@@ -15,49 +15,36 @@ namespace TimeTracker
 {
     public class MainPageViewModel : INotifyPropertyChanged
     {
-        private Entry _currentEntry;
-        private Entry CurrentEntry
+        private TimeEntry _currentTimeEntry;
+        public TimeEntry CurrentTimeEntry
         {
             get
             {
-                if (_currentEntry == null)
+                if (_currentTimeEntry == null)
                 {
-                    _currentEntry = new Entry();
+                    _currentTimeEntry = new TimeEntry();
                 }
 
-                return _currentEntry;
+                return _currentTimeEntry;
             }
+            protected set => _currentTimeEntry = value;
         }
-        public string CurrentComments
-        {
-            get => CurrentEntry.Comments;
-            set => CurrentEntry.Comments = value;
-        }
+  
 
-        public string CurrentTimer
-        {
-            get
-            {
-                var elapsedTime = Stopwatch.Elapsed;
-                return $"{elapsedTime.Hours}:{elapsedTime.Minutes}:{elapsedTime.Seconds}";
-            } 
+        
 
-        }
+        public ObservableCollection<ObservableCollection<TimeEntry>> _timeEntries;
 
-        public Stopwatch Stopwatch = new Stopwatch();
-
-        public ObservableCollection<ObservableCollection<Entry>> _entries;
-
-        public ObservableCollection<ObservableCollection<Entry>> Entries
+        public ObservableCollection<ObservableCollection<TimeEntry>> TimeEntries
         {
             get
             {
-                if (_entries == null)
+                if (_timeEntries == null)
                 {
-                    _entries = new ObservableCollection<ObservableCollection<Entry>>{new ObservableCollection<Entry>()};
+                    _timeEntries = new ObservableCollection<ObservableCollection<TimeEntry>>{new ObservableCollection<TimeEntry>()};
                 }
 
-                return _entries;
+                return _timeEntries;
             }
         }
 
@@ -65,19 +52,23 @@ namespace TimeTracker
 
         public void TimerClicked()
         {
-            if (!Stopwatch.IsRunning)
+            if (!CurrentTimeEntry.Stopwatch.IsRunning)
             {
-                Stopwatch.Start();
+                CurrentTimeEntry.StartTimer();
             }
             else
             {
-                Stopwatch.Stop();
-                CurrentEntry.RunTime = Stopwatch.Elapsed;
-                Stopwatch.Reset();
-                Entries.First().Add(CurrentEntry);
-               _currentEntry = null;
-                OnPropertyChanged();
+                CurrentTimeEntry.Stopwatch.Stop();
+                TimeEntries.First().Add(CurrentTimeEntry);
+                _currentTimeEntry = new TimeEntry();
+                OnPropertyChanged(nameof(CurrentTimeEntry));
+                CurrentTimeEntry.OnPropertyChanged(nameof(TimeEntry.Comments));
             }
+        }
+
+
+        public void ContinueTimerClicked(TimeEntry previousTimeEntry)
+        {
 
         }
 

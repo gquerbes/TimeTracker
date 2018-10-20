@@ -11,17 +11,17 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="15*"/>
             </Grid.RowDefinitions>
-            <Grid x:Name="TopBar" Grid.Row="0" BackgroundColor="Beige" Padding="5">
+            <Grid x:Name="TopBar" BindingContext="{Binding CurrentTimeEntry}" Grid.Row="0" BackgroundColor="Beige" Padding="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Entry x:Name="CurrentTextLabel" Grid.Column="0" Text="{Binding CurrentComments}"/>
-                <Label x:Name="TimerLabel" Grid.Column="1"/>
+                <Entry x:Name="CurrentTextLabel" Grid.Column="0" Text="{Binding Comments, Mode=TwoWay}"/>
+                <Label x:Name="TimerLabel" Text="0:00" Grid.Column="1"/>
                 <Button x:Name="TimerButton" Grid.Column="2" Text="START" BackgroundColor="Green" Clicked="TimerButton_OnClicked"/>
             </Grid>
-            <ListView Grid.Row="1" IsGroupingEnabled="True" ItemsSource="{Binding Entries}">
+            <ListView Grid.Row="1" IsGroupingEnabled="True" ItemsSource="{Binding TimeEntries}">
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -47,7 +47,7 @@
                             </Grid.ColumnDefinitions>
                             <Label  Grid.Column="0" Text="{Binding Comments}"/>
                             <Label  Grid.Column="1" Text="{Binding RunTimeText}"/>
-                            <Button Grid.Column="2" Text="|>" BackgroundColor="Green"/>
+                            <Button Grid.Column="2" Text="|>" BackgroundColor="Green" Clicked="PreviousJobTimer_OnClicked"/>
                         </Grid>
                         </ViewCell>
                     </DataTemplate>

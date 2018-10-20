@@ -26,10 +26,17 @@ namespace TimeTracker
 
         private bool UpdateClock()
         {
-            var elapsedTime = _vm.Stopwatch.Elapsed;
+            var elapsedTime = _vm.CurrentTimeEntry.Stopwatch.Elapsed;
             TimerLabel.Text = $"{elapsedTime.Hours}:{elapsedTime.Minutes}:{elapsedTime.Seconds}";
 
-            return _vm.Stopwatch.IsRunning;
+            return _vm.CurrentTimeEntry.Stopwatch.IsRunning;
+        }
+
+        private void PreviousJobTimer_OnClicked(object sender, EventArgs e)
+        {
+            TimeEntry selectedTimeEntry = (sender as Button)?.BindingContext as TimeEntry;
+
+
         }
     }
 }
