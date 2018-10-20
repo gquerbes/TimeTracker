@@ -12,4 +12,10 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Xamarin.Android.Arch.Core.Common">
+      <HintPath>..\..\..\..\..\.nuget\packages\xamarin.android.arch.core.common\1.0.0.1\lib\MonoAndroid80\Xamarin.Android.Arch.Core.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

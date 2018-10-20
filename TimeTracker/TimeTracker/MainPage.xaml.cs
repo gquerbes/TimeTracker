@@ -17,5 +17,19 @@ namespace TimeTracker
 
             InitializeComponent();
         }
+
+        private void TimerButton_OnClicked(object sender, EventArgs e)
+        {
+            _vm.TimerClicked();
+            Device.StartTimer(new TimeSpan(0, 0, 0, 1), UpdateClock);
+        }
+
+        private bool UpdateClock()
+        {
+            var elapsedTime = _vm.Stopwatch.Elapsed;
+            TimerLabel.Text = $"{elapsedTime.Hours}:{elapsedTime.Minutes}:{elapsedTime.Seconds}";
+
+            return _vm.Stopwatch.IsRunning;
+        }
     }
 }

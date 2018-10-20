@@ -17,9 +17,9 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Entry x:Name="CurrentTextLabel" Grid.Column="0" Placeholder="Current Text"/>
-                <Label x:Name="TimerLabel" Grid.Column="1" Text="0:00"/>
-                <Button x:Name="TimerButton" Grid.Column="2" Text="START" BackgroundColor="Green"/>
+                <Entry x:Name="CurrentTextLabel" Grid.Column="0" Text="{Binding CurrentComments}"/>
+                <Label x:Name="TimerLabel" Grid.Column="1"/>
+                <Button x:Name="TimerButton" Grid.Column="2" Text="START" BackgroundColor="Green" Clicked="TimerButton_OnClicked"/>
             </Grid>
             <ListView Grid.Row="1" IsGroupingEnabled="True" ItemsSource="{Binding Entries}">
                 <ListView.GroupHeaderTemplate>
@@ -45,8 +45,8 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <Label  Grid.Column="0" Text="JobBlahBlah"/>
-                            <Label  Grid.Column="1" Text="1:20"/>
+                            <Label  Grid.Column="0" Text="{Binding Comments}"/>
+                            <Label  Grid.Column="1" Text="{Binding RunTimeText}"/>
                             <Button Grid.Column="2" Text="|>" BackgroundColor="Green"/>
                         </Grid>
                         </ViewCell>
