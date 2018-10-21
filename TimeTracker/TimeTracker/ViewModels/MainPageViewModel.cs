@@ -58,7 +58,7 @@ namespace TimeTracker
             }
             else
             {
-                CurrentTimeEntry.Stopwatch.Stop();
+                CurrentTimeEntry.StopTimer();
                 TimeEntries.First().Add(CurrentTimeEntry);
                 _currentTimeEntry = new TimeEntry();
                 OnPropertyChanged(nameof(CurrentTimeEntry));

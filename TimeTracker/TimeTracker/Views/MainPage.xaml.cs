@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using TimeTracker.Views;
 using Xamarin.Forms;
 
 namespace TimeTracker
@@ -16,6 +18,13 @@ namespace TimeTracker
             this.BindingContext = _vm;
 
             InitializeComponent();
+
+            foreach (var x in App.Current.Properties)
+            {
+                var obj = JsonConvert.DeserializeObject<TimeEntry>(x.Value as string);
+
+                _vm.TimeEntries.FirstOrDefault()?.Add(obj);
+            }
         }
 
         private void TimerButton_OnClicked(object sender, EventArgs e)
@@ -32,11 +41,7 @@ namespace TimeTracker
             return _vm.CurrentTimeEntry.Stopwatch.IsRunning;
         }
 
-        private void PreviousJobTimer_OnClicked(object sender, EventArgs e)
-        {
-            TimeEntry selectedTimeEntry = (sender as Button)?.BindingContext as TimeEntry;
 
-
-        }
+     
     }
 }

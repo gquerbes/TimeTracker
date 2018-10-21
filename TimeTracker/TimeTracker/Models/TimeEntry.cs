@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
+using Newtonsoft.Json;
 using TimeTracker.Annotations;
 
 namespace TimeTracker
@@ -57,14 +58,26 @@ namespace TimeTracker
             if (Stopwatch.IsRunning)
             {
                 Stopwatch.Stop();
+                Save();
+                
             }
             else
             {
                 throw new Exception("Stopwatch was not running!");
             }
         }
-        
 
+
+        private async void Save()
+        {
+            var serializedEntry = JsonConvert.SerializeObject(this);
+            App.Current.Properties.Add(Guid.NewGuid().ToString(), serializedEntry);
+            await App.Current.SavePropertiesAsync();
+            foreach (var currentProperty in App.Current.Properties)
+            {
+                System.Diagnostics.Debug.WriteLine($"***{currentProperty}");
+            }
+        }
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
