@@ -19,11 +19,16 @@ namespace TimeTracker
 
             InitializeComponent();
 
-            foreach (var x in App.Current.Properties)
-            {
-                var obj = JsonConvert.DeserializeObject<TimeEntry>(x.Value as string);
+            
+            LoadData();
+        }
 
-                _vm.TimeEntries.FirstOrDefault()?.Add(obj);
+        private async void LoadData()
+        {
+            var entries = await App.Database.GetItemsAsync<TimeEntry>();
+            foreach (var entry in entries)
+            {
+                _vm.TimeEntries.FirstOrDefault()?.Add(entry);
             }
         }
 

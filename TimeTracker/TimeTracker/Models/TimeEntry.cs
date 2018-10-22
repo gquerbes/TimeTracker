@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
+using SQLite;
 using TimeTracker.Annotations;
 
 namespace TimeTracker
@@ -14,11 +15,26 @@ namespace TimeTracker
     {
         #region Properties
 
-        public TimeSpan RunTime => Stopwatch.Elapsed;
+        private TimeSpan _runTime;
+        public TimeSpan RunTime
+        {
+            get
+            {
+                if (_runTime.Equals(TimeSpan.Zero))
+                {
+                    return Stopwatch.Elapsed;
+                }
+
+                return _runTime;
+            }
+            set => _runTime = value;
+        }
        
         public string Comments { get; set; }
 
-        public  Stopwatch Stopwatch;
+        public Stopwatch Stopwatch;
+
+        public string Guid { get; set; }
         #endregion
 
         #region Constructor
@@ -32,7 +48,7 @@ namespace TimeTracker
         #endregion
 
         #region BindedProperties
-
+        [Ignore]
         public string RunTimeText
         {
             get { return $"{RunTime.Hours}:{RunTime.Minutes}:{RunTime.Seconds}"; }
@@ -59,7 +75,6 @@ namespace TimeTracker
             {
                 Stopwatch.Stop();
                 Save();
-                
             }
             else
             {
@@ -70,13 +85,7 @@ namespace TimeTracker
 
         private async void Save()
         {
-            var serializedEntry = JsonConvert.SerializeObject(this);
-            App.Current.Properties.Add(Guid.NewGuid().ToString(), serializedEntry);
-            await App.Current.SavePropertiesAsync();
-            foreach (var currentProperty in App.Current.Properties)
-            {
-                System.Diagnostics.Debug.WriteLine($"***{currentProperty}");
-            }
+            await App.Database.SaveItemAsync(this);
         }
         #endregion
 

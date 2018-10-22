@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using TimeTracker.Database;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,6 +16,21 @@ namespace TimeTracker
             MainPage = new MainPage();
         }
 
+        private static AppDatabase database;
+
+        public static AppDatabase Database
+        {
+            get
+            {
+                if (database == null)
+                {
+                    database = new AppDatabase(Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "app.db3"));
+                }
+
+                return database;
+            }
+        }
         protected override void OnStart()
         {
             // Handle when your app starts
