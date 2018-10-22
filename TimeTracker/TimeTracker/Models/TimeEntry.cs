@@ -14,6 +14,7 @@ namespace TimeTracker
     public class TimeEntry : INotifyPropertyChanged
     {
         #region Properties
+        public DateTime StartDate { get; set; }
 
         private TimeSpan _runTime;
         public TimeSpan RunTime
@@ -33,7 +34,7 @@ namespace TimeTracker
         public string Comments { get; set; }
 
         public Stopwatch Stopwatch;
-
+        [PrimaryKey]
         public string Guid { get; set; }
         #endregion
 
@@ -62,6 +63,7 @@ namespace TimeTracker
             if (!Stopwatch.IsRunning)
             {
                 Stopwatch.Start();
+                StartDate = DateTime.Today;
             }
             else
             {
@@ -83,9 +85,14 @@ namespace TimeTracker
         }
 
 
-        private async void Save()
+        public async void Save()
         {
             await App.Database.SaveItemAsync(this);
+        }
+
+        public async void Delete()
+        {
+            await App.Database.DeleteItemAsync(this);
         }
         #endregion
 

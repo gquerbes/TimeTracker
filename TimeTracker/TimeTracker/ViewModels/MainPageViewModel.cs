@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using TimeTracker.Annotations;
+using TimeTracker.Models;
 using Xamarin.Forms;
 
 namespace TimeTracker
@@ -33,15 +34,19 @@ namespace TimeTracker
 
         
 
-        public ObservableCollection<ObservableCollection<TimeEntry>> _timeEntries;
+        public ObservableCollection<TimeEntryObservableCollection> _timeEntries;
 
-        public ObservableCollection<ObservableCollection<TimeEntry>> TimeEntries
+        public ObservableCollection<TimeEntryObservableCollection> TimeEntries
         {
             get
             {
                 if (_timeEntries == null)
                 {
-                    _timeEntries = new ObservableCollection<ObservableCollection<TimeEntry>>{new ObservableCollection<TimeEntry>()};
+                    _timeEntries = new ObservableCollection<TimeEntryObservableCollection>();
+                }
+                if(!_timeEntries.Any(x => x.Date.Equals(DateTime.Today)))
+                {
+                    _timeEntries.Add(new TimeEntryObservableCollection(DateTime.Today));
                 }
 
                 return _timeEntries;

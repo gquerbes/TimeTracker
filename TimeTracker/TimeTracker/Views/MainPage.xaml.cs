@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using TimeTracker.Models;
 using TimeTracker.Views;
 using Xamarin.Forms;
 
@@ -28,7 +29,17 @@ namespace TimeTracker
             var entries = await App.Database.GetItemsAsync<TimeEntry>();
             foreach (var entry in entries)
             {
-                _vm.TimeEntries.FirstOrDefault()?.Add(entry);
+                //Find collection with same date as start date of entry
+                TimeEntryObservableCollection correspondingCollection =
+                    _vm.TimeEntries.FirstOrDefault(x => x.Date.Equals(entry.StartDate));
+
+                //if collection does not exist, create one
+                if(correspondingCollection == null)
+                {
+                    correspondingCollection = new TimeEntryObservableCollection(entry.StartDate);
+                    _vm.TimeEntries.Add(correspondingCollection);
+                }
+                correspondingCollection.Add(entry);
             }
         }
 
