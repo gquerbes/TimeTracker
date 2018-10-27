@@ -9,7 +9,7 @@ namespace TimeTracker.Models
     /// <summary>
     /// Observable collection to hold entries for a specified date
     /// </summary>
-   public class TimeEntryObservableCollection : ObservableCollection<TimeEntry>
+   public class TimeEntryObservableCollection : ObservableCollection<TimeEntryViewModel>
    {
        public TimeEntryObservableCollection(DateTime date)
        {

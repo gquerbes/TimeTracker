@@ -16,15 +16,15 @@ namespace TimeTracker
 {
     public class MainPageViewModel : INotifyPropertyChanged
     {
-        private TimeEntry _currentTimeEntry;
+        private TimeEntryViewModel _currentTimeEntry;
 
-        public TimeEntry CurrentTimeEntry
+        public TimeEntryViewModel CurrentTimeEntry
         {
             get
             {
                 if (_currentTimeEntry == null)
                 {
-                    _currentTimeEntry = new TimeEntry();
+                    _currentTimeEntry = new TimeEntryViewModel();
                 }
 
                 return _currentTimeEntry;
@@ -67,14 +67,14 @@ namespace TimeTracker
             {
                 CurrentTimeEntry.StopTimer();
                 TimeEntries.First().Add(CurrentTimeEntry);
-                _currentTimeEntry = new TimeEntry();
+                _currentTimeEntry = new TimeEntryViewModel();
                 OnPropertyChanged(nameof(CurrentTimeEntry));
-                CurrentTimeEntry.OnPropertyChanged(nameof(TimeEntry.Comments));
+                CurrentTimeEntry.OnPropertyChanged(nameof(TimeEntryViewModel.Comments));
             }
         }
 
 
-        public void ContinueTimerClicked(TimeEntry previousTimeEntry)
+        public void ContinueTimerClicked(TimeEntryViewModel previousTimeEntry)
         {
 
         }

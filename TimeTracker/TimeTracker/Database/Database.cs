@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using SQLite;
+using TimeTracker.Models;
 
 namespace TimeTracker.Database
 {
@@ -16,15 +17,16 @@ namespace TimeTracker.Database
     {
         database = new SQLiteAsyncConnection(dbPath);
         database.CreateTableAsync<TimeEntry>().Wait();
+        //database.CreateTableAsync<Ticket>().Wait();
     }
 
 
-    public Task<List<T>> GetItemsAsync<T>() where T: TimeEntry, new()
+    public Task<List<T>> GetItemsAsync<T>() where T: DataObj, new()
     {
         return database.Table<T>().ToListAsync();
     }
 
-        public Task<int> SaveItemAsync(TimeEntry item)
+        public Task<int> SaveItemAsync(DataObj item)
         {
             if (string.IsNullOrEmpty(item.Guid))
             {
@@ -37,7 +39,7 @@ namespace TimeTracker.Database
             }
         }
 
-        public Task<int> DeleteItemAsync(TimeEntry item)
+        public Task<int> DeleteItemAsync(DataObj item)
         {
             return database.DeleteAsync(item);
         }

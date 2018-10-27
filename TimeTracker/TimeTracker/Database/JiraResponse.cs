@@ -8,10 +8,10 @@ namespace TimeTracker.Database
     {
         public int startAt { get; set; }
         public int total { get; set; }
-        public List<Issue> issues { get; set; }
+        public List<Ticket> issues { get; set; }
     }
 
-    public class Issue
+    public class Ticket : DataObj
     {
         public string id { get; set; }
         public string self { get; set; }

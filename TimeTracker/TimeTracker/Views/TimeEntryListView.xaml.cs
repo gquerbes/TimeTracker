@@ -19,16 +19,16 @@ namespace TimeTracker.Views
 
 	    private void PreviousJobTimer_OnClicked(object sender, EventArgs e)
 	    {
-	        TimeEntry selectedTimeEntry = (sender as Button)?.BindingContext as TimeEntry;
+	        TimeEntryViewModel selectedTimeEntry = (sender as Button)?.BindingContext as TimeEntryViewModel;
 	    }
 
 	    private void DeleteContextAction_Clicked(object sender, EventArgs e)
 	    {
             //get entry that was selected to remove
-	        TimeEntry selectedTimeEntry = (sender as MenuItem)?.BindingContext as TimeEntry;
+	        TimeEntryViewModel selectedTimeEntry = (sender as MenuItem)?.BindingContext as TimeEntryViewModel;
 
             //find corresponding collection
-            var correspondingCollection = (this.BindingContext as MainPageViewModel)?.TimeEntries.Where((x => x.Date.Equals(selectedTimeEntry?.StartDate))).FirstOrDefault();
+            var correspondingCollection = (this.BindingContext as MainPageViewModel)?.TimeEntries.Where((x => x.Date.Equals(selectedTimeEntry?.TimeEntry.StartDate))).FirstOrDefault();
 
             //remove item from list
             correspondingCollection?.Remove(selectedTimeEntry);

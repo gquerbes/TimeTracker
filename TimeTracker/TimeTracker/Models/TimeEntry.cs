@@ -1,138 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading;
-using Newtonsoft.Json;
-using SQLite;
-using TimeTracker.Annotations;
-using Xamarin.Forms;
+using TimeTracker.Database;
 
-namespace TimeTracker
+namespace TimeTracker.Models
 {
-    public class TimeEntry : INotifyPropertyChanged
+    public class TimeEntry : DataObj
     {
-        #region Properties
         public DateTime StartDate { get; set; }
 
-        private TimeSpan _runTime;
-        public TimeSpan RunTime
-        {
-            get
-            {
-                if (_runTime.Equals(TimeSpan.Zero))
-                {
-                    return Stopwatch.Elapsed;
-                }
+        public TimeSpan RunTime { get; set; }
 
-                return _runTime;
-            }
-            set => _runTime = value;
-        }
-       
         public string Comments { get; set; }
 
-        public Stopwatch Stopwatch;
-        [PrimaryKey]
-        public string Guid { get; set; }
-        #endregion
-
-        #region Constructor
-
-        public TimeEntry()
-        {
-            Stopwatch = new Stopwatch();
-        }
-        
-
-        #endregion
-
-        #region BindedProperties
-        [Ignore]
-        public string RunTimeText
-        {
-            get { return $"{RunTime.Hours}:{RunTime.Minutes}:{RunTime.Seconds}"; }
-        }
-
-        public Color TimerButtonColor
-        {
-            get
-            {
-                if (Stopwatch.IsRunning)
-                {
-                    return Color.Red;
-                }
-
-                return Color.Green;
-            }
-        }
-
-
-        public string TimerButtonText
-        {
-            get
-            {
-                if (Stopwatch.IsRunning)
-                {
-                    return "Stop";
-                }
-
-                return "Start";
-            }
-        }
-        #endregion
-
-        #region Methods
-
-        public void StartTimer()
-        {
-            if (!Stopwatch.IsRunning)
-            {
-                Stopwatch.Start();
-                StartDate = DateTime.Today;
-            }
-            else
-            {
-                throw new Exception("Stopwatch already running!");
-            }
-
-            OnPropertyChanged(nameof(TimerButtonColor));
-            OnPropertyChanged(nameof(TimerButtonText));
-        }
-
-        public void StopTimer()
-        {
-            if (Stopwatch.IsRunning)
-            {
-                Stopwatch.Stop();
-                Save();
-            }
-            else
-            {
-                throw new Exception("Stopwatch was not running!");
-            }
-        }
-
-
-        public async void Save()
-        {
-            await App.Database.SaveItemAsync(this);
-        }
-
-        public async void Delete()
-        {
-            await App.Database.DeleteItemAsync(this);
-        }
-        #endregion
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

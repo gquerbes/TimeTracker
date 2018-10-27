@@ -39,7 +39,7 @@ namespace TimeTracker
                     correspondingCollection = new TimeEntryObservableCollection(entry.StartDate);
                     _vm.TimeEntries.Add(correspondingCollection);
                 }
-                correspondingCollection.Add(entry);
+                correspondingCollection.Add(new TimeEntryViewModel(entry));
             }
         }
 
