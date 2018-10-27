@@ -17,6 +17,7 @@ namespace TimeTracker
     public class MainPageViewModel : INotifyPropertyChanged
     {
         private TimeEntry _currentTimeEntry;
+
         public TimeEntry CurrentTimeEntry
         {
             get
@@ -30,9 +31,9 @@ namespace TimeTracker
             }
             protected set => _currentTimeEntry = value;
         }
-  
 
-        
+
+
 
         public ObservableCollection<TimeEntryObservableCollection> _timeEntries;
 
@@ -44,7 +45,8 @@ namespace TimeTracker
                 {
                     _timeEntries = new ObservableCollection<TimeEntryObservableCollection>();
                 }
-                if(!_timeEntries.Any(x => x.Date.Equals(DateTime.Today)))
+
+                if (!_timeEntries.Any(x => x.Date.Equals(DateTime.Today)))
                 {
                     _timeEntries.Add(new TimeEntryObservableCollection(DateTime.Today));
                 }
@@ -78,7 +80,9 @@ namespace TimeTracker
         }
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
+    
+
+    public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -8,6 +8,7 @@ using System.Threading;
 using Newtonsoft.Json;
 using SQLite;
 using TimeTracker.Annotations;
+using Xamarin.Forms;
 
 namespace TimeTracker
 {
@@ -54,6 +55,33 @@ namespace TimeTracker
         {
             get { return $"{RunTime.Hours}:{RunTime.Minutes}:{RunTime.Seconds}"; }
         }
+
+        public Color TimerButtonColor
+        {
+            get
+            {
+                if (Stopwatch.IsRunning)
+                {
+                    return Color.Red;
+                }
+
+                return Color.Green;
+            }
+        }
+
+
+        public string TimerButtonText
+        {
+            get
+            {
+                if (Stopwatch.IsRunning)
+                {
+                    return "Stop";
+                }
+
+                return "Start";
+            }
+        }
         #endregion
 
         #region Methods
@@ -69,6 +97,9 @@ namespace TimeTracker
             {
                 throw new Exception("Stopwatch already running!");
             }
+
+            OnPropertyChanged(nameof(TimerButtonColor));
+            OnPropertyChanged(nameof(TimerButtonText));
         }
 
         public void StopTimer()

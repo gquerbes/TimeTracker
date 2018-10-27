@@ -5,19 +5,20 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace TimeTracker.Database
 {
     public class TicketLoader
     {
         static HttpClient client = new HttpClient();
-        public static async void LoadData()
+        public static void LoadData()
         {
 
 
             WebRequest req = WebRequest.Create(@"http://support.abas-usa.com/rest/api/2/search?jql=assignee=gquerbes");
-            req.Method = "GET";
-            req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes("user:password"));
+            req.Method = "GET"
+            req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes($"{Credentials.Username}:{Credentials.Password}"));
 
             WebResponse response = req.GetResponse();
 
@@ -29,7 +30,10 @@ namespace TimeTracker.Database
 
             var responseFromServer = reader.ReadToEnd();
 
-            Console.WriteLine(responseFromServer);
+
+            var text = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseFromServer);
+
+            Console.WriteLine(text);
 
             reader.Close();
             response.Close();

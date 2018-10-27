@@ -20,7 +20,7 @@
                 </Grid.ColumnDefinitions>
                 <Entry x:Name="CurrentTextLabel" Grid.Column="0" Text="{Binding Comments, Mode=TwoWay}"/>
                 <Label x:Name="TimerLabel" Text="0:00" Grid.Column="1"/>
-                <Button x:Name="TimerButton" Grid.Column="2" Text="START" BackgroundColor="Green" Clicked="TimerButton_OnClicked"/>
+                <Button x:Name="TimerButton" Grid.Column="2" Text="{Binding TimerButtonText}" BackgroundColor="{Binding TimerButtonColor}" Clicked="TimerButton_OnClicked"/>
             </Grid>
             <views:TimeEntryListView Grid.Row="1"/>
         </Grid>
