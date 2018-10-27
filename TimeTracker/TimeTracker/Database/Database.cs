@@ -17,7 +17,8 @@ namespace TimeTracker.Database
     {
         database = new SQLiteAsyncConnection(dbPath);
         database.CreateTableAsync<TimeEntry>().Wait();
-        //database.CreateTableAsync<Ticket>().Wait();
+        database.CreateTableAsync<Fields>().Wait();
+        database.CreateTableAsync<Ticket>().Wait();
     }
 
 

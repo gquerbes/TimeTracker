@@ -36,7 +36,12 @@ namespace TimeTracker.Database
 
                 var responseFromServer = reader.ReadToEnd();
 
-                var text = JsonConvert.DeserializeObject<JiraResponse>(responseFromServer);
+                var JiraResult = JsonConvert.DeserializeObject<JiraResponse>(responseFromServer);
+
+                foreach (var ticket in JiraResult.issues)
+                {
+                    App.Database.SaveItemAsync(ticket);
+                }
             }
 
 
