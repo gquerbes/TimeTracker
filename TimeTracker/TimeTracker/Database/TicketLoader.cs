@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -15,28 +16,41 @@ namespace TimeTracker.Database
         public static void LoadData()
         {
 
+            var TimeRange = "jql=updated >= -12w";
+            var fieldsToShow = "fields=summary,key,customfield_10571";
+            var maxResults = "maxResults=-1";
 
-            WebRequest req = WebRequest.Create(@"http://support.abas-usa.com/rest/api/2/search?jql=assignee=gquerbes");
-            req.Method = "GET"
+
+            WebRequest req = WebRequest.Create($"{@"http://support.abas-usa.com/rest/api/2/search?"}{TimeRange}&{fieldsToShow}&{maxResults}");
+            req.Method = "GET";
             req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes($"{Credentials.Username}:{Credentials.Password}"));
+            WebResponse response = null;
+            StreamReader reader = null;
+            try
+            {
+                response = req.GetResponse();
 
-            WebResponse response = req.GetResponse();
+                Stream dataStream = response.GetResponseStream();
 
-            Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+                reader = new StreamReader(dataStream);
 
-            Stream dataStream = response.GetResponseStream();
+                var responseFromServer = reader.ReadToEnd();
 
-            StreamReader reader = new StreamReader(dataStream);
+                var text = JsonConvert.DeserializeObject<JiraResponse>(responseFromServer);
+            }
 
-            var responseFromServer = reader.ReadToEnd();
 
+            catch (Exception e)
+            {
+                Debug.WriteLine($"**{e.Data}==>{e.Message}");
+            }
+            finally
+            {
+                reader?.Close();
+                response?.Close();
+            }
+            
 
-            var text = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseFromServer);
-
-            Console.WriteLine(text);
-
-            reader.Close();
-            response.Close();
 
 
         }
