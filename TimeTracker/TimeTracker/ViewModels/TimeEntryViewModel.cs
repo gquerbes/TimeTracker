@@ -124,14 +124,14 @@ namespace TimeTracker
         }
 
 
-        public async void Save()
+        public  void Save()
         {
-            await App.Database.SaveItemAsync(TimeEntry);
+             App.Database.SaveItem(TimeEntry);
         }
 
-        public async void Delete()
+        public  void Delete()
         {
-            await App.Database.DeleteItemAsync(TimeEntry);
+             App.Database.DeleteItem(TimeEntry);
         }
         #endregion
 

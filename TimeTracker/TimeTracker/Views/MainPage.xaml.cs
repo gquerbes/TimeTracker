@@ -24,9 +24,9 @@ namespace TimeTracker
             LoadData();
         }
 
-        private async void LoadData()
+        private void LoadData()
         {
-            var entries = await App.Database.GetItemsAsync<TimeEntry>();
+            var entries =  App.Database.GetItems<TimeEntry>();
             foreach (var entry in entries)
             {
                 //Find collection with same date as start date of entry

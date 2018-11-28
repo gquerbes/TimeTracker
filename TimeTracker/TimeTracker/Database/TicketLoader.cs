@@ -40,7 +40,7 @@ namespace TimeTracker.Database
 
                 foreach (var ticket in JiraResult.issues)
                 {
-                    App.Database.SaveItemAsync(ticket);
+                    App.Database.SaveItem(ticket);
                 }
             }
 

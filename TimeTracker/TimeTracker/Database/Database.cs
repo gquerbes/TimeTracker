@@ -11,38 +11,39 @@ namespace TimeTracker.Database
     public class AppDatabase
 
     {
-    private readonly SQLiteAsyncConnection database;
+
+        private readonly SQLiteConnection database;
 
     public AppDatabase(string dbPath)
     {
-        database = new SQLiteAsyncConnection(dbPath);
-        database.CreateTableAsync<TimeEntry>().Wait();
-        database.CreateTableAsync<Fields>().Wait();
-        database.CreateTableAsync<Ticket>().Wait();
+        database = new SQLiteConnection(dbPath);
+        database.CreateTable<TimeEntry>();
+        database.CreateTable<Fields>();
+        database.CreateTable<Ticket>();
     }
 
 
-    public Task<List<T>> GetItemsAsync<T>() where T: DataObj, new()
+    public List<T> GetItems<T>() where T: DataObj, new()
     {
-        return database.Table<T>().ToListAsync();
+        return database.Table<T>().ToList();
     }
 
-        public Task<int> SaveItemAsync(DataObj item)
+        public int SaveItem(DataObj item)
         {
             if (string.IsNullOrEmpty(item.Guid))
             {
                 item.Guid = Guid.NewGuid().ToString();
-                return database.InsertAsync(item);
+                return database.Insert(item);
             }
             else
             {
-                return database.UpdateAsync(item);
+                return database.Update(item);
             }
         }
 
-        public Task<int> DeleteItemAsync(DataObj item)
+        public int DeleteItem(DataObj item)
         {
-            return database.DeleteAsync(item);
+            return database.Delete(item);
         }
 
     }
