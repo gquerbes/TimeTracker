@@ -13,7 +13,7 @@ namespace TimeTracker
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new MainPage());
         }
 
         private static AppDatabase database;

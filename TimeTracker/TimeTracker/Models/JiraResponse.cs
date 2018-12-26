@@ -16,21 +16,24 @@ namespace TimeTracker.Database
     public class Ticket : DataObj
     {
         public string id { get; set; }
+        /// <summary>
+        /// URL to ticket
+        /// </summary>
         public string self { get; set; }
+        /// <summary>
+        /// Ticket abbreviation i.e. ABC-123
+        /// </summary>
         public string key { get; set; }
+
+        /// <summary>
+        /// Ticket Summary
+        /// </summary>
+        public string Summary { get; set; }
+
+        public string repliconID { get; set; }
+
         [Ignore]
         public Fields fields { get; set; }
-
-        public string Summary
-        {
-            get => fields.summary;
-            set => fields.summary = value;
-        }
-
-        public string RepliconID {
-            get => fields.customfield_10571;
-            set => fields.customfield_10571 = value;
-        }
     }
 
     public class Fields : DataObj

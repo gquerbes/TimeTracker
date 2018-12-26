@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:TimeTracker"
              xmlns:views="clr-namespace:TimeTracker.Views;assembly=TimeTracker"
              x:Class="TimeTracker.MainPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="BUTTON" Clicked="MenuItem_OnClicked" />
+    </ContentPage.ToolbarItems>
+    
 
     <StackLayout x:Name="MainContentStack"> 
         <!-- Place new controls here -->
@@ -22,7 +26,8 @@
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-                <Entry x:Name="CurrentTextLabel" Grid.Column="0" Grid.Row="0" Text="{Binding Comments, Mode=TwoWay}" />
+                <!--<Entry x:Name="CurrentTextLabel" Grid.Column="0" Grid.Row="0" Text="{Binding Comments, Mode=TwoWay}" />-->
+                <views:AutoCompleteList Grid.Column="0" Grid.Row="0" />
                 <Label x:Name="SelectedTicketLabel" Grid.Column="0" Grid.Row="1" Text="{Binding SelectedTicketLabel} "/>
                 <Label x:Name="TimerLabel" Text="0:00" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"/>
                 <Button x:Name="TimerButton" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Text="{Binding TimerButtonText}" BackgroundColor="{Binding TimerButtonColor}" Clicked="TimerButton_OnClicked" />

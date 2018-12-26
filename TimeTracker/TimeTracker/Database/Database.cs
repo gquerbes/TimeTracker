@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SQLite;
@@ -26,7 +27,6 @@ namespace TimeTracker.Database
             database = new SQLiteConnection(dbPath);
             database.CreateTable<Ticket>();
             database.CreateTable<TimeEntry>();
-            database.CreateTable<Fields>();
         }
 
 
@@ -34,6 +34,14 @@ namespace TimeTracker.Database
         {
             return database.Table<T>().ToList();
         }
+
+        public List<T> Query<T>(string Query) where T : DataObj, new()
+        {
+           return database.Query<T>($"SELECT * FROM {database.GetMapping(typeof(T)).TableName} WHERE {Query}");
+        }
+
+    
+
 
         public int SaveItem(DataObj item)
         {

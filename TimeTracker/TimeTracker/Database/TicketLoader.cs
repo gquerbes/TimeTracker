@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -33,6 +34,7 @@ namespace TimeTracker.Database
             StreamReader reader = null;
             try
             {
+//TODO: Do this in a loop until ALL tickets are synced
                 response = req.GetResponse();
 
                 Stream dataStream = response.GetResponseStream();
@@ -43,9 +45,19 @@ namespace TimeTracker.Database
 
                 var JiraResult = JsonConvert.DeserializeObject<JiraResponse>(responseFromServer);
 
+               
+
                 foreach (var ticket in JiraResult.issues)
                 {
-                    App.Database.SaveItem(ticket);
+                    if (!App.Database.Query<Ticket>($"id = {ticket.id}").Any())
+                    {
+                        //set summary directly on ticket object from fields object
+                        ticket.Summary = ticket.fields.summary;
+                        //set RepliconID directly on ticket object from fields object
+                        ticket.repliconID = ticket.fields.customfield_10571;
+                        //Save ticket 
+                        App.Database.SaveItem(ticket);
+                    }
                 }
             }
 
@@ -63,6 +75,26 @@ namespace TimeTracker.Database
 
 
 
+        }
+
+     
+    }
+
+    public class converter : JsonConverter
+    {
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool CanConvert(Type objectType)
+        {
+            throw new NotImplementedException();
         }
     }
 }

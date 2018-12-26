@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:TimeTracker.Views;assembly=TimeTracker"
+             x:Class="TimeTracker.Views.TestPage"
+             BackgroundColor="Beige">
+    <ContentPage.Content>
+        <StackLayout>
+            <views:AutoCompleteList/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
