@@ -10,18 +10,23 @@ using Newtonsoft.Json;
 
 namespace TimeTracker.Database
 {
+    /// <summary>
+    /// Loads all available tickets fro JIRA into the app
+    /// </summary>
     public class TicketLoader
     {
         static HttpClient client = new HttpClient();
         public static void LoadData()
         {
-
+            //Tickets updated within the last x weeks
             var TimeRange = "jql=updated >= -12w";
+            //list of fields that we want to sync "customfield_10571" is the replicon ID of each ticket
             var fieldsToShow = "fields=summary,key,customfield_10571";
+            //Do not limit number of results
             var maxResults = "maxResults=-1";
 
 
-            WebRequest req = WebRequest.Create($"{@"http://support.abas-usa.com/rest/api/2/search?"}{TimeRange}&{fieldsToShow}&{maxResults}");
+            WebRequest req = WebRequest.Create($"{Credentials.URL}{TimeRange}&{fieldsToShow}&{maxResults}");
             req.Method = "GET";
             req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes($"{Credentials.Username}:{Credentials.Password}"));
             WebResponse response = null;

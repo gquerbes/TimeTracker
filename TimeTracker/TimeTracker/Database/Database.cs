@@ -8,25 +8,32 @@ using TimeTracker.Models;
 
 namespace TimeTracker.Database
 {
+    /// <summary>
+    /// Represents the Apps database to used to persist data 
+    /// </summary>
     public class AppDatabase
 
     {
 
         private readonly SQLiteConnection database;
 
-    public AppDatabase(string dbPath)
-    {
-        database = new SQLiteConnection(dbPath);
-        database.CreateTable<TimeEntry>();
-        database.CreateTable<Fields>();
-        database.CreateTable<Ticket>();
-    }
+        /// <summary>
+        /// Creates the app database
+        /// </summary>
+        /// <param name="dbPath"></param>
+        public AppDatabase(string dbPath)
+        {
+            database = new SQLiteConnection(dbPath);
+            database.CreateTable<Ticket>();
+            database.CreateTable<TimeEntry>();
+            database.CreateTable<Fields>();
+        }
 
 
-    public List<T> GetItems<T>() where T: DataObj, new()
-    {
-        return database.Table<T>().ToList();
-    }
+        public List<T> GetItems<T>() where T : DataObj, new()
+        {
+            return database.Table<T>().ToList();
+        }
 
         public int SaveItem(DataObj item)
         {

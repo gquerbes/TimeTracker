@@ -31,20 +31,19 @@ namespace TimeTracker
 
         public TimeEntry TimeEntry{get; set; }
 
-      
+
 
         public TimeSpan RunTime
         {
             get
             {
-                if (TimeEntry.RunTime.Equals(TimeSpan.Zero))
+                if (TimeEntry.EndDateTime.Equals(DateTime.MinValue))
                 {
-                    return Stopwatch.Elapsed;
+                    return DateTime.Now - TimeEntry.StartDateTime;
                 }
 
-                return TimeEntry.RunTime;
+                return TimeEntry.EndDateTime - TimeEntry.StartDateTime;
             }
-            set => TimeEntry.RunTime = value;
         }
 
         public string Comments
@@ -99,7 +98,7 @@ namespace TimeTracker
             if (!Stopwatch.IsRunning)
             {
                 Stopwatch.Start();
-                TimeEntry.StartDate = DateTime.Today;
+                TimeEntry.StartDateTime = DateTime.Now;
             }
             else
             {

@@ -7,11 +7,13 @@ namespace TimeTracker.Models
 {
     public class TimeEntry : DataObj
     {
-        public DateTime StartDate { get; set; }
+        public DateTime StartDateTime { get; set; }
 
-        public TimeSpan RunTime { get; set; }
+        public DateTime EndDateTime { get; set; } = DateTime.MinValue;
 
         public string Comments { get; set; }
+
+        public Guid TicketID { get; set; }
 
     }
 }
