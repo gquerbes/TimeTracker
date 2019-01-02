@@ -25,7 +25,14 @@ namespace TimeTracker.Views
             vm= new AutoCompleteListViewModel();
 		    this.BindingContext = vm;
 
-		    TicketListView.ItemTapped += (sender, args) => { OnTicketSelected?.Invoke(args.Item as Ticket); };
+		    TicketListView.ItemTapped += (sender, args) =>
+		    {
+		        Ticket ticket = args.Item as Ticket;
+
+                OnTicketSelected?.Invoke(ticket);
+		        vm.SelectedTicket = ticket;
+		        SearchBar.Text = "";
+		    };
             SearchBar.TextChanged += (sender, args) => { vm.SearchTextChanged(args); }; 
 		}
 
@@ -40,5 +47,10 @@ namespace TimeTracker.Views
 	    {
 	        vm.IsListViewVisible = false;
 	    }
-    }
+
+	    private void ClearSelectedTicket_OnClicked(object sender, EventArgs e)
+	    {
+	        vm.SelectedTicket = null;
+	    }
+	}
 }

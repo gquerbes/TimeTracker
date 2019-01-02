@@ -62,6 +62,26 @@ namespace TimeTracker.ViewModels
 
         #region ListViewSearching
 
+        private Ticket _selectedTicket;
+
+        public Ticket SelectedTicket
+        {
+            get => _selectedTicket;
+            set
+            {
+                if (value != SelectedTicket)
+                {
+                    _selectedTicket = value;
+                    OnPropertyChanged(nameof(SelectedTicketLabel));
+                    OnPropertyChanged(nameof(IsTicketSelected));
+                }
+               
+            }
+        }
+
+        public bool IsTicketSelected => SelectedTicket != null;
+        public string SelectedTicketLabel => $"{SelectedTicket?.key} : {SelectedTicket?.Summary}";
+
         public void SearchTextChanged(TextChangedEventArgs args)
         {
             if (string.IsNullOrEmpty(args.NewTextValue))
@@ -76,6 +96,7 @@ namespace TimeTracker.ViewModels
 
 
         #endregion
+        
 
         public event PropertyChangedEventHandler PropertyChanged;
 

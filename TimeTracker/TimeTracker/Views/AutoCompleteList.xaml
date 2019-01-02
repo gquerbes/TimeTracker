@@ -4,9 +4,13 @@
              x:Class="TimeTracker.Views.AutoCompleteList">
   <ContentView.Content>
       <StackLayout>
-          <SearchBar x:Name="SearchBar" Focused="SearchBarFocused" Unfocused="SearchBarUnfocused"/>
+            <StackLayout Orientation="Horizontal" IsVisible="{Binding IsTicketSelected}">
+                <Label x:Name="SelectedItemLabel" Text="{Binding SelectedTicketLabel}" />
+            <Button Text="X" TextColor="Red" BackgroundColor="Transparent" Clicked="ClearSelectedTicket_OnClicked"/>
+          </StackLayout>
+            <SearchBar x:Name="SearchBar" Focused="SearchBarFocused" Unfocused="SearchBarUnfocused" IsVisible="{Binding IsTicketSelected, Converter={StaticResource NegateBooleanConverter} }"/>
             <ListView x:Name="TicketListView" IsVisible="{Binding IsListViewVisible}"  ItemsSource="{Binding FilteredTickets}">
-             <ListView.ItemTemplate>
+                <ListView.ItemTemplate>
                  <DataTemplate>
                      <ViewCell>
                          <Grid BackgroundColor="White" HeightRequest="40">
