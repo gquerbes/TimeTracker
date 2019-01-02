@@ -19,7 +19,7 @@ namespace TimeTracker
             this.BindingContext = _vm;
 
             InitializeComponent();
-            
+            AutoCompleteList.OnTicketSelected += (x) => _vm.CurrentTimeEntry.Ticket = x;
             LoadData();
         }
 

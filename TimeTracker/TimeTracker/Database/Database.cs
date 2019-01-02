@@ -40,6 +40,11 @@ namespace TimeTracker.Database
            return database.Query<T>($"SELECT * FROM {database.GetMapping(typeof(T)).TableName} WHERE {Query}");
         }
 
+        public Ticket FindTicketByRepliconID(string repliconID)
+        {
+            return this.Query<Ticket>($"repliconID = {repliconID}").FirstOrDefault();
+        }
+
     
 
 

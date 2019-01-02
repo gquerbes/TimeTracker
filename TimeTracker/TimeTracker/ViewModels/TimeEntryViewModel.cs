@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
 using TimeTracker.Annotations;
+using TimeTracker.Database;
 using TimeTracker.Models;
 using Xamarin.Forms;
 
@@ -29,8 +30,31 @@ namespace TimeTracker
 
         #region Properties
 
-        public TimeEntry TimeEntry{get; set; }
 
+
+        protected TimeEntry TimeEntry{get; set; }
+
+        public DateTime StartTime => TimeEntry.StartDateTime;
+
+        private Ticket _ticket;
+        public Ticket Ticket
+        {
+            get
+            {
+                if (_ticket == null &&  !string.IsNullOrEmpty(TimeEntry.TicketRepliconID) )
+                {
+                    _ticket = App.Database.FindTicketByRepliconID(TimeEntry.TicketRepliconID);
+                }
+
+                return _ticket;
+            }
+            set
+            {
+                _ticket = value;
+                TimeEntry.TicketRepliconID = value.repliconID;
+                OnPropertyChanged(nameof(SelectedTicketLabel));
+            }
+        }
 
 
         public TimeSpan RunTime
@@ -58,6 +82,12 @@ namespace TimeTracker
 
 
         #region BindedProperties
+
+        public string SelectedTicketLabel
+        {
+            get => $"{Ticket?.key} : {Ticket?.Summary}";
+        }
+
         public string RunTimeText
         {
             get { return $"{RunTime.Hours}:{RunTime.Minutes}:{RunTime.Seconds}"; }

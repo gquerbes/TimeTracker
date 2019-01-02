@@ -14,23 +14,23 @@
         <Grid x:Name="MainContentGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="15*"/>
+                <RowDefinition Height="7*"/>
             </Grid.RowDefinitions>
             <Grid x:Name="TopBar" BindingContext="{Binding CurrentTimeEntry}" Grid.Row="0" BackgroundColor="Beige" Padding="5">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <!--<Entry x:Name="CurrentTextLabel" Grid.Column="0" Grid.Row="0" Text="{Binding Comments, Mode=TwoWay}" />-->
-                <views:AutoCompleteList Grid.Column="0" Grid.Row="0" />
+                <views:AutoCompleteList x:Name="AutoCompleteList" Grid.Column="0" Grid.Row="0" />
                 <Label x:Name="SelectedTicketLabel" Grid.Column="0" Grid.Row="1" Text="{Binding SelectedTicketLabel} "/>
                 <Label x:Name="TimerLabel" Text="0:00" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"/>
-                <Button x:Name="TimerButton" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Text="{Binding TimerButtonText}" BackgroundColor="{Binding TimerButtonColor}" Clicked="TimerButton_OnClicked" />
+                <Button x:Name="TimerButton" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" HorizontalOptions="Center"  Text="{Binding TimerButtonText}" BackgroundColor="{Binding TimerButtonColor}" Clicked="TimerButton_OnClicked" />
             </Grid>
             <views:TimeEntryListView Grid.Row="1"/>
         </Grid>

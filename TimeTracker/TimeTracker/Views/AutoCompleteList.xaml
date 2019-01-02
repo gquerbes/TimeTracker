@@ -5,16 +5,17 @@
   <ContentView.Content>
       <StackLayout>
           <SearchBar Focused="SearchBarFocused" Unfocused="SearchBarUnfocused"/>
-            <ListView IsVisible="{Binding IsListViewVisible}"  ItemsSource="{Binding Tickets}">
+            <ListView x:Name="TicketListView" IsVisible="{Binding IsListViewVisible}"  ItemsSource="{Binding Tickets}">
              <ListView.ItemTemplate>
                  <DataTemplate>
-                     <ViewCell Height="80">
-                         <Grid BackgroundColor="Red">
+                     <ViewCell>
+                         <Grid BackgroundColor="White" HeightRequest="40">
                              <Grid.ColumnDefinitions>
                                  <ColumnDefinition Width="*"/>
                                  <ColumnDefinition Width="*"/>
                              </Grid.ColumnDefinitions>
-                             <Label Grid.Column="0" Text="{Binding key}"></Label>
+                             <Label Grid.Column="0" Text="{Binding key}"/>
+                             <Label Grid.Column="1" Text="{Binding Summary}"/>
                          </Grid>
                      </ViewCell>
                  </DataTemplate>

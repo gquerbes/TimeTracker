@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SQLite;
 using TimeTracker.Database;
 
 namespace TimeTracker.Models
@@ -13,7 +14,7 @@ namespace TimeTracker.Models
 
         public string Comments { get; set; }
 
-        public Guid TicketID { get; set; }
+        public string TicketRepliconID { get; set; }
 
     }
 }

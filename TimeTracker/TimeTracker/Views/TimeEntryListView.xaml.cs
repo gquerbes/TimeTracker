@@ -28,7 +28,7 @@ namespace TimeTracker.Views
 	        TimeEntryViewModel selectedTimeEntry = (sender as MenuItem)?.BindingContext as TimeEntryViewModel;
 
             //find corresponding collection
-            var correspondingCollection = (this.BindingContext as MainPageViewModel)?.TimeEntries.Where((x => x.Date.Equals(selectedTimeEntry?.TimeEntry.StartDateTime))).FirstOrDefault();
+            var correspondingCollection = (this.BindingContext as MainPageViewModel)?.TimeEntries.Where((x => x.Date.Equals(selectedTimeEntry?.StartTime))).FirstOrDefault();
 
             //remove item from list
             correspondingCollection?.Remove(selectedTimeEntry);
