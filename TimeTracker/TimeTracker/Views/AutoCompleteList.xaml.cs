@@ -26,9 +26,9 @@ namespace TimeTracker.Views
 		    this.BindingContext = vm;
 
 		    TicketListView.ItemTapped += (sender, args) => { OnTicketSelected?.Invoke(args.Item as Ticket); };
+            SearchBar.TextChanged += (sender, args) => { vm.SearchTextChanged(args); }; 
 		}
 
-	 
 
 
 	    public void SearchBarFocused(object x, EventArgs y)

@@ -45,6 +45,38 @@ namespace TimeTracker.ViewModels
             }
         }
 
+        private List<Ticket> _filteredTickets;
+        public List<Ticket> FilteredTickets
+        {
+            get
+            {
+                if (_filteredTickets == null)
+                {
+                    _filteredTickets = Tickets;
+                }
+
+                return _filteredTickets;
+            }
+            protected set { _filteredTickets = value; }
+        }
+
+        #region ListViewSearching
+
+        public void SearchTextChanged(TextChangedEventArgs args)
+        {
+            if (string.IsNullOrEmpty(args.NewTextValue))
+            {
+                _filteredTickets = Tickets;
+                return;
+            }
+
+            FilteredTickets = Tickets.Where(x => x.key.ToLower().Contains(args.NewTextValue.ToLower())).ToList();
+            OnPropertyChanged(nameof(FilteredTickets));
+        }
+
+
+        #endregion
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

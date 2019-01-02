@@ -4,8 +4,8 @@
              x:Class="TimeTracker.Views.AutoCompleteList">
   <ContentView.Content>
       <StackLayout>
-          <SearchBar Focused="SearchBarFocused" Unfocused="SearchBarUnfocused"/>
-            <ListView x:Name="TicketListView" IsVisible="{Binding IsListViewVisible}"  ItemsSource="{Binding Tickets}">
+          <SearchBar x:Name="SearchBar" Focused="SearchBarFocused" Unfocused="SearchBarUnfocused"/>
+            <ListView x:Name="TicketListView" IsVisible="{Binding IsListViewVisible}"  ItemsSource="{Binding FilteredTickets}">
              <ListView.ItemTemplate>
                  <DataTemplate>
                      <ViewCell>
