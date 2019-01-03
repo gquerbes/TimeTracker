@@ -99,10 +99,10 @@ namespace TimeTracker
             {
                 if (Stopwatch.IsRunning)
                 {
-                    return Color.Red;
+                    return Color.FromHex("#97d700");
                 }
 
-                return Color.Green;
+                return Color.FromHex("#E40046");
             }
         }
 

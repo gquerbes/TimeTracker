@@ -13,7 +13,11 @@ namespace TimeTracker
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MainPage());
+            MainPage = new NavigationPage(new MainPage())
+            {
+                BarBackgroundColor = Color.FromHex("#2A3539"),
+                BarTextColor = Color.FromHex("#1BB8A3"),
+            };
         }
 
         private static AppDatabase database;

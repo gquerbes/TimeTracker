@@ -42,7 +42,7 @@ namespace TimeTracker.Database
 
         public Ticket FindTicketByRepliconID(string repliconID)
         {
-            return this.Query<Ticket>($"repliconID = {repliconID}").FirstOrDefault();
+            return this.Query<Ticket>($"repliconID = \"{repliconID}\"").FirstOrDefault();
         }
 
     
