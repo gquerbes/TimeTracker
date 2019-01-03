@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TimeTracker.Views.TimeEntryListView">
   <ContentView.Content>
-      <ListView Grid.Row="1" IsGroupingEnabled="True" ItemsSource="{Binding TimeEntries}" BackgroundColor="LightGray" SeparatorColor="{StaticResource AbasGray}" CachingStrategy="RecycleElement">
+      <ListView Grid.Row="1" IsGroupingEnabled="True" ItemsSource="{Binding TimeEntries}" BackgroundColor="LightGray" SeparatorColor="{StaticResource AbasGreen}" SeparatorVisibility="Default"  CachingStrategy="RecycleElement" >
           <ListView.GroupHeaderTemplate>
               <DataTemplate>
                   <ViewCell>
@@ -31,10 +31,10 @@
                               <RowDefinition Height="2*"/>
                               <RowDefinition Height="1*"/>
                           </Grid.RowDefinitions>
-                          <Label  Grid.Column="0" Grid.Row="0" Text="{Binding Comments}" FontSize="Small"/>
+                          <Label  Grid.Column="0" Grid.Row="0" Text="{Binding Comments}" FontSize="Small" FontFamily=""/>
                           <Label Grid.Column="0" Grid.Row="1" Text="{Binding SelectedTicketLabel}" FontSize="Micro"/>
                           <Label  Grid.Column="1"  Grid.Row="0" Grid.RowSpan="2" Text="{Binding RunTimeText}"/>
-                          <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Text="continue" FontAttributes="Bold" TextColor="DarkGray" CornerRadius="5" BorderWidth="5" BorderColor="LightGray" BackgroundColor="{StaticResource AbasLimeGreen}" Clicked="PreviousJobTimer_OnClicked"/>
+                          <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Text="continue" FontAttributes="Bold" TextColor="SlateGray" CornerRadius="2" BorderWidth="5" BorderColor="LightGray" BackgroundColor="{StaticResource AbasLimeGreen}" Clicked="PreviousJobTimer_OnClicked"/>
                       </Grid>
                       <ViewCell.ContextActions>
                             <MenuItem Text="Delete" Clicked="DeleteContextAction_Clicked" CommandParameter="{Binding .}" />

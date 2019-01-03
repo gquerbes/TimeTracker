@@ -30,12 +30,12 @@ namespace TimeTracker
             {
                 //Find collection with same date as start date of entry
                 TimeEntryObservableCollection correspondingCollection =
-                    _vm.TimeEntries.FirstOrDefault(x => x.Date.Equals(entry.StartDateTime));
+                    _vm.TimeEntries.FirstOrDefault(x => x.Date.Equals(entry.StartDateTime.Date));
 
                 //if collection does not exist, create one
                 if(correspondingCollection == null)
                 {
-                    correspondingCollection = new TimeEntryObservableCollection(entry.StartDateTime);
+                    correspondingCollection = new TimeEntryObservableCollection(entry.StartDateTime.Date);
                     _vm.TimeEntries.Add(correspondingCollection);
                 }
                 correspondingCollection.Add(new TimeEntryViewModel(entry));
