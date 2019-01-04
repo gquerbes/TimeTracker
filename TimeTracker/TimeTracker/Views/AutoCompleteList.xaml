@@ -5,8 +5,8 @@
   <ContentView.Content>
       <StackLayout>
             <StackLayout Orientation="Horizontal" IsVisible="{Binding IsTicketSelected}">
-                <Label x:Name="SelectedItemLabel" Text="{Binding SelectedTicketLabel}" />
-            <Button Text="X" TextColor="Red" BackgroundColor="Transparent" Clicked="ClearSelectedTicket_OnClicked"/>
+                <Label x:Name="SelectedItemLabel" Text="{Binding SelectedTicketLabel}" TextColor="White" FontAttributes="Bold" FontSize="20" />
+            <Button Text="X" TextColor="Red" FontAttributes="Bold" FontSize="25" VerticalOptions="Center" BackgroundColor="Transparent" Clicked="ClearSelectedTicket_OnClicked"/>
           </StackLayout>
             <SearchBar x:Name="SearchBar" Focused="SearchBarFocused" Unfocused="SearchBarUnfocused" IsVisible="{Binding IsTicketSelected, Converter={StaticResource NegateBooleanConverter} }"/>
             <ListView x:Name="TicketListView" IsVisible="{Binding IsListViewVisible}"  ItemsSource="{Binding FilteredTickets}">

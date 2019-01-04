@@ -36,6 +36,10 @@ namespace TimeTracker.Views
             SearchBar.TextChanged += (sender, args) => { vm.SearchTextChanged(args); }; 
 		}
 
+	    public void ClearSelectedValue()
+	    {
+	        vm.SelectedTicket = null;
+	    }
 
 
 	    public void SearchBarFocused(object x, EventArgs y)

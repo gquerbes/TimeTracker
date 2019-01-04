@@ -45,6 +45,11 @@ namespace TimeTracker
         private void TimerButton_OnClicked(object sender, EventArgs e)
         {
             _vm.TimerClicked();
+            //reset selected ticket if stopping timer
+            if (!_vm.CurrentTimeEntry.Stopwatch.IsRunning)
+            {
+                AutoCompleteList.ClearSelectedValue();
+            }
             Device.StartTimer(new TimeSpan(0, 0, 0, 1), UpdateClock);
         }
 

@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:TimeTracker"
              xmlns:views="clr-namespace:TimeTracker.Views;assembly=TimeTracker"
-             x:Class="TimeTracker.MainPage">
+             x:Class="TimeTracker.MainPage"
+             Title="abas Time Tracker ">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="BUTTON" Clicked="MenuItem_OnClicked" />
     </ContentPage.ToolbarItems>
@@ -29,7 +30,7 @@
                 <views:AutoCompleteList x:Name="AutoCompleteList" Grid.Column="0" Grid.Row="1"/>
                 <StackLayout Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Horizontal" Padding="10,0,0,0">
                     <Label x:Name="TimerLabel" Text="00:00:00" HorizontalOptions="End" VerticalOptions="Center" FontSize="20"/>
-                    <Button x:Name="TimerButton"  HorizontalOptions="EndAndExpand"  Text="{Binding TimerButtonText}" BackgroundColor="{Binding TimerButtonColor}" Clicked="TimerButton_OnClicked" />
+                    <Button x:Name="TimerButton"  HorizontalOptions="EndAndExpand"  Text="{Binding TimerButtonText}" FontAttributes="Bold" TextColor="DarkSlateGray" CornerRadius="2" BorderWidth="5" BorderColor="DarkGray" BackgroundColor="{Binding TimerButtonColor}" Clicked="TimerButton_OnClicked" />
                 </StackLayout>
                
             </Grid>
