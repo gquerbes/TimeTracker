@@ -5,7 +5,7 @@
   <ContentView.Content>
       <StackLayout>
             <StackLayout Orientation="Horizontal" IsVisible="{Binding IsTicketSelected}">
-                <Label x:Name="SelectedItemLabel" Text="{Binding SelectedTicketLabel}" TextColor="White" FontAttributes="Bold" FontSize="20" />
+                <Label x:Name="SelectedItemLabel" Text="{Binding SelectedTicketLabel}" TextColor="White" FontAttributes="Bold" FontSize="20" VerticalTextAlignment="Center" />
             <Button Text="X" TextColor="Red" FontAttributes="Bold" FontSize="25" VerticalOptions="Center" BackgroundColor="Transparent" Clicked="ClearSelectedTicket_OnClicked"/>
           </StackLayout>
             <SearchBar x:Name="SearchBar" Focused="SearchBarFocused" Unfocused="SearchBarUnfocused" IsVisible="{Binding IsTicketSelected, Converter={StaticResource NegateBooleanConverter} }"/>
@@ -18,8 +18,8 @@
                                  <ColumnDefinition Width="*"/>
                                  <ColumnDefinition Width="*"/>
                              </Grid.ColumnDefinitions>
-                             <Label Grid.Column="0" Text="{Binding key}"/>
-                             <Label Grid.Column="1" Text="{Binding Summary}"/>
+                                <Label Grid.Column="0" Text="{Binding key}"/>
+                                <Label Grid.Column="1" Text="{Binding Summary}"/>
                          </Grid>
                      </ViewCell>
                  </DataTemplate>

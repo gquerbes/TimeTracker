@@ -36,5 +36,10 @@ namespace TimeTracker.Views
             selectedTimeEntry?.Delete();
            
         }
-    }
+
+	    private void ListView_OnItemTapped(object sender, ItemTappedEventArgs e)
+	    {
+	        this.Navigation.PushAsync(new TimeEntryDetailPage(e.Item as TimeEntryViewModel));
+	    }
+	}
 }
