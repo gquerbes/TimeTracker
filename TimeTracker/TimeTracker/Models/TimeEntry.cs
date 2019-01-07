@@ -8,7 +8,7 @@ namespace TimeTracker.Models
 {
     public class TimeEntry : DataObj
     {
-        public DateTime StartDateTime { get; set; }
+        public DateTime StartDateTime { get; set; } = DateTime.MinValue;
 
         public DateTime EndDateTime { get; set; } = DateTime.MinValue;
 

@@ -57,9 +57,12 @@ namespace TimeTracker
 
 
 
+        /// <summary>
+        /// Start or stop current job
+        /// </summary>
         public void TimerClicked()
         {
-            if (!CurrentTimeEntry.Stopwatch.IsRunning)
+            if (!CurrentTimeEntry.IsRunning)
             {
                 CurrentTimeEntry.StartTimer();
             }

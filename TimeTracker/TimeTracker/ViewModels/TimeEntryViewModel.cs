@@ -16,32 +16,38 @@ namespace TimeTracker
     public class TimeEntryViewModel :  INotifyPropertyChanged
     {
 
-        public TimeEntryViewModel(TimeEntry Entry)
+        public TimeEntryViewModel(TimeEntry Entry = null)
         {
-            TimeEntry = Entry;
-            Stopwatch = new Stopwatch();
+            //set current time entry if one being passed in else, create new entry
+            TimeEntry = Entry ?? new TimeEntry();
         }
 
-        public TimeEntryViewModel()
-        {
-            TimeEntry = new TimeEntry();
-            Stopwatch = new Stopwatch();
-        }
+   
 
         #region Properties
 
 
 
-        protected TimeEntry TimeEntry{get; set; }
+        private TimeEntry TimeEntry{get; set; }
 
-        public DateTime StartTime => TimeEntry.StartDateTime;
+        public DateTime StartTime
+        {
+            get => TimeEntry.StartDateTime;
+            set => TimeEntry.StartDateTime = value;
+        }
+
+        public DateTime EndTime
+        {
+            get => TimeEntry.EndDateTime;
+            set => TimeEntry.EndDateTime = value;
+        }
 
         private Ticket _ticket;
         public Ticket Ticket
         {
             get
             {
-                if (_ticket == null &&  !string.IsNullOrEmpty(TimeEntry.TicketRepliconID) )
+                if (_ticket == null && !string.IsNullOrEmpty(TimeEntry.TicketRepliconID) )
                 {
                     _ticket = App.Database.FindTicketByRepliconID(TimeEntry.TicketRepliconID);
                 }
@@ -56,12 +62,16 @@ namespace TimeTracker
             }
         }
 
+        /// <summary>
+        /// Returns TRUE if end time has not been set yet
+        /// </summary>
+        public bool IsRunning => !StartTime.Equals(DateTime.MinValue) && EndTime.Equals(DateTime.MinValue);
 
         public TimeSpan RunTime
         {
             get
             {
-                if (TimeEntry.EndDateTime.Equals(DateTime.MinValue))
+                if (IsRunning)
                 {
                     return DateTime.Now - TimeEntry.StartDateTime;
                 }
@@ -76,7 +86,6 @@ namespace TimeTracker
             set => TimeEntry.Comments = value;
         }
 
-        public Stopwatch Stopwatch;
         public string Guid { get; set; }
         #endregion
 
@@ -97,7 +106,7 @@ namespace TimeTracker
         {
             get
             {
-                if (Stopwatch.IsRunning)
+                if (IsRunning)
                 {
                     return  ((Color) Application.Current.Resources["AbasRed"]);
                 }
@@ -110,7 +119,7 @@ namespace TimeTracker
         {
             get
             {
-                if (Stopwatch.IsRunning)
+                if (IsRunning)
                 {
                     return "Stop";
                 }
@@ -124,9 +133,8 @@ namespace TimeTracker
 
         public void StartTimer()
         {
-            if (!Stopwatch.IsRunning)
+            if (!IsRunning)
             {
-                Stopwatch.Start();
                 TimeEntry.StartDateTime = DateTime.Now;
             }
             else
@@ -140,15 +148,17 @@ namespace TimeTracker
 
         public void StopTimer()
         {
-            if (Stopwatch.IsRunning)
+            if (IsRunning)
             {
-                Stopwatch.Stop();
+                EndTime = DateTime.Now;
                 Save();
             }
             else
             {
                 throw new Exception("Stopwatch was not running!");
             }
+            OnPropertyChanged(nameof(TimerButtonColor));
+            OnPropertyChanged(nameof(TimerButtonText));
         }
 
 

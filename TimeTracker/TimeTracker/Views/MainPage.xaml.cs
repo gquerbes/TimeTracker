@@ -19,12 +19,17 @@ namespace TimeTracker
             this.BindingContext = _vm;
 
             InitializeComponent();
+            //Set current time entry's ticket to that selected from list
             AutoCompleteList.OnTicketSelected += (x) => _vm.CurrentTimeEntry.Ticket = x;
             LoadData();
         }
 
+        /// <summary>
+        /// Load data from the DB and add to table
+        /// </summary>
         private void LoadData()
         {
+            //Query entries
             var entries =  App.Database.GetItems<TimeEntry>();
             foreach (var entry in entries)
             {
@@ -42,23 +47,39 @@ namespace TimeTracker
             }
         }
 
+        /// <summary>
+        /// Handles when start/stop button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TimerButton_OnClicked(object sender, EventArgs e)
         {
+            //Start or stop timer
             _vm.TimerClicked();
+
             //reset selected ticket if stopping timer
-            if (!_vm.CurrentTimeEntry.Stopwatch.IsRunning)
+            if (!_vm.CurrentTimeEntry.IsRunning)
             {
                 AutoCompleteList.ClearSelectedValue();
             }
-            Device.StartTimer(new TimeSpan(0, 0, 0, 1), UpdateClock);
+            else
+            {
+                //update the UI every second to update the clock
+                Device.StartTimer(new TimeSpan(0, 0, 0, 1), UpdateClock);
+            }
         }
 
+        /// <summary>
+        /// Updates the timer label 
+        /// </summary>
+        /// <returns></returns>
         private bool UpdateClock()
         {
-            var elapsedTime = _vm.CurrentTimeEntry.Stopwatch.Elapsed;
+            var elapsedTime =  DateTime.Now - _vm.CurrentTimeEntry.StartTime;
             TimerLabel.Text = $"{elapsedTime.Hours}:{elapsedTime.Minutes}:{elapsedTime.Seconds}";
 
-            return _vm.CurrentTimeEntry.Stopwatch.IsRunning;
+            //will continue so long as timer is running
+            return _vm.CurrentTimeEntry.IsRunning;
         }
 
 
