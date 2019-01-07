@@ -7,7 +7,7 @@
     <ContentPage.Content>
         <StackLayout HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="{StaticResource AbasGreen}" Padding="50">
            <Entry Text="{Binding Comments}"/>
-           <views:AutoCompleteList></views:AutoCompleteList>  
+            <views:AutoCompleteList SelectedTicket="{Binding Ticket}"></views:AutoCompleteList>  
             <TimePicker Time="{Binding StartTime}"/>
             <Entry Text="{Binding RunTimeText, Mode=OneWay}"/>
             <TimePicker Time="{Binding EndTime}"/>

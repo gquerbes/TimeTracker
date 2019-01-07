@@ -56,9 +56,12 @@ namespace TimeTracker
             }
             set
             {
-                _ticket = value;
-                TimeEntry.TicketRepliconID = value.repliconID;
-                OnPropertyChanged(nameof(SelectedTicketLabel));
+                if (value != null && !value.Equals(_ticket))
+                {
+                    _ticket = value;
+                    TimeEntry.TicketRepliconID = value.repliconID;
+                    OnPropertyChanged(nameof(SelectedTicketLabel));
+                }
             }
         }
 
@@ -83,7 +86,14 @@ namespace TimeTracker
         public string Comments
         {
             get => TimeEntry?.Comments;
-            set => TimeEntry.Comments = value;
+            set
+            {
+                if (!value.Equals(Comments))
+                {
+                    TimeEntry.Comments = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public string Guid { get; set; }

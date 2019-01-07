@@ -19,8 +19,6 @@ namespace TimeTracker
             this.BindingContext = _vm;
 
             InitializeComponent();
-            //Set current time entry's ticket to that selected from list
-            AutoCompleteList.OnTicketSelected += (x) => _vm.CurrentTimeEntry.Ticket = x;
             LoadData();
         }
 
@@ -60,7 +58,7 @@ namespace TimeTracker
             //reset selected ticket if stopping timer
             if (!_vm.CurrentTimeEntry.IsRunning)
             {
-                AutoCompleteList.ClearSelectedValue();
+               // AutoCompleteList.ClearSelectedValue();
             }
             else
             {

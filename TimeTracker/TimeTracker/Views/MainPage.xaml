@@ -27,7 +27,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Entry x:Name="CurrentTextLabel" Grid.Column="0" Grid.Row="0" Text="{Binding Comments, Mode=TwoWay}" BackgroundColor="Transparent"/>
-                <views:AutoCompleteList x:Name="AutoCompleteList" Grid.Column="0" Grid.Row="1"/>
+                <views:AutoCompleteList x:Name="AutoCompleteList" Grid.Column="0" Grid.Row="1" SelectedTicket="{Binding CurrentTimeEntry.Ticket}" />
                 <StackLayout Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Horizontal" Padding="10,0,0,0">
                     <Label x:Name="TimerLabel" Text="00:00:00" HorizontalOptions="End" VerticalOptions="Center" FontSize="20"/>
                     <Button x:Name="TimerButton"  HorizontalOptions="EndAndExpand"  Text="{Binding TimerButtonText}" FontAttributes="Bold" TextColor="DarkSlateGray" CornerRadius="2" BorderWidth="5" BorderColor="DarkGray" BackgroundColor="{Binding TimerButtonColor}" Clicked="TimerButton_OnClicked" />
