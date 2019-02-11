@@ -20,7 +20,10 @@ namespace TimeTracker
 
             InitializeComponent();
             LoadData();
+            EntryListView.OnContinueEntry += OnContinueEntry;
         }
+
+       
 
         /// <summary>
         /// Load data from the DB and add to table
@@ -78,6 +81,22 @@ namespace TimeTracker
 
             //will continue so long as timer is running
             return _vm.CurrentTimeEntry.IsRunning;
+        }
+
+        private void OnContinueEntry(TimeEntryViewModel TimeEntryVM)
+        {
+            _vm.ContinueTimerClicked(TimeEntryVM);
+
+            //reset selected ticket if stopping timer
+            if (!_vm.CurrentTimeEntry.IsRunning)
+            {
+                // AutoCompleteList.ClearSelectedValue();
+            }
+            else
+            {
+                //update the UI every second to update the clock
+                Device.StartTimer(new TimeSpan(0, 0, 0, 1), UpdateClock);
+            }
         }
 
 

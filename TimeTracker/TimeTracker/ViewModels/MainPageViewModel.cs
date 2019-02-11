@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -79,7 +79,10 @@ namespace TimeTracker
 
         public void ContinueTimerClicked(TimeEntryViewModel previousTimeEntry)
         {
-
+            TimerClicked();
+            CurrentTimeEntry.Comments = previousTimeEntry.Comments;
+            CurrentTimeEntry.Ticket = previousTimeEntry.Ticket;
+            OnPropertyChanged(null);
         }
 
 

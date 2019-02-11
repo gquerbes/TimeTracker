@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -88,7 +88,7 @@ namespace TimeTracker
             get => TimeEntry?.Comments;
             set
             {
-                if (!value.Equals(Comments))
+                if (value !=null && !value.Equals(Comments))
                 {
                     TimeEntry.Comments = value;
                     OnPropertyChanged();

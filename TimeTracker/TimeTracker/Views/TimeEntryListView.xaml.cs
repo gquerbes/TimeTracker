@@ -11,15 +11,21 @@ namespace TimeTracker.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class TimeEntryListView : ContentView
-	{
+    {
+        public delegate void ContinueEntry(TimeEntryViewModel TimeEntryVM);
+
+        public ContinueEntry OnContinueEntry;
+
 		public TimeEntryListView()
 		{
 			InitializeComponent();
 		}
 
-	    private void PreviousJobTimer_OnClicked(object sender, EventArgs e)
+
+	    private void ContinueJobTimer_OnClicked(object sender, EventArgs e)
 	    {
 	        TimeEntryViewModel selectedTimeEntry = (sender as Button)?.BindingContext as TimeEntryViewModel;
+            OnContinueEntry?.Invoke(selectedTimeEntry);
 	    }
 
 	    private void DeleteContextAction_Clicked(object sender, EventArgs e)
