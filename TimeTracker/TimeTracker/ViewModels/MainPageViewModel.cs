@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using TimeTracker.Annotations;
 using TimeTracker.Models;
+using TimeTracker.ViewModels;
 using Xamarin.Forms;
 
 namespace TimeTracker
@@ -35,23 +36,23 @@ namespace TimeTracker
 
 
 
-        public ObservableCollection<TimeEntryObservableCollection> _timeEntries;
+        public ObservableCollection<TimeEntryParentObservableCollection> _timeEntriesParents;
 
-        public ObservableCollection<TimeEntryObservableCollection> TimeEntries
+        public ObservableCollection<TimeEntryParentObservableCollection> TimeEntriesParents
         {
             get
             {
-                if (_timeEntries == null)
+                if (_timeEntriesParents == null)
                 {
-                    _timeEntries = new ObservableCollection<TimeEntryObservableCollection>();
+                    _timeEntriesParents = new ObservableCollection<TimeEntryParentObservableCollection>();
                 }
 
-                if (!_timeEntries.Any(x => x.Date.Equals(DateTime.Today)))
+                if (!_timeEntriesParents.Any(x => x.Date.Equals(DateTime.Today)))
                 {
-                    _timeEntries.Add(new TimeEntryObservableCollection(DateTime.Today));
+                    _timeEntriesParents.Add(new TimeEntryParentObservableCollection(DateTime.Today));
                 }
 
-                return _timeEntries;
+                return _timeEntriesParents;
             }
         }
 
@@ -69,13 +70,32 @@ namespace TimeTracker
             else
             {
                 CurrentTimeEntry.StopTimer();
-                TimeEntries.First().Add(CurrentTimeEntry);
+                AddTimeEntryToList(CurrentTimeEntry);
                 _currentTimeEntry = new TimeEntryViewModel();
                 OnPropertyChanged(nameof(CurrentTimeEntry));
                 CurrentTimeEntry.OnPropertyChanged(nameof(TimeEntryViewModel.Comments));
             }
         }
 
+
+        /// <summary>
+        /// Will add time entry to corresponding parent or make new parent if required
+        /// </summary>
+        /// <param name="vm"></param>
+        public void AddTimeEntryToList(TimeEntryViewModel vm)
+        {
+            foreach (var entryParent in TimeEntriesParents.First())
+            {
+                if (entryParent.Entries != null && entryParent.Entries.Any() && entryParent.Entries.First().Ticket != null && entryParent.Entries.First().Ticket.Equals(vm.Ticket))
+                {
+                    entryParent.Entries.Add(vm);
+                    entryParent.OnPropertyChanged(null);
+                    return;
+                }
+            }
+            TimeEntriesParents.First().Add(new TimeEntryParent(){Entries = new List<TimeEntryViewModel>(){vm}});
+            
+        }
 
         public void ContinueTimerClicked(TimeEntryViewModel previousTimeEntry)
         {

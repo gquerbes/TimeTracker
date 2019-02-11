@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TimeTracker.Views.TimeEntryListView">
   <ContentView.Content>
-      <ListView Grid.Row="1" IsGroupingEnabled="True" ItemsSource="{Binding TimeEntries}" BackgroundColor="LightGray" SeparatorColor="{StaticResource AbasGreen}" SeparatorVisibility="Default"  CachingStrategy="RecycleElement" ItemTapped="ListView_OnItemTapped">
+        <ListView Grid.Row="1" IsGroupingEnabled="True" ItemsSource="{Binding TimeEntriesParents}" BackgroundColor="LightGray" SeparatorColor="{StaticResource AbasGreen}" SeparatorVisibility="Default"  CachingStrategy="RecycleElement" ItemTapped="ListView_OnItemTapped">
           <ListView.GroupHeaderTemplate>
               <DataTemplate>
                   <ViewCell>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TimeTracker.Models;
+using TimeTracker.ViewModels;
 using TimeTracker.Views;
 using Xamarin.Forms;
 
@@ -35,16 +36,40 @@ namespace TimeTracker
             foreach (var entry in entries)
             {
                 //Find collection with same date as start date of entry
-                TimeEntryObservableCollection correspondingCollection =
-                    _vm.TimeEntries.FirstOrDefault(x => x.Date.Equals(entry.StartDateTime.Date));
+                TimeEntryParentObservableCollection correspondingCollection =
+                    _vm.TimeEntriesParents.FirstOrDefault(x => x.Date.Equals(entry.StartDateTime.Date));
 
-                //if collection does not exist, create one
+                //if collection for date does not exist, create one
                 if(correspondingCollection == null)
                 {
-                    correspondingCollection = new TimeEntryObservableCollection(entry.StartDateTime.Date);
-                    _vm.TimeEntries.Add(correspondingCollection);
+                    correspondingCollection = new TimeEntryParentObservableCollection(entry.StartDateTime.Date);
+                    _vm.TimeEntriesParents.Add(correspondingCollection);
                 }
-                correspondingCollection.Add(new TimeEntryViewModel(entry));
+            
+
+                //Find corresponding parent entry 
+                TimeEntryParent entryParent = null;
+                foreach (var parent in correspondingCollection)
+                {
+                    if (parent.Entries.FirstOrDefault()?.Ticket != null && parent.Entries.FirstOrDefault()
+                            .Ticket.repliconID.Equals(entry.TicketRepliconID))
+                    {
+                        entryParent = parent;
+                        break;
+                    }
+                }
+                //parent entry not found, make a new one
+                if (entryParent == null)
+                {
+                    entryParent = new TimeEntryParent();
+                }
+
+
+                //add entry to parent
+                entryParent.Entries.Add(new TimeEntryViewModel(entry));
+                //add parent to collection
+                correspondingCollection.Add(entryParent);
+
             }
         }
 
