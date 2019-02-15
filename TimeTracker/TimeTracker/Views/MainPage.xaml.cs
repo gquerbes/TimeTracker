@@ -22,9 +22,23 @@ namespace TimeTracker
             InitializeComponent();
             LoadData();
             EntryListView.OnContinueEntry += OnContinueEntry;
+            EntryListView.OnExpandCollapseParent += OnExpandCollapseParent;
         }
 
-       
+        private void OnExpandCollapseParent(TimeEntryParent timeentryparent)
+        {
+            int index = -1;
+            foreach (var timeEntryVM in timeentryparent.Entries)
+            {
+                if (index.Equals(-1))
+                {
+                    index = _vm.TimeEntriesParents.FirstOrDefault().IndexOf(timeentryparent);
+                }
+                _vm.TimeEntriesParents.FirstOrDefault().Insert(index+1, timeEntryVM);
+
+            }
+        }
+
 
         /// <summary>
         /// Load data from the DB and add to table
@@ -36,13 +50,13 @@ namespace TimeTracker
             foreach (var entry in entries)
             {
                 //Find collection with same date as start date of entry
-                TimeEntryParentObservableCollection correspondingCollection =
+                TimeEntryListElementOverservableCollection correspondingCollection =
                     _vm.TimeEntriesParents.FirstOrDefault(x => x.Date.Equals(entry.StartDateTime.Date));
 
                 //if collection for date does not exist, create one
                 if(correspondingCollection == null)
                 {
-                    correspondingCollection = new TimeEntryParentObservableCollection(entry.StartDateTime.Date);
+                    correspondingCollection = new TimeEntryListElementOverservableCollection(entry.StartDateTime.Date);
                     _vm.TimeEntriesParents.Add(correspondingCollection);
                 }
             

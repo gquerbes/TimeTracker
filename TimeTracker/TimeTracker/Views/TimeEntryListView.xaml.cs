@@ -16,6 +16,11 @@ namespace TimeTracker.Views
 
         public ContinueEntry OnContinueEntry;
 
+        public delegate void ExpandCollapseParent(TimeEntryParent TimeEntryParent);
+
+        public ExpandCollapseParent OnExpandCollapseParent;
+
+
 		public TimeEntryListView()
 		{
 			InitializeComponent();
@@ -47,7 +52,17 @@ namespace TimeTracker.Views
 
 	    private void ListView_OnItemTapped(object sender, ItemTappedEventArgs e)
 	    {
-	        this.Navigation.PushAsync(new TimeEntryDetailPage(e.Item as TimeEntryViewModel));
-	    }
+            if (e.Item is TimeEntryParent)
+            {
+                TimeEntryParent parent = e.Item as TimeEntryParent;
+
+                if (parent.Entries.Count > 1)
+                {
+                    OnExpandCollapseParent?.Invoke(parent);
+                }
+            }
+
+            //this.Navigation.PushAsync(new TimeEntryDetailPage(e.Item as TimeEntryViewModel));
+        }
 	}
 }

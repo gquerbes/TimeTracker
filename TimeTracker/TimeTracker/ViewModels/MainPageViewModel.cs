@@ -36,20 +36,20 @@ namespace TimeTracker
 
 
 
-        public ObservableCollection<TimeEntryParentObservableCollection> _timeEntriesParents;
+        public ObservableCollection<TimeEntryListElementOverservableCollection> _timeEntriesParents;
 
-        public ObservableCollection<TimeEntryParentObservableCollection> TimeEntriesParents
+        public ObservableCollection<TimeEntryListElementOverservableCollection> TimeEntriesParents
         {
             get
             {
                 if (_timeEntriesParents == null)
                 {
-                    _timeEntriesParents = new ObservableCollection<TimeEntryParentObservableCollection>();
+                    _timeEntriesParents = new ObservableCollection<TimeEntryListElementOverservableCollection>();
                 }
 
                 if (!_timeEntriesParents.Any(x => x.Date.Equals(DateTime.Today)))
                 {
-                    _timeEntriesParents.Add(new TimeEntryParentObservableCollection(DateTime.Today));
+                    _timeEntriesParents.Add(new TimeEntryListElementOverservableCollection(DateTime.Today));
                 }
 
                 return _timeEntriesParents;

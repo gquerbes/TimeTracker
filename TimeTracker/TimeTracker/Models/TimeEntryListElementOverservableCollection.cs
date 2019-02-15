@@ -11,9 +11,9 @@ namespace TimeTracker.Models
     /// <summary>
     /// Observable collection to hold entries for a specified date
     /// </summary>
-   public class TimeEntryParentObservableCollection : ObservableCollection<ITimeEntryListElement>
+   public class TimeEntryListElementOverservableCollection : ObservableCollection<ITimeEntryListElement>
    {
-       public TimeEntryParentObservableCollection(DateTime date)
+       public TimeEntryListElementOverservableCollection(DateTime date)
        {
            Date = date;
        }
