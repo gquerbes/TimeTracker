@@ -1,9 +1,63 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:TimeTracker.Views;assembly=TimeTracker"
              x:Class="TimeTracker.Views.TimeEntryListView">
-  <ContentView.Content>
-        <ListView Grid.Row="1" IsGroupingEnabled="True" ItemsSource="{Binding TimeEntriesParents}" BackgroundColor="LightGray" SeparatorColor="{StaticResource AbasGreen}" SeparatorVisibility="Default"  CachingStrategy="RecycleElement" ItemTapped="ListView_OnItemTapped">
+<ContentView.Resources>
+    <ResourceDictionary>
+        <DataTemplate x:Key="ParentTemplate" >
+            <ViewCell>
+                <Grid BackgroundColor="White" Padding="5" HeightRequest="70" Margin="0,0,0,1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Text="{Binding Comments}" FontSize="20"/>
+                    <Label Grid.Column="0" Grid.Row="1" Text="{Binding SelectedTicketLabel}" FontSize="13"/>
+                    <Label Grid.Column="1"  Grid.Row="0" Grid.RowSpan="2" Text="{Binding RunTimeText}" VerticalOptions="Center" FontAttributes="Bold" FontSize="20"/>
+                    <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Text="continue" FontAttributes="Bold" TextColor="SlateGray" CornerRadius="2" BorderWidth="5" BorderColor="LightGray" BackgroundColor="{StaticResource AbasLimeGreen}" Clicked="ContinueJobTimer_OnClicked"/>
+                </Grid>
+                <ViewCell.ContextActions>
+                    <MenuItem Text="Delete" Clicked="DeleteContextAction_Clicked" CommandParameter="{Binding .}" />
+                </ViewCell.ContextActions>
+            </ViewCell>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ChildTemplate"> 
+            <ViewCell>
+                <Grid BackgroundColor="LightBlue" Padding="20,5,5,5" HeightRequest="70" Margin="0,0,0,1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Text="{Binding Comments}" FontSize="20"/>
+                    <Label Grid.Column="0" Grid.Row="1" Text="{Binding SelectedTicketLabel}" FontSize="13"/>
+                    <Label Grid.Column="1"  Grid.Row="0" Grid.RowSpan="2" Text="{Binding RunTimeText}" VerticalOptions="Center" FontAttributes="Bold" FontSize="20"/>
+                    <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Text="continue" FontAttributes="Bold" TextColor="SlateGray" CornerRadius="2" BorderWidth="5" BorderColor="LightGray" BackgroundColor="{StaticResource AbasLimeGreen}" Clicked="ContinueJobTimer_OnClicked"/>
+                </Grid>
+                <ViewCell.ContextActions>
+                    <MenuItem Text="Delete" Clicked="DeleteContextAction_Clicked" CommandParameter="{Binding .}" />
+                </ViewCell.ContextActions>
+            </ViewCell>
+        </DataTemplate>
+            <views:EntryListViewDataTemplateSelector x:Key="EntryListViewDataTemplateSelector" ChildTemplate="{StaticResource ChildTemplate}" ParentTemplate="{StaticResource ParentTemplate}"/>
+
+        
+        </ResourceDictionary>
+</ContentView.Resources>
+
+    <ContentView.Content>
+        <ListView Grid.Row="1" IsGroupingEnabled="True" ItemsSource="{Binding TimeEntriesParents}" ItemTemplate="{StaticResource EntryListViewDataTemplateSelector}" BackgroundColor="LightGray" SeparatorColor="{StaticResource AbasGreen}" SeparatorVisibility="Default"  CachingStrategy="RecycleElement" ItemTapped="ListView_OnItemTapped">
           <ListView.GroupHeaderTemplate>
               <DataTemplate>
                   <ViewCell>
@@ -18,30 +72,7 @@
                   </ViewCell>
               </DataTemplate>
           </ListView.GroupHeaderTemplate>
-          <ListView.ItemTemplate>
-              <DataTemplate>
-                  <ViewCell>
-                      <Grid BackgroundColor="White" Padding="5" HeightRequest="70" Margin="0,0,0,1">
-                          <Grid.ColumnDefinitions>
-                              <ColumnDefinition Width="5*"/>
-                              <ColumnDefinition Width="*"/>
-                              <ColumnDefinition Width="Auto"/>
-                          </Grid.ColumnDefinitions>
-                          <Grid.RowDefinitions>
-                              <RowDefinition Height="2*"/>
-                              <RowDefinition Height="1*"/>
-                          </Grid.RowDefinitions>
-                          <Label Grid.Column="0" Grid.Row="0" Text="{Binding Comments}" FontSize="20"/>
-                          <Label Grid.Column="0" Grid.Row="1" Text="{Binding SelectedTicketLabel}" FontSize="13"/>
-                          <Label Grid.Column="1"  Grid.Row="0" Grid.RowSpan="2" Text="{Binding RunTimeText}" VerticalOptions="Center" FontAttributes="Bold" FontSize="20"/>
-                          <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Text="continue" FontAttributes="Bold" TextColor="SlateGray" CornerRadius="2" BorderWidth="5" BorderColor="LightGray" BackgroundColor="{StaticResource AbasLimeGreen}" Clicked="ContinueJobTimer_OnClicked"/>
-                      </Grid>
-                      <ViewCell.ContextActions>
-                            <MenuItem Text="Delete" Clicked="DeleteContextAction_Clicked" CommandParameter="{Binding .}" />
-                      </ViewCell.ContextActions>
-                  </ViewCell>
-              </DataTemplate>
-          </ListView.ItemTemplate>
+          
       </ListView>
     </ContentView.Content>
 </ContentView>

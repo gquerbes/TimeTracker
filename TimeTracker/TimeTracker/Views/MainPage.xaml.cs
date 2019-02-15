@@ -27,6 +27,15 @@ namespace TimeTracker
 
         private void OnExpandCollapseParent(TimeEntryParent timeentryparent)
         {
+            if (_vm.TimeEntriesParents.FirstOrDefault().Contains(timeentryparent.Entries.FirstOrDefault()))
+            {
+                foreach (var childEntry in timeentryparent.Entries)
+                {
+                    _vm.TimeEntriesParents.FirstOrDefault().Remove(childEntry);
+                }
+                return;
+            }
+
             int index = -1;
             foreach (var timeEntryVM in timeentryparent.Entries)
             {

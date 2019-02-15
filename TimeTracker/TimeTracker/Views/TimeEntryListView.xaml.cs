@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TimeTracker.Interfaces;
 using TimeTracker.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -65,4 +66,14 @@ namespace TimeTracker.Views
             //this.Navigation.PushAsync(new TimeEntryDetailPage(e.Item as TimeEntryViewModel));
         }
 	}
+    public class EntryListViewDataTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate ParentTemplate { get; set; }
+        public DataTemplate ChildTemplate { get; set; }
+
+        protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
+        {
+            return ((ITimeEntryListElement)item) is TimeEntryParent ? ParentTemplate : ChildTemplate;
+        }
+    }
 }
