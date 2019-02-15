@@ -36,23 +36,23 @@ namespace TimeTracker
 
 
 
-        public ObservableCollection<TimeEntryListElementOverservableCollection> _timeEntriesParents;
+        public ObservableCollection<TimeEntryListElementOverservableCollection> _timeEntries;
 
-        public ObservableCollection<TimeEntryListElementOverservableCollection> TimeEntriesParents
+        public ObservableCollection<TimeEntryListElementOverservableCollection> TimeEntries
         {
             get
             {
-                if (_timeEntriesParents == null)
+                if (_timeEntries == null)
                 {
-                    _timeEntriesParents = new ObservableCollection<TimeEntryListElementOverservableCollection>();
+                    _timeEntries = new ObservableCollection<TimeEntryListElementOverservableCollection>();
                 }
 
-                if (!_timeEntriesParents.Any(x => x.Date.Equals(DateTime.Today)))
+                if (!_timeEntries.Any(x => x.Date.Equals(DateTime.Today)))
                 {
-                    _timeEntriesParents.Add(new TimeEntryListElementOverservableCollection(DateTime.Today));
+                    _timeEntries.Add(new TimeEntryListElementOverservableCollection(DateTime.Today));
                 }
 
-                return _timeEntriesParents;
+                return _timeEntries;
             }
         }
 
@@ -85,17 +85,31 @@ namespace TimeTracker
         public void AddTimeEntryToList(TimeEntryViewModel vm)
         {
             //check if valid parent ticket exists and place child inside or make new one and place child inside if does not exist
-            foreach (var entryParent in  TimeEntriesParents.First())
+            foreach (var entryParent in  TimeEntries.First())
             {
                 if (entryParent.Ticket != null && entryParent.Ticket.repliconID.Equals(vm.Ticket?.repliconID))
                 {
                     var castedParent = (entryParent as TimeEntryParent);
+                    vm.parent = castedParent;
                     castedParent?.Entries.Add(vm);
                     castedParent?.OnPropertyChanged(null);
                     return;
                 }
             }
-            TimeEntriesParents.First().Add(new TimeEntryParent(){Entries = new List<TimeEntryViewModel>(){vm}});
+
+            //No valid parent yest on list
+            //create new parent
+            var newParent = new TimeEntryParent();
+            newParent.Date = DateTime.Today;
+            //add new time entry as the first item in the new parent's Entries list
+            newParent.Entries = new List<TimeEntryViewModel>(){vm};
+            //set the ticket for the parent
+            newParent.Ticket = vm.Ticket;
+            //set the parent of the entry to the newly created parent
+            vm.parent = newParent;
+            
+            // add to list
+            TimeEntries.First().Add(newParent);
             
         }
 

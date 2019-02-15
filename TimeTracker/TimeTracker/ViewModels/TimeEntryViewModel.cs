@@ -10,6 +10,7 @@ using TimeTracker.Annotations;
 using TimeTracker.Database;
 using TimeTracker.Interfaces;
 using TimeTracker.Models;
+using TimeTracker.ViewModels;
 using Xamarin.Forms;
 
 namespace TimeTracker
@@ -23,6 +24,7 @@ namespace TimeTracker
             TimeEntry = Entry ?? new TimeEntry();
         }
 
+        public TimeEntryParent parent { get; set; }
    
 
         #region Properties

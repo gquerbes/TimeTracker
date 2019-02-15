@@ -17,15 +17,15 @@
                         <RowDefinition Height="2*"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <Label Grid.Column="0" Grid.Row="0" Text="{Binding Comments}" FontSize="20"/>
-                    <Label Grid.Column="0" Grid.Row="1" Text="{Binding SelectedTicketLabel}" FontSize="13"/>
+                    <Label Grid.Column="0" Grid.Row="0" Text="{Binding SelectedTicketLabel}" FontSize="20"/>
+                    <Label Grid.Column="0" Grid.Row="1" Text="{Binding Comments}" FontSize="13"/>
                     <Label Grid.Column="1"  Grid.Row="0" Grid.RowSpan="2" Text="{Binding RunTimeText}" VerticalOptions="Center" FontAttributes="Bold" FontSize="20"/>
                     <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Text="continue" FontAttributes="Bold" TextColor="SlateGray" CornerRadius="2" BorderWidth="5" BorderColor="LightGray" BackgroundColor="{StaticResource AbasLimeGreen}" Clicked="ContinueJobTimer_OnClicked"/>
                 </Grid>
                 <ViewCell.ContextActions>
-                    <MenuItem Text="Delete" Clicked="DeleteContextAction_Clicked" CommandParameter="{Binding .}" />
+                    <MenuItem Text="Delete" Clicked="DeleteParentContextAction_Clicked" CommandParameter="{Binding .}"  />
                 </ViewCell.ContextActions>
-            </ViewCell>
+                </ViewCell>
         </DataTemplate>
 
         <DataTemplate x:Key="ChildTemplate"> 
@@ -40,24 +40,22 @@
                         <RowDefinition Height="2*"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <Label Grid.Column="0" Grid.Row="0" Text="{Binding Comments}" FontSize="20"/>
-                    <Label Grid.Column="0" Grid.Row="1" Text="{Binding SelectedTicketLabel}" FontSize="13"/>
+                     <Label Grid.Column="0" Grid.Row="0" Text="{Binding SelectedTicketLabel}" FontSize="20"/>
+                    <Label Grid.Column="0" Grid.Row="1" Text="{Binding Comments}" FontSize="13"/>
                     <Label Grid.Column="1"  Grid.Row="0" Grid.RowSpan="2" Text="{Binding RunTimeText}" VerticalOptions="Center" FontAttributes="Bold" FontSize="20"/>
                     <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Text="continue" FontAttributes="Bold" TextColor="SlateGray" CornerRadius="2" BorderWidth="5" BorderColor="LightGray" BackgroundColor="{StaticResource AbasLimeGreen}" Clicked="ContinueJobTimer_OnClicked"/>
                 </Grid>
                 <ViewCell.ContextActions>
-                    <MenuItem Text="Delete" Clicked="DeleteContextAction_Clicked" CommandParameter="{Binding .}" />
+                    <MenuItem Text="Delete" Clicked="DeleteChildContextAction_Clicked" CommandParameter="{Binding .}"  />
                 </ViewCell.ContextActions>
             </ViewCell>
         </DataTemplate>
             <views:EntryListViewDataTemplateSelector x:Key="EntryListViewDataTemplateSelector" ChildTemplate="{StaticResource ChildTemplate}" ParentTemplate="{StaticResource ParentTemplate}"/>
-
-        
         </ResourceDictionary>
 </ContentView.Resources>
 
     <ContentView.Content>
-        <ListView Grid.Row="1" IsGroupingEnabled="True" ItemsSource="{Binding TimeEntriesParents}" ItemTemplate="{StaticResource EntryListViewDataTemplateSelector}" BackgroundColor="LightGray" SeparatorColor="{StaticResource AbasGreen}" SeparatorVisibility="Default"  CachingStrategy="RecycleElement" ItemTapped="ListView_OnItemTapped">
+        <ListView Grid.Row="1" IsGroupingEnabled="True" ItemsSource="{Binding TimeEntries}" ItemTemplate="{StaticResource EntryListViewDataTemplateSelector}" BackgroundColor="LightGray" SeparatorColor="{StaticResource AbasGreen}" SeparatorVisibility="Default"  CachingStrategy="RecycleElement" ItemTapped="ListView_OnItemTapped">
           <ListView.GroupHeaderTemplate>
               <DataTemplate>
                   <ViewCell>

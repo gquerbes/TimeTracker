@@ -20,6 +20,9 @@ namespace TimeTracker.ViewModels
 
         public string RepliconTicketID { get; set; }
 
+        public DateTime Date { get; set; }
+
+
         private Ticket _ticket;
         public Ticket Ticket
         {
@@ -34,12 +37,12 @@ namespace TimeTracker.ViewModels
             }
             set
             {
-                if (!value.Equals(_ticket))
+                if (value != null && !value.Equals(_ticket))
                 {
                     _ticket = value;
                     foreach (var timeEntryViewModel in Entries)
                     {
-                        timeEntryViewModel.TimeEntry.TicketRepliconID = value.repliconID;  
+                        timeEntryViewModel.TimeEntry.TicketRepliconID = value?.repliconID;  
                     }
                     OnPropertyChanged(nameof(SelectedTicketLabel));
                 }

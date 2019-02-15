@@ -27,11 +27,18 @@ namespace TimeTracker
 
         private void OnExpandCollapseParent(TimeEntryParent timeentryparent)
         {
-            if (_vm.TimeEntriesParents.FirstOrDefault().Contains(timeentryparent.Entries.FirstOrDefault()))
+            //sub list that contains all TimeEntryParents for specified date of the selected timeEntryParent
+            var correspondingDateList =
+                _vm.TimeEntries.FirstOrDefault(x => x.Date.Date.Equals(timeentryparent.Date.Date));
+
+            if(correspondingDateList == null)return;
+
+
+            if (correspondingDateList.Contains(timeentryparent.Entries.FirstOrDefault()))
             {
                 foreach (var childEntry in timeentryparent.Entries)
                 {
-                    _vm.TimeEntriesParents.FirstOrDefault().Remove(childEntry);
+                    correspondingDateList.Remove(childEntry);
                 }
                 return;
             }
@@ -41,9 +48,9 @@ namespace TimeTracker
             {
                 if (index.Equals(-1))
                 {
-                    index = _vm.TimeEntriesParents.FirstOrDefault().IndexOf(timeentryparent);
+                    index = correspondingDateList.IndexOf(timeentryparent);
                 }
-                _vm.TimeEntriesParents.FirstOrDefault().Insert(index+1, timeEntryVM);
+               correspondingDateList.Insert(index+1, timeEntryVM);
 
             }
         }
@@ -60,13 +67,13 @@ namespace TimeTracker
             {
                 //Find collection with same date as start date of entry
                 TimeEntryListElementOverservableCollection correspondingCollection =
-                    _vm.TimeEntriesParents.FirstOrDefault(x => x.Date.Equals(entry.StartDateTime.Date));
+                    _vm.TimeEntries.FirstOrDefault(x => x.Date.Equals(entry.StartDateTime.Date));
 
                 //if collection for date does not exist, create one
                 if(correspondingCollection == null)
                 {
                     correspondingCollection = new TimeEntryListElementOverservableCollection(entry.StartDateTime.Date);
-                    _vm.TimeEntriesParents.Add(correspondingCollection);
+                    _vm.TimeEntries.Add(correspondingCollection);
                 }
             
 
@@ -84,13 +91,20 @@ namespace TimeTracker
                 if (entryParent == null)
                 {
                     entryParent = new TimeEntryParent();
+                    entryParent.Date = entry.StartDateTime;
                     entryParent.RepliconTicketID = entry?.TicketRepliconID;
                     //add parent to collection
                     correspondingCollection.Add(entryParent);
                 }
 
+                //create new entryVM
+                TimeEntryViewModel entryVM = new TimeEntryViewModel(entry);
+
+                //set parent on child entry
+                entryVM.parent = entryParent;
+
                 //add entry to parent
-                entryParent.Entries.Add(new TimeEntryViewModel(entry));
+                entryParent.Entries.Add(entryVM);
               
 
             }
