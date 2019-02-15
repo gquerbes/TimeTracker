@@ -5,16 +5,46 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using TimeTracker.Annotations;
+using TimeTracker.Database;
+using TimeTracker.Interfaces;
+using TimeTracker.Models;
 
 namespace TimeTracker.ViewModels
 {
-    public class TimeEntryParent : INotifyPropertyChanged
+    public class TimeEntryParent : ITimeEntryListElement, INotifyPropertyChanged
     {
         /// <summary>
         /// Holds list of entries for a specific ordertime
         /// </summary>
         public List<TimeEntryViewModel> Entries { get; set; } = new List<TimeEntryViewModel>();
 
+        public string RepliconTicketID { get; set; }
+
+        private Ticket _ticket;
+        public Ticket Ticket
+        {
+            get
+            {
+                if (_ticket == null && !string.IsNullOrEmpty(RepliconTicketID))
+                {
+                    _ticket = App.Database.FindTicketByRepliconID(RepliconTicketID);
+                }
+
+                return _ticket;
+            }
+            set
+            {
+                if (!value.Equals(_ticket))
+                {
+                    _ticket = value;
+                    foreach (var timeEntryViewModel in Entries)
+                    {
+                        timeEntryViewModel.TimeEntry.TicketRepliconID = value.repliconID;  
+                    }
+                    OnPropertyChanged(nameof(SelectedTicketLabel));
+                }
+            }
+        }
 
         public string Comments
         {

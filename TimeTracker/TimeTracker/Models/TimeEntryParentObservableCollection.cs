@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using TimeTracker.Interfaces;
 using TimeTracker.ViewModels;
 
 namespace TimeTracker.Models
@@ -10,7 +11,7 @@ namespace TimeTracker.Models
     /// <summary>
     /// Observable collection to hold entries for a specified date
     /// </summary>
-   public class TimeEntryParentObservableCollection : ObservableCollection<TimeEntryParent>
+   public class TimeEntryParentObservableCollection : ObservableCollection<ITimeEntryListElement>
    {
        public TimeEntryParentObservableCollection(DateTime date)
        {

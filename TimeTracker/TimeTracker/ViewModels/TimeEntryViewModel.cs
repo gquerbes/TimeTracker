@@ -8,12 +8,13 @@ using System.Threading;
 using Newtonsoft.Json;
 using TimeTracker.Annotations;
 using TimeTracker.Database;
+using TimeTracker.Interfaces;
 using TimeTracker.Models;
 using Xamarin.Forms;
 
 namespace TimeTracker
 {
-    public class TimeEntryViewModel :  INotifyPropertyChanged
+    public class TimeEntryViewModel :  ITimeEntryListElement, INotifyPropertyChanged
     {
 
         public TimeEntryViewModel(TimeEntry Entry = null)
@@ -28,7 +29,7 @@ namespace TimeTracker
 
 
 
-        private TimeEntry TimeEntry{get; set; }
+        public TimeEntry TimeEntry{get; set; }
 
         public DateTime StartTime
         {
@@ -56,12 +57,9 @@ namespace TimeTracker
             }
             set
             {
-                if (value != null && !value.Equals(_ticket))
-                {
-                    _ticket = value;
-                    TimeEntry.TicketRepliconID = value.repliconID;
-                    OnPropertyChanged(nameof(SelectedTicketLabel));
-                }
+                _ticket = value;
+                TimeEntry.TicketRepliconID = value?.repliconID;
+                OnPropertyChanged(nameof(SelectedTicketLabel));
             }
         }
 

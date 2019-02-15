@@ -51,10 +51,9 @@ namespace TimeTracker
                 TimeEntryParent entryParent = null;
                 foreach (var parent in correspondingCollection)
                 {
-                    if (parent.Entries.FirstOrDefault()?.Ticket != null && parent.Entries.FirstOrDefault()
-                            .Ticket.repliconID.Equals(entry.TicketRepliconID))
+                    if (parent.Ticket != null && parent.Ticket.repliconID.Equals(entry.TicketRepliconID))
                     {
-                        entryParent = parent;
+                        entryParent = parent as TimeEntryParent;
                         break;
                     }
                 }
@@ -62,6 +61,7 @@ namespace TimeTracker
                 if (entryParent == null)
                 {
                     entryParent = new TimeEntryParent();
+                    entryParent.RepliconTicketID = entry?.TicketRepliconID;
                     //add parent to collection
                     correspondingCollection.Add(entryParent);
                 }
