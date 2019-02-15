@@ -84,9 +84,10 @@ namespace TimeTracker
         /// <param name="vm"></param>
         public void AddTimeEntryToList(TimeEntryViewModel vm)
         {
+            //check if valid parent ticket exists and place child inside or make new one and place child inside if does not exist
             foreach (var entryParent in TimeEntriesParents.First())
             {
-                if (entryParent.Entries != null && entryParent.Entries.Any() && entryParent.Entries.First().Ticket != null && entryParent.Entries.First().Ticket.Equals(vm.Ticket))
+                if (entryParent.Entries != null && entryParent.Entries.Any() && entryParent.Entries.First().Ticket != null && entryParent.Entries.First().Ticket.repliconID.Equals(vm.Ticket.repliconID))
                 {
                     entryParent.Entries.Add(vm);
                     entryParent.OnPropertyChanged(null);

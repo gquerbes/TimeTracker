@@ -62,13 +62,13 @@ namespace TimeTracker
                 if (entryParent == null)
                 {
                     entryParent = new TimeEntryParent();
+                    //add parent to collection
+                    correspondingCollection.Add(entryParent);
                 }
-
 
                 //add entry to parent
                 entryParent.Entries.Add(new TimeEntryViewModel(entry));
-                //add parent to collection
-                correspondingCollection.Add(entryParent);
+              
 
             }
         }

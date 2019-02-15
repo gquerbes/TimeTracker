@@ -10,6 +10,9 @@ namespace TimeTracker.ViewModels
 {
     public class TimeEntryParent : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Holds list of entries for a specific ordertime
+        /// </summary>
         public List<TimeEntryViewModel> Entries { get; set; } = new List<TimeEntryViewModel>();
 
 
@@ -30,7 +33,22 @@ namespace TimeTracker.ViewModels
 
         public string SelectedTicketLabel => Entries.FirstOrDefault()?.SelectedTicketLabel;
 
-        public string RunTimeText => Entries.FirstOrDefault()?.RunTimeText;
+        public string RunTimeText
+        {
+            get
+            {
+                TimeSpan totalTime = new TimeSpan();
+                foreach (var timeEntryViewModel in Entries)
+                {
+                    totalTime += timeEntryViewModel.RunTime;
+                }
+
+                return $"{totalTime.Hours}:{totalTime.Minutes}:{totalTime.Seconds}";
+            }
+
+        }
+
+
 
 
         public event PropertyChangedEventHandler PropertyChanged;
