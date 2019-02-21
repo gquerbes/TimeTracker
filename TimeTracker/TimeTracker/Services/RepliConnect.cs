@@ -6,8 +6,8 @@ using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RepliconIntegrator.Models;
 using TimeTracker.Models;
-using TimeTracker.Models.Replicon;
 
 namespace TimeTracker.Services
 {

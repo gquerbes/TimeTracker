@@ -125,7 +125,7 @@ namespace TimeTracker
 
         public void GetUser()
         {
-            RepliConnect.GetTickets();
+            RepliConnect.GetUser();
         }
     
 
