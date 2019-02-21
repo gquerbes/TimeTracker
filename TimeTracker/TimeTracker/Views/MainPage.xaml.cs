@@ -164,8 +164,8 @@ namespace TimeTracker
 
         private async void MenuItem_OnClicked(object sender, EventArgs e)
         {
-            var page = new TestPage();
-            await this.Navigation.PushAsync(page);
+           _vm.GetUser();
+           
         }
     }
 }

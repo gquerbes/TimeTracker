@@ -9,7 +9,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using TimeTracker.Annotations;
+using TimeTracker.Database;
 using TimeTracker.Models;
+using TimeTracker.Services;
 using TimeTracker.ViewModels;
 using Xamarin.Forms;
 
@@ -121,7 +123,10 @@ namespace TimeTracker
             OnPropertyChanged(null);
         }
 
-
+        public void GetUser()
+        {
+            RepliConnect.GetUser();
+        }
     
 
     public event PropertyChangedEventHandler PropertyChanged;
