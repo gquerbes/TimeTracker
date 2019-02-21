@@ -17,7 +17,7 @@ namespace TimeTracker.Services
 {
     public class RepliConnect
     {
-        public static void DoSomething()
+        public static RepliconTaskResponse GetTickets()
         {
             var user = GetUser();
 
@@ -32,7 +32,7 @@ namespace TimeTracker.Services
 
             var tasks = JsonConvert.DeserializeObject<RepliconTaskResponse>(GetTaskFromProjects(projectsList).ToString());
 
-
+            return tasks;
 
 
         }

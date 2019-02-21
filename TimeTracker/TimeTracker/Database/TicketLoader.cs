@@ -20,24 +20,31 @@ namespace TimeTracker.Database
         static HttpClient client = new HttpClient();
         public static void LoadData()
         {
-            //var rawData = RepliConnect.GetTickets();
-
-            
+            var rawData = RepliConnect.GetTickets();
 
 
 
-            //foreach (var ticket in X)
-            //{
-            //    if (!App.Database.Query<Ticket>($"id = {ticket.id}").Any())
-            //    {
-            //        //set summary directly on ticket object from fields object
-            //        ticket.Summary = ticket.fields.summary;
-            //        //set RepliconID directly on ticket object from fields object
-            //        ticket.repliconID = ticket.fields.customfield_10571;
-            //        //Save ticket 
-            //        App.Database.SaveItem(ticket);
-            //    }
-            //}
+
+
+            foreach (var item in rawData.d)
+            {
+                foreach (var childtask in item.childTasks)
+                {
+                    var ticket = childtask.task;
+
+                   //write tickets to database
+                    //if (!App.Database.Query<Ticket>($"repliconID = {ticket.uri}").Any())
+                    //{
+                    //    //set summary directly on ticket object from fields object
+                    //    ticket.Summary = ticket.fields.summary;
+                    //    //set RepliconID directly on ticket object from fields object
+                    //    ticket.repliconID = ticket.fields.customfield_10571;
+                    //    //Save ticket 
+                    //    App.Database.SaveItem(ticket);
+                    //}
+                }
+                
+            }
         }
 
     
