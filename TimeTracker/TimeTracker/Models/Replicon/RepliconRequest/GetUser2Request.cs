@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace TimeTracker.Models.Replicon
+namespace RepliconIntegrator.Models
 {
+    
     public class GetUser2Request 
     {
         [JsonIgnore]
@@ -15,9 +17,11 @@ namespace TimeTracker.Models.Replicon
     }
 
     public class User
-    {
-        public string uri { get; set; }
-        public string loginName { get; set; }
-        public string parameterCorrelationID { get; set; }
-    }
+        {
+            public string uri { get; set; }
+            public string loginName { get; set; }
+            public string parameterCorrelationID { get; set; }
+        }
+
+     
 }
