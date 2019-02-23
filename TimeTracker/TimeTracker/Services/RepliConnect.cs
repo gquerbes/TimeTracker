@@ -8,8 +8,8 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RepliconIntegrator.Models;
-using RepliconIntegrator.Models.RepliconReply;
-using RepliconIntegrator.Models.RepliconRequest;
+using TimeTracker.Models.Replicon.RepliconReply;
+using TimeTracker.Models.Replicon.RepliconRequest;
 using TimeTracker.Models;
 using TimeTracker.Models.Replicon.RepliconReply;
 

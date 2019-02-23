@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RepliconIntegrator.Models.RepliconRequest
+namespace TimeTracker.Models.Replicon.RepliconRequest
 {
     public class GetStandardTimesheet2Request
     {

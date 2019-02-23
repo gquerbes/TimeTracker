@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace RepliconIntegrator.Models.RepliconReply
+namespace TimeTracker.Models.Replicon.RepliconReply
 {
     public class RepliconTaskResponse
     {

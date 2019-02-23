@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace RepliconIntegrator.Models.RepliconRequest
+namespace TimeTracker.Models.Replicon.RepliconRequest
 {
     public class GetPageOfProjectsFilteredByClientAndTextSearchRequest
     {
