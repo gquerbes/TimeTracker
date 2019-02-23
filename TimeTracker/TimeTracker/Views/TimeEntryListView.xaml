@@ -7,7 +7,7 @@
     <ResourceDictionary>
         <DataTemplate x:Key="ParentTemplate" >
             <ViewCell>
-                <Grid BackgroundColor="White" Padding="5" HeightRequest="70" Margin="0,0,0,1">
+                <Grid BackgroundColor="White" Padding="5" HeightRequest="50" Margin="0,0,0,1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5*"/>
                         <ColumnDefinition Width="*"/>
@@ -17,8 +17,8 @@
                         <RowDefinition Height="2*"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <Label Grid.Column="0" Grid.Row="0" Text="{Binding SelectedTicketLabel}" FontSize="20"/>
-                    <Label Grid.Column="0" Grid.Row="1" Text="{Binding Comments}" FontSize="13"/>
+                    <Label Grid.Column="0" Grid.Row="0" Text="{Binding Comments}" FontSize="14"  LineBreakMode="CharacterWrap"/>
+                    <Label Grid.Column="0" Grid.Row="1" Text="{Binding SelectedTicketLabel}" FontSize="12"/>
                     <Label Grid.Column="1"  Grid.Row="0" Grid.RowSpan="2" Text="{Binding RunTimeText}" VerticalOptions="Center" FontAttributes="Bold" FontSize="20"/>
                     <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Text="continue" FontAttributes="Bold" TextColor="SlateGray" CornerRadius="2" BorderWidth="5" BorderColor="LightGray" BackgroundColor="{StaticResource AbasLimeGreen}" Clicked="ContinueJobTimer_OnClicked"/>
                 </Grid>
@@ -30,7 +30,7 @@
 
         <DataTemplate x:Key="ChildTemplate"> 
             <ViewCell>
-                <Grid BackgroundColor="LightBlue" Padding="20,5,5,5" HeightRequest="70" Margin="0,0,0,1">
+                <Grid BackgroundColor="LightBlue" Padding="20,5,5,5" HeightRequest="40" Margin="0,0,0,1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5*"/>
                         <ColumnDefinition Width="*"/>
@@ -40,8 +40,8 @@
                         <RowDefinition Height="2*"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                     <Label Grid.Column="0" Grid.Row="0" Text="{Binding SelectedTicketLabel}" FontSize="20"/>
-                    <Label Grid.Column="0" Grid.Row="1" Text="{Binding Comments}" FontSize="13"/>
+                     <Label Grid.Column="0" Grid.Row="0" Text="{Binding Comments}" FontSize="14"/>
+                    <Label Grid.Column="0" Grid.Row="1" Text="{Binding SelectedTicketLabel}" FontSize="10"/>
                     <Label Grid.Column="1"  Grid.Row="0" Grid.RowSpan="2" Text="{Binding RunTimeText}" VerticalOptions="Center" FontAttributes="Bold" FontSize="20"/>
                     <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Text="continue" FontAttributes="Bold" TextColor="SlateGray" CornerRadius="2" BorderWidth="5" BorderColor="LightGray" BackgroundColor="{StaticResource AbasLimeGreen}" Clicked="ContinueJobTimer_OnClicked"/>
                 </Grid>
@@ -55,22 +55,21 @@
 </ContentView.Resources>
 
     <ContentView.Content>
-        <ListView Grid.Row="1" IsGroupingEnabled="True" ItemsSource="{Binding TimeEntries}" ItemTemplate="{StaticResource EntryListViewDataTemplateSelector}" BackgroundColor="LightGray" SeparatorColor="{StaticResource AbasGreen}" SeparatorVisibility="Default"  CachingStrategy="RecycleElement" ItemTapped="ListView_OnItemTapped">
-          <ListView.GroupHeaderTemplate>
-              <DataTemplate>
-                  <ViewCell>
-                        <Grid BackgroundColor="{StaticResource AbasGray}" HeightRequest="35" Padding="5,0,5,0">
-                          <Grid.ColumnDefinitions>
-                              <ColumnDefinition Width="*"/>
-                              <ColumnDefinition Width="*"/>
-                          </Grid.ColumnDefinitions>
-                          <Label Grid.Column="0" Text="{Binding DateLabel}" TextColor="White" HorizontalOptions="Start"/>
-                          <Label Grid.Column="1" Text="4:34"  HorizontalOptions="End" TextColor="White"/>
-                      </Grid>
-                  </ViewCell>
-              </DataTemplate>
-          </ListView.GroupHeaderTemplate>
-          
-      </ListView>
+        <ListView  IsGroupingEnabled="True"  ItemsSource="{Binding TimeEntries}" ItemTemplate="{StaticResource EntryListViewDataTemplateSelector}" BackgroundColor="LightGray" SeparatorColor="{StaticResource AbasGreen}"  CachingStrategy="RecycleElement" ItemTapped="ListView_OnItemTapped" >
+            <ListView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid BackgroundColor="{StaticResource AbasGray}" HeightRequest="40" Padding="5,0,5,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Text="{Binding DateLabel}" FontSize="12"  VerticalOptions="Center"  TextColor="White" HorizontalOptions="Start"/>
+                            <Label Grid.Column="1" Text="{Binding TotalTime}"  FontSize="14" HorizontalOptions="End" TextColor="White"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.GroupHeaderTemplate>
+        </ListView>
     </ContentView.Content>
 </ContentView>
