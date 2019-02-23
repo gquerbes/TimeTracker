@@ -125,7 +125,7 @@ namespace TimeTracker
 
         public void LoadTickets()
         {
-           TicketLoader.LoadData();
+           RepliConnect.SubmitTimesheet();
         }
     
 

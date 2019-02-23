@@ -38,42 +38,47 @@ namespace TimeTracker.Services
 
             //TODO: Pull ops overhead and other ticket
 
-            var tasks = JsonConvert.DeserializeObject<Models.Replicon.RepliconReply.BulkGetDescendantTaskDetailsResponse>(GetTaskFromProjects(projectsList).ToString());
+            var tasks = JsonConvert.DeserializeObject<BulkGetDescendantTaskDetailsResponse>(GetTaskFromProjects(projectsList).ToString());
 
             return tasks;
 
         }
 
-        public static bool SubmitTimesheet()
+
+        public static void SubmitTimesheet()
         {
-            if (string.IsNullOrEmpty(TimesheetURI)) return false;
+            /*
+             * do beforehand and save values
+             */ 
+            var userReply = GetUser();
 
-            //pull current timesheet
-            var timesheet = GetTimesheet(TimesheetURI);
-            GetStandardTimesheet2Reply currentTimesheet = timesheet.ToObject<GetStandardTimesheet2Reply>();
-            //copy values over to new timesheet submission
+            UserURI = JsonConvert.DeserializeObject<GetUser2Response>(userReply.ToString()).d.uri;
 
-            //add latest values
+            var timesheetReply = GetTimesheetUri(UserURI, DateTime.Today);
 
-            //submit
-
-            return true;
-        }
-
-        public static void CopyAndAdd()
-        {
-            GetStandardTimesheet2Reply currentTS = new GetStandardTimesheet2Reply();
+            TimesheetURI = JsonConvert.DeserializeObject<GetTimesheetForDate2Response>(timesheetReply.ToString()).d.timesheet.uri;
+            /*
+          * do beforehand and save values
+          */
+            GetStandardTimesheet2Reply currentTS = JsonConvert.DeserializeObject<GetStandardTimesheet2Reply>(GetTimesheet(TimesheetURI).ToString());
 
             PutStandardTimesheet2Request newTS = new PutStandardTimesheet2Request();
 
+            //copy URI of current Timesheet
             newTS.timesheet.target.uri = TimesheetURI;
 
-            foreach (var row in currentTS.d.rows)
-            {
-              //  newTS.timesheet.rows.Add(new Row(row));
-            }
+            //copy current rows
+            newTS.timesheet.rows = currentTS.d.rows;
 
+            newTS.timesheet.rows.FirstOrDefault().cells.FirstOrDefault().duration.hours = "22";
+             //add a couple more for testing
+             //newTS.timesheet.rows.Add(currentTS.d.rows.FirstOrDefault());
+             //newTS.timesheet.rows.Add(currentTS.d.rows.FirstOrDefault());
+             //newTS.timesheet.rows.Add(currentTS.d.rows.FirstOrDefault());
+
+              PutTimesheet(newTS);
         }
+
         #endregion
 
         #region Base Replicon Communication
@@ -126,8 +131,9 @@ namespace TimeTracker.Services
             input.SetDate(DateTime.Today);
             input.userUri = userURI;
             req.Input = JObject.FromObject(input);
-            return GetServerData(req);
+            var response = GetServerData(req);
 
+            return response;
         }
 
         private static JToken GetTimesheet(string timesheetURI)
@@ -137,9 +143,20 @@ namespace TimeTracker.Services
             var input = new GetStandardTimesheet2Request();
             input.timesheetUri = timesheetURI;
             req.Input = JObject.FromObject(input);
-            return GetServerData(req);
+            var response = GetServerData(req);
+
+            return response;
         }
 
+        private static void PutTimesheet(PutStandardTimesheet2Request timesheetRequest)
+        {
+            AppRequest req = new AppRequest();
+            req.serviceURL = PutStandardTimesheet2Request.ServiceUrl;
+            req.Input = JObject.FromObject(timesheetRequest);
+
+            GetServerData(req);
+
+        }
 
         private static JToken GetServerData(AppRequest appRequest, string requestMethod ="POST" )
         {
