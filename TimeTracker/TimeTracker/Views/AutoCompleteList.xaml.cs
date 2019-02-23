@@ -114,8 +114,12 @@ namespace TimeTracker.Views
 	        }
 
 	        FilteredTickets = Tickets.Where(x => !string.IsNullOrEmpty(x.name) && x.name.ToLower().Contains(args?.NewTextValue?.ToLower())).ToList();
-	        //do this better instead of changing item source constantly on filter
-	        TicketListView.ItemsSource = FilteredTickets;
+
+            //nothing found? check the tickets by description
+//TODO: Add Description filtering for overhead / training tickets
+
+            //do this better instead of changing item source constantly on filter
+            TicketListView.ItemsSource = FilteredTickets;
 	    }
 
 	    public void ClearSelectedTicket_OnClicked(object sender, EventArgs e)

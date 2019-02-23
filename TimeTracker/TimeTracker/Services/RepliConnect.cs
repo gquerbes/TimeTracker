@@ -20,25 +20,64 @@ namespace TimeTracker.Services
 
         private static string UserURI;
 
-        public static RepliconTaskResponse GetTickets()
+        private static string TimesheetURI;
+
+
+        #region Public Methods
+        public static BulkGetDescendantTaskDetailsResponse GetTickets()
         {
-            var user = GetUser();
+            var userReply = GetUser();
 
-            var userURI = JsonConvert.DeserializeObject<GetUser2Response>(user.ToString()).d.uri;
+            UserURI = JsonConvert.DeserializeObject<GetUser2Response>(userReply.ToString()).d.uri;
 
-            var timesheetReply = GetTimesheetUri(userURI, DateTime.Today);
-            var timesheetURI = JsonConvert.DeserializeObject<GetTimesheetForDate2Response>(timesheetReply.ToString());
+            var timesheetReply = GetTimesheetUri(UserURI, DateTime.Today);
 
-            var y = timesheetURI.d.timesheet.uri;
+            TimesheetURI = JsonConvert.DeserializeObject<GetTimesheetForDate2Response>(timesheetReply.ToString()).d.timesheet.uri;
 
-            var projectsList = JsonConvert.DeserializeObject<GetPageOfProjectsFilteredByClientAndTextSearchResponse>(GetProjectsForTimesheet(y).ToString()).d.Select(x => x.project.uri).ToList();
+            var projectsList = JsonConvert.DeserializeObject<GetPageOfProjectsFilteredByClientAndTextSearchResponse>(TimesheetURI).d.Select(x => x.project.uri).ToList();
 
-            var tasks = JsonConvert.DeserializeObject<RepliconTaskResponse>(GetTaskFromProjects(projectsList).ToString());
+            //TODO: Pull ops overhead and other ticket
+
+            var tasks = JsonConvert.DeserializeObject<Models.Replicon.RepliconReply.BulkGetDescendantTaskDetailsResponse>(GetTaskFromProjects(projectsList).ToString());
 
             return tasks;
 
+        }
+
+        public static bool SubmitTimesheet()
+        {
+            if (string.IsNullOrEmpty(TimesheetURI)) return false;
+
+            //pull current timesheet
+            var timesheet = GetTimesheet(TimesheetURI);
+            GetStandardTimesheet2Reply currentTimesheet = timesheet.ToObject<GetStandardTimesheet2Reply>();
+            //copy values over to new timesheet submission
+
+            //add latest values
+
+            //submit
+
+            return true;
+        }
+
+        public static void CopyAndAdd()
+        {
+            GetStandardTimesheet2Reply currentTS = new GetStandardTimesheet2Reply();
+
+            PutStandardTimesheet2Request newTS = new PutStandardTimesheet2Request();
+
+            newTS.timesheet.target.uri = TimesheetURI;
+
+            foreach (var row in currentTS.d.rows)
+            {
+              //  newTS.timesheet.rows.Add(new Row(row));
+            }
 
         }
+        #endregion
+
+        #region Base Replicon Communication
+
 
         private static JToken GetProjectsForTimesheet(string TimesheetURI)
         {
@@ -55,18 +94,12 @@ namespace TimeTracker.Services
         private static JToken GetTaskFromProjects(List<string> projectURIs)
         {
             AppRequest req = new AppRequest();
-            req.serviceURL = BulkGetDescendantTaskDetailsRequest.ServiceURL;
-            var input = new BulkGetDescendantTaskDetailsRequest();
+            req.serviceURL = Models.Replicon.RepliconRequest.BulkGetDescendantTaskDetailsRequest.ServiceURL;
+            var input = new Models.Replicon.RepliconRequest.BulkGetDescendantTaskDetailsRequest();
          
-            int x = 0;
             foreach (var projectUrI in projectURIs)
             {
                 input.parentUris.Add(projectUrI);
-                //limit number of projects for now
-                //if (x++ > 20)
-                //{
-                //    break;
-                //}
             }
 
             req.Input = JObject.FromObject(input);
@@ -144,8 +177,7 @@ namespace TimeTracker.Services
         }
 
 
-  
+        #endregion
 
-       
     }
 }

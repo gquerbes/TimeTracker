@@ -9,7 +9,7 @@ using TimeTracker.Database;
 
 namespace TimeTracker.Models.Replicon.RepliconReply
 {
-    public class RepliconTaskResponse
+    public class BulkGetDescendantTaskDetailsResponse
     {
 
         public List<TaskRootObject> d { get; set; }
