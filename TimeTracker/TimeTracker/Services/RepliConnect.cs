@@ -34,7 +34,7 @@ namespace TimeTracker.Services
 
             TimesheetURI = JsonConvert.DeserializeObject<GetTimesheetForDate2Response>(timesheetReply.ToString()).d.timesheet.uri;
 
-            var projectsList = JsonConvert.DeserializeObject<GetPageOfProjectsFilteredByClientAndTextSearchResponse>(TimesheetURI).d.Select(x => x.project.uri).ToList();
+            var projectsList = JsonConvert.DeserializeObject<GetPageOfProjectsFilteredByClientAndTextSearchResponse>(GetProjectsForTimesheet(TimesheetURI).ToString()).d.Select(x => x.project.uri).ToList();
 
             //TODO: Pull ops overhead and other ticket
 
