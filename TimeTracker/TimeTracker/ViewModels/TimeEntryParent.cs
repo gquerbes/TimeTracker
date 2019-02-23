@@ -8,6 +8,7 @@ using TimeTracker.Annotations;
 using TimeTracker.Database;
 using TimeTracker.Interfaces;
 using TimeTracker.Models;
+using TimeTracker.Models.Replicon.RepliconReply;
 
 namespace TimeTracker.ViewModels
 {
@@ -23,14 +24,14 @@ namespace TimeTracker.ViewModels
         public DateTime Date { get; set; }
 
 
-        private Ticket _ticket;
-        public Ticket Ticket
+        private RepliconTask _ticket;
+        public RepliconTask Ticket
         {
             get
             {
                 if (_ticket == null && !string.IsNullOrEmpty(RepliconTicketID))
                 {
-                    _ticket = App.Database.FindTicketByRepliconID(RepliconTicketID);
+                    _ticket = App.Database.FindRepliconTaskByUri(RepliconTicketID);
                 }
 
                 return _ticket;
@@ -42,7 +43,7 @@ namespace TimeTracker.ViewModels
                     _ticket = value;
                     foreach (var timeEntryViewModel in Entries)
                     {
-                        timeEntryViewModel.TimeEntry.TicketRepliconID = value?.repliconID;  
+                        timeEntryViewModel.TimeEntry.TicketURI = value?.uri;  
                     }
                     OnPropertyChanged(nameof(SelectedTicketLabel));
                 }

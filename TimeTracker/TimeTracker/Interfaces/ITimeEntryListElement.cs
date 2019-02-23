@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using TimeTracker.Database;
+using TimeTracker.Models.Replicon.RepliconReply;
 
 namespace TimeTracker.Interfaces
 {
@@ -11,6 +12,6 @@ namespace TimeTracker.Interfaces
 
         string RunTimeText { get; }
 
-        Ticket Ticket { get; set; }
+        RepliconTask Ticket { get; set; }
     }
 }

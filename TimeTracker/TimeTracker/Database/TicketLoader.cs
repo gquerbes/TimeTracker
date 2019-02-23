@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using Newtonsoft.Json;
+using TimeTracker.Models.Replicon.RepliconReply;
 using TimeTracker.Services;
 
 namespace TimeTracker.Database
@@ -34,16 +35,11 @@ namespace TimeTracker.Database
                     if (item?.childTasks != null)
                         foreach (var childtask in item?.childTasks)
                         {
-                            if (!App.Database.Query<Ticket>($"repliconID = \"{childtask.Task.uri}\"").Any()
+                            if (!App.Database.Query<RepliconTask>($"{nameof(RepliconTask.uri)} = \"{childtask.Task.uri}\"").Any()
                             ) //if ticket not in database
                             {
-                                //add to database
-                                Ticket ticket = new Ticket();
-                                ticket.Summary = childtask.Task.description;
-                                ticket.repliconID = childtask.Task.uri;
-                                ticket.key = childtask.Task.name;
                                 //save
-                                App.Database.SaveItem(ticket);
+                                App.Database.SaveItem(childtask.Task);
                             }
                         }
                 }

@@ -10,10 +10,10 @@ namespace TimeTracker.Database
     {
         public int startAt { get; set; }
         public int total { get; set; }
-        public List<Ticket> issues { get; set; }
+        public List<JiraTicket> issues { get; set; }
     }
 
-    public class Ticket : DataObj
+    public class JiraTicket 
     {
         public string id { get; set; }
         /// <summary>

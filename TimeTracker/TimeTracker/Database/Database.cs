@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using SQLite;
 using TimeTracker.Models;
+using TimeTracker.Models.Replicon.RepliconReply;
+using Task = System.Threading.Tasks.Task;
 
 namespace TimeTracker.Database
 {
@@ -25,7 +26,7 @@ namespace TimeTracker.Database
         public AppDatabase(string dbPath)
         {
             database = new SQLiteConnection(dbPath);
-            database.CreateTable<Ticket>();
+            database.CreateTable<Models.Replicon.RepliconReply.RepliconTask>();
             database.CreateTable<TimeEntry>();
         }
 
@@ -40,9 +41,9 @@ namespace TimeTracker.Database
            return database.Query<T>($"SELECT * FROM {database.GetMapping(typeof(T)).TableName} WHERE {Query}");
         }
 
-        public Ticket FindTicketByRepliconID(string repliconID)
+        public Models.Replicon.RepliconReply.RepliconTask FindRepliconTaskByUri(string TaskURI)
         {
-            return this.Query<Ticket>($"repliconID = \"{repliconID}\"").FirstOrDefault();
+            return this.Query<Models.Replicon.RepliconReply.RepliconTask>($"{nameof(Models.Replicon.RepliconReply.RepliconTask.uri)} = \"{TaskURI}\"").FirstOrDefault();
         }
 
     

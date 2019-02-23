@@ -14,7 +14,7 @@ namespace TimeTracker.Models
 
         public string Comments { get; set; }
 
-        public string TicketRepliconID { get; set; }
+        public string TicketURI { get; set; }
 
     }
 }

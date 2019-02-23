@@ -4,6 +4,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SQLite;
+using TimeTracker.Database;
 
 namespace TimeTracker.Models.Replicon.RepliconReply
 {
@@ -34,30 +36,42 @@ namespace TimeTracker.Models.Replicon.RepliconReply
             public object startDate { get; set; }
         }
 
-    public class  Task : TaskBasic
+    public class  RepliconTask : DataObj
     {
+        [Ignore]
         public string code { get; set; }
+        [Ignore]
         public object costType { get; set; }
+        [Ignore]
         public List<CustomField> customFields { get; set; }
         public string description { get; set; }
         public string displayText { get; set; }
+        [Ignore]
         public object estimatedCost { get; set; }
+        [Ignore]
         public EstimatedHours estimatedHours { get; set; }
+        [Ignore]
         public bool isClosed { get; set; }
+        [Ignore]
         public bool isClosedByInheritance { get; set; }
         public bool isTimeEntryAllowed { get; set; }
         public string name { get; set; }
+        [Ignore]
         public object parent { get; set; }
         public int percentCompleted { get; set; }
+        [Ignore]
         public object slug { get; set; }
+        [Ignore]
         public TimeAndExpenseEntryType timeAndExpenseEntryType { get; set; }
+        [Ignore]
         public TimeEntryDateRange timeEntryDateRange { get; set; }
+        public string uri { get; set; }
     }
 
     public class ChildTask
         {
-            public List<Task> tasks { get; set; }
-            public Task Task { get; set; }
+            public List<RepliconTask> tasks { get; set; }
+            public RepliconTask Task { get; set; }
         }
 
     public class TaskRootObject

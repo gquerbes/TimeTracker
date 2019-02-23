@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TimeTracker.Database;
+using TimeTracker.Models.Replicon.RepliconReply;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,7 +14,7 @@ namespace TimeTracker.Views
 	public partial class AutoCompleteList : ContentView
 	{
 
-	    public delegate void TicketSelected(Ticket ticket);
+	    public delegate void TicketSelected(RepliconTask ticket);
 
 	    public TicketSelected OnTicketSelected;
 
@@ -23,7 +24,7 @@ namespace TimeTracker.Views
 
 		    TicketListView.ItemTapped += (sender, args) =>
 		    {
-		        Ticket ticket = args.Item as Ticket;
+		        RepliconTask ticket = args.Item as RepliconTask;
 
                 OnTicketSelected?.Invoke(ticket);
 		        SelectedTicket = ticket;
@@ -38,7 +39,7 @@ namespace TimeTracker.Views
         #region Bindable Selected Ticket Property
 
 	    public static readonly BindableProperty SelectedTicketProperty =
-	        BindableProperty.Create("SelectedTicket", typeof(Ticket), typeof(AutoCompleteList), null, BindingMode.TwoWay, propertyChanged: OnSelectedTicketChanged);
+	        BindableProperty.Create("SelectedTicket", typeof(RepliconTask), typeof(AutoCompleteList), null, BindingMode.TwoWay, propertyChanged: OnSelectedTicketChanged);
 
 	    static void OnSelectedTicketChanged(BindableObject bindable, object oldValue, object newValue)
 	    {
@@ -49,17 +50,17 @@ namespace TimeTracker.Views
             }
 	        else
 	        {
-	            Ticket ticket = ((Ticket)newValue);
+                RepliconTask ticket = ((RepliconTask)newValue);
 	            ((AutoCompleteList)bindable).SelectedItemStack.IsVisible = true;
-	            ((AutoCompleteList)bindable).SelectedItemLabel.Text = $"{((AutoCompleteList)bindable).SelectedTicket.key} : {((AutoCompleteList)bindable).SelectedTicket.Summary}";
+	            ((AutoCompleteList)bindable).SelectedItemLabel.Text = $"{((AutoCompleteList)bindable).SelectedTicket.name} : {((AutoCompleteList)bindable).SelectedTicket.description}";
 	            ((AutoCompleteList)bindable).SearchBar.IsVisible = false;
 	        }
 	    }
-	    public Ticket SelectedTicket
+	    public RepliconTask SelectedTicket
 	    {
 	        get
 	        {
-	            return (Ticket)GetValue(SelectedTicketProperty);
+	            return (RepliconTask)GetValue(SelectedTicketProperty);
 	        }
 	        set
 	        {
@@ -71,23 +72,23 @@ namespace TimeTracker.Views
 
         #region Tickets
 
-	    private List<Ticket> _tickets = new List<Ticket>();
+	    private List<RepliconTask> _tickets = new List<RepliconTask>();
 
-	    public List<Ticket> Tickets
+	    public List<RepliconTask> Tickets
 	    {
 	        get
 	        {
 	            if (!_tickets.Any())
 	            {
-	                _tickets = App.Database.GetItems<Ticket>();
+	                _tickets = App.Database.GetItems<RepliconTask>();
 	            }
 
 	            return _tickets;
 	        }
 	    }
 
-	    private List<Ticket> _filteredTickets;
-	    public List<Ticket> FilteredTickets
+	    private List<RepliconTask> _filteredTickets;
+	    public List<RepliconTask> FilteredTickets
 	    {
 	        get
 	        {
@@ -112,7 +113,7 @@ namespace TimeTracker.Views
 	            return;
 	        }
 
-	        FilteredTickets = Tickets.Where(x => !string.IsNullOrEmpty(x.key) && x.key.ToLower().Contains(args?.NewTextValue?.ToLower())).ToList();
+	        FilteredTickets = Tickets.Where(x => !string.IsNullOrEmpty(x.name) && x.name.ToLower().Contains(args?.NewTextValue?.ToLower())).ToList();
 	        //do this better instead of changing item source constantly on filter
 	        TicketListView.ItemsSource = FilteredTickets;
 	    }

@@ -81,7 +81,7 @@ namespace TimeTracker
                 TimeEntryParent entryParent = null;
                 foreach (var parent in correspondingCollection)
                 {
-                    if (parent.Ticket != null && parent.Ticket.repliconID.Equals(entry.TicketRepliconID))
+                    if (parent.Ticket != null && parent.Ticket.uri.Equals(entry.TicketURI))
                     {
                         entryParent = parent as TimeEntryParent;
                         break;
@@ -92,7 +92,7 @@ namespace TimeTracker
                 {
                     entryParent = new TimeEntryParent();
                     entryParent.Date = entry.StartDateTime;
-                    entryParent.RepliconTicketID = entry?.TicketRepliconID;
+                    entryParent.RepliconTicketID = entry?.TicketURI;
                     //add parent to collection
                     correspondingCollection.Add(entryParent);
                 }

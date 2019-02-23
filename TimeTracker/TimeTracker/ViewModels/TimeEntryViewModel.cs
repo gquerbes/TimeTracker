@@ -10,6 +10,7 @@ using TimeTracker.Annotations;
 using TimeTracker.Database;
 using TimeTracker.Interfaces;
 using TimeTracker.Models;
+using TimeTracker.Models.Replicon.RepliconReply;
 using TimeTracker.ViewModels;
 using Xamarin.Forms;
 
@@ -45,14 +46,14 @@ namespace TimeTracker
             set => TimeEntry.EndDateTime = value;
         }
 
-        private Ticket _ticket;
-        public Ticket Ticket
+        private RepliconTask _ticket;
+        public RepliconTask Ticket
         {
             get
             {
-                if (_ticket == null && !string.IsNullOrEmpty(TimeEntry.TicketRepliconID) )
+                if (_ticket == null && !string.IsNullOrEmpty(TimeEntry.TicketURI) )
                 {
-                    _ticket = App.Database.FindTicketByRepliconID(TimeEntry.TicketRepliconID);
+                    _ticket = App.Database.FindRepliconTaskByUri(TimeEntry.TicketURI);
                 }
 
                 return _ticket;
@@ -60,7 +61,7 @@ namespace TimeTracker
             set
             {
                 _ticket = value;
-                TimeEntry.TicketRepliconID = value?.repliconID;
+                TimeEntry.TicketURI = value?.uri;
                 OnPropertyChanged(nameof(SelectedTicketLabel));
             }
         }
@@ -104,7 +105,7 @@ namespace TimeTracker
 
         public string SelectedTicketLabel
         {
-            get => $"{Ticket?.key} : {Ticket?.Summary}";
+            get => $"{Ticket?.name} : {Ticket?.description}";
         }
 
         public string RunTimeText
