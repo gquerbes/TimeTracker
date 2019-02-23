@@ -112,7 +112,7 @@ namespace TimeTracker.Views
 	            return;
 	        }
 
-	        FilteredTickets = Tickets.Where(x => x.key.ToLower().Contains(args.NewTextValue.ToLower())).ToList();
+	        FilteredTickets = Tickets.Where(x => !string.IsNullOrEmpty(x.key) && x.key.ToLower().Contains(args?.NewTextValue?.ToLower())).ToList();
 	        //do this better instead of changing item source constantly on filter
 	        TicketListView.ItemsSource = FilteredTickets;
 	    }

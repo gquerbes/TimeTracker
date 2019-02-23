@@ -164,7 +164,7 @@ namespace TimeTracker
 
         private async void MenuItem_OnClicked(object sender, EventArgs e)
         {
-           _vm.GetUser();
+           _vm.LoadTickets();
            
         }
     }

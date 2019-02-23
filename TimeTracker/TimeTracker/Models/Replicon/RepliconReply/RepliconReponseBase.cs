@@ -31,7 +31,7 @@ namespace TimeTracker.Models.Replicon.RepliconReply
         public int year { get; set; }
     }
 
-    public class Task
+    public class TaskBasic
     {
         public string displayText { get; set; }
         public string uri { get; set; }

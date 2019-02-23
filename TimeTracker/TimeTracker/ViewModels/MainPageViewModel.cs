@@ -123,9 +123,9 @@ namespace TimeTracker
             OnPropertyChanged(null);
         }
 
-        public void GetUser()
+        public void LoadTickets()
         {
-            RepliConnect.GetTickets();
+           TicketLoader.LoadData();
         }
     
 

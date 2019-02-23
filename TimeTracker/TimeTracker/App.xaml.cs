@@ -38,7 +38,6 @@ namespace TimeTracker
         protected override void OnStart()
         {
             // Handle when your app starts
-            TicketLoader.LoadData();
         }
 
         protected override void OnSleep()

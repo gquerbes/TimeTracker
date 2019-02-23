@@ -34,30 +34,30 @@ namespace TimeTracker.Models.Replicon.RepliconReply
             public object startDate { get; set; }
         }
 
-        //public class Task 
-        //{
-        //    public string code { get; set; }
-        //    public object costType { get; set; }
-        //    public List<CustomField> customFields { get; set; }
-        //    public string description { get; set; }
-        //    public string displayText { get; set; }
-        //    public object estimatedCost { get; set; }
-        //    public EstimatedHours estimatedHours { get; set; }
-        //    public bool isClosed { get; set; }
-        //    public bool isClosedByInheritance { get; set; }
-        //    public bool isTimeEntryAllowed { get; set; }
-        //    public string name { get; set; }
-        //    public object parent { get; set; }
-        //    public int percentCompleted { get; set; }
-        //    public object slug { get; set; }
-        //    public TimeAndExpenseEntryType timeAndExpenseEntryType { get; set; }
-        //    public TimeEntryDateRange timeEntryDateRange { get; set; }
-        //}
+    public class  Task : TaskBasic
+    {
+        public string code { get; set; }
+        public object costType { get; set; }
+        public List<CustomField> customFields { get; set; }
+        public string description { get; set; }
+        public string displayText { get; set; }
+        public object estimatedCost { get; set; }
+        public EstimatedHours estimatedHours { get; set; }
+        public bool isClosed { get; set; }
+        public bool isClosedByInheritance { get; set; }
+        public bool isTimeEntryAllowed { get; set; }
+        public string name { get; set; }
+        public object parent { get; set; }
+        public int percentCompleted { get; set; }
+        public object slug { get; set; }
+        public TimeAndExpenseEntryType timeAndExpenseEntryType { get; set; }
+        public TimeEntryDateRange timeEntryDateRange { get; set; }
+    }
 
-        public class ChildTask
+    public class ChildTask
         {
-            public List<Task> childTasks { get; set; }
-            public Task task { get; set; }
+            public List<Task> tasks { get; set; }
+            public Task Task { get; set; }
         }
 
     public class TaskRootObject

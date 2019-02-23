@@ -17,6 +17,9 @@ namespace TimeTracker.Services
 {
     public class RepliConnect
     {
+
+        private static string UserURI;
+
         public static RepliconTaskResponse GetTickets()
         {
             var user = GetUser();
@@ -42,7 +45,7 @@ namespace TimeTracker.Services
             AppRequest req = new AppRequest();
             req.serviceURL = GetPageOfProjectsFilteredByClientAndTextSearchRequest.ServiceURL;
             var input = new GetPageOfProjectsFilteredByClientAndTextSearchRequest();
-            input.pageSize = 1000;
+            input.pageSize = 100000;
             input.timesheetUri = TimesheetURI;
             req.Input = JObject.FromObject(input);
             return GetServerData(req);
@@ -60,10 +63,10 @@ namespace TimeTracker.Services
             {
                 input.parentUris.Add(projectUrI);
                 //limit number of projects for now
-                if (x++ > 20)
-                {
-                    break;
-                }
+                //if (x++ > 20)
+                //{
+                //    break;
+                //}
             }
 
             req.Input = JObject.FromObject(input);

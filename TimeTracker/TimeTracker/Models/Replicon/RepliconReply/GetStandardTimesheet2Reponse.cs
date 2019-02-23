@@ -114,7 +114,7 @@ namespace TimeTracker.Models.Replicon.RepliconReply
         public List<Cell> cells { get; set; }
         public List<CustomFieldValue2> customFieldValues { get; set; }
         public Project project { get; set; }
-        public Task task { get; set; }
+        public TaskBasic TaskBasic { get; set; }
         public string uri { get; set; }
     }
 

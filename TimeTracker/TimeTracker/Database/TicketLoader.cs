@@ -18,57 +18,39 @@ namespace TimeTracker.Database
     public class TicketLoader
     {
         static HttpClient client = new HttpClient();
+
+        public delegate void TicketLoadCompleted();
+
+        public static TicketLoadCompleted OnTicketLoadCompleted;
+
         public static void LoadData()
         {
+            //load ticket from DB
             var rawData = RepliConnect.GetTickets();
 
-
-
-
-
-            foreach (var item in rawData.d)
-            {
-                foreach (var childtask in item.childTasks)
+            if (rawData?.d != null)
+                foreach (var item in rawData?.d)
                 {
-                    var ticket = childtask.task;
-
-                   //write tickets to database
-                    //if (!App.Database.Query<Ticket>($"repliconID = {ticket.uri}").Any())
-                    //{
-                    //    //set summary directly on ticket object from fields object
-                    //    ticket.Summary = ticket.fields.summary;
-                    //    //set RepliconID directly on ticket object from fields object
-                    //    ticket.repliconID = ticket.fields.customfield_10571;
-                    //    //Save ticket 
-                    //    App.Database.SaveItem(ticket);
-                    //}
+                    if (item?.childTasks != null)
+                        foreach (var childtask in item?.childTasks)
+                        {
+                            if (!App.Database.Query<Ticket>($"repliconID = \"{childtask.Task.uri}\"").Any()
+                            ) //if ticket not in database
+                            {
+                                //add to database
+                                Ticket ticket = new Ticket();
+                                ticket.Summary = childtask.Task.description;
+                                ticket.repliconID = childtask.Task.uri;
+                                ticket.key = childtask.Task.name;
+                                //save
+                                App.Database.SaveItem(ticket);
+                            }
+                        }
                 }
-                
-            }
-        }
 
-    
+            OnTicketLoadCompleted?.Invoke();
+        }
     }
 
+}
      
-    }
-
-    public class converter : JsonConverter
-    {
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool CanConvert(Type objectType)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-
