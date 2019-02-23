@@ -5,21 +5,21 @@
   <ContentView.Content>
       <StackLayout>
             <StackLayout Orientation="Horizontal" x:Name="SelectedItemStack" IsVisible="False">
-                <Label x:Name="SelectedItemLabel" TextColor="White" FontAttributes="Bold" FontSize="20" VerticalTextAlignment="Center" />
-                <Button Text="X" TextColor="Red" FontAttributes="Bold" FontSize="25" VerticalOptions="Center" BackgroundColor="Transparent" Clicked="ClearSelectedTicket_OnClicked"/>
+                <Label x:Name="SelectedItemLabel" TextColor="White" FontAttributes="Bold" FontSize="15" VerticalTextAlignment="Center" />
+                <Button Text="X" TextColor="Red" FontAttributes="Bold" FontSize="20" VerticalOptions="Center" BackgroundColor="Transparent" Clicked="ClearSelectedTicket_OnClicked"/>
           </StackLayout>
             <SearchBar x:Name="SearchBar" Focused="SearchBar_OnFocused" Unfocused="SearchBar_OnUnfocused"/>
             <ListView x:Name="TicketListView"  ItemsSource="FilteredTickets" IsVisible="False" HeightRequest="200">
                 <ListView.ItemTemplate>
                  <DataTemplate>
                      <ViewCell>
-                         <Grid BackgroundColor="White" HeightRequest="40">
+                         <Grid BackgroundColor="White" HeightRequest="25">
                              <Grid.ColumnDefinitions>
-                                 <ColumnDefinition Width="*"/>
+                                 <ColumnDefinition Width="Auto"/>
                                  <ColumnDefinition Width="*"/>
                              </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Text="{Binding name}"/>
-                                <Label Grid.Column="1" Text="{Binding description}"/>
+                                <Label Grid.Column="0" FontSize="12" VerticalOptions="Center"  Margin="0,0,5,0" Text="{Binding name}"/>
+                                <Label Grid.Column="1"  FontSize="12"  VerticalOptions="Center"  Text="{Binding description}"/>
                          </Grid>
                      </ViewCell>
                  </DataTemplate>
