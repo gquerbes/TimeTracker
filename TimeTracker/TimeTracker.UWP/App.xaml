@@ -5,4 +5,10 @@
     xmlns:local="using:TimeTracker.UWP"
     RequestedTheme="Light">
 
+    <Application.Resources>
+        <Style TargetType="ToggleSwitch"  >
+            <Setter Property="OffContent" Value="" />
+            <Setter Property="OnContent" Value="" />
+        </Style>
+    </Application.Resources>
 </Application>

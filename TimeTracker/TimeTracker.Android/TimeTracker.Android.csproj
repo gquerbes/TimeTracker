@@ -55,7 +55,7 @@
     <PackageReference Include="sqlite-net-pcl">
       <Version>1.5.231</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
+    <PackageReference Include="Xamarin.Forms" Version="3.5.0.169047" />
     <PackageReference Include="Xamarin.Android.Support.Design" Version="27.0.2.1" />
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="27.0.2.1" />
     <PackageReference Include="Xamarin.Android.Support.v4" Version="27.0.2.1" />
@@ -99,7 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TimeTracker\TimeTracker.csproj">
-      <Project>{B81780FC-50FA-4743-8DAB-DED6FD60D31A}</Project>
+      <Project>{B5F86506-203D-4554-AA2C-26280BFEC20C}</Project>
       <Name>TimeTracker</Name>
     </ProjectReference>
   </ItemGroup>
