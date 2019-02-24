@@ -99,7 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TimeTracker\TimeTracker.csproj">
-      <Project>{B81780FC-50FA-4743-8DAB-DED6FD60D31A}</Project>
+      <Project>{B5F86506-203D-4554-AA2C-26280BFEC20C}</Project>
       <Name>TimeTracker</Name>
     </ProjectReference>
   </ItemGroup>

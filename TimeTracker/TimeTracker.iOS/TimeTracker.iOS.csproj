@@ -154,12 +154,12 @@
     <PackageReference Include="sqlite-net-pcl">
       <Version>1.5.231</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
+    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1009999" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\TimeTracker\TimeTracker.csproj">
-      <Project>{B81780FC-50FA-4743-8DAB-DED6FD60D31A}</Project>
+      <Project>{B5F86506-203D-4554-AA2C-26280BFEC20C}</Project>
       <Name>TimeTracker</Name>
     </ProjectReference>
   </ItemGroup>
