@@ -8,37 +8,30 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="BUTTON" Clicked="MenuItem_OnClicked" />
     </ContentPage.ToolbarItems>
-    
 
-        <!-- Place new controls here -->
-        <Grid x:Name="MainContentGrid">
-            <Grid.RowDefinitions>
+
+    <!-- Place new controls here -->
+    <Grid x:Name="MainContentGrid">
+        <Grid.RowDefinitions>
             <RowDefinition Height="175"/>
             <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="TopBar" BindingContext="{Binding CurrentTimeEntry}" Grid.Row="0" BackgroundColor="{StaticResource AbasGreen}" Padding="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="125"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Grid x:Name="TopBar" BindingContext="{Binding CurrentTimeEntry}" Grid.Row="0" BackgroundColor="{StaticResource AbasGreen}" Padding="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="125"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Editor x:Name="CurrentTextEditor"  FontSize="15" Grid.Column="0" Grid.Row="0" Margin="0,50,0,0" Text="{Binding Comments, Mode=TwoWay}" BackgroundColor="White" />
-
-                <views:AutoCompleteList  x:Name="AutoCompleteList" Grid.Column="0" Grid.Row="0" SelectedTicket="{Binding CurrentTimeEntry.Ticket}" />
-
-                <StackLayout Grid.Column="1" Grid.Row="0"  Orientation="Vertical" Padding="10,0,0,0" HorizontalOptions="End">
-                <Switch IsToggled="{Binding Billed}" />
-
+            <Editor x:Name="CurrentTextEditor"  FontSize="15" Grid.Column="0" Grid.Row="0" Margin="0,50,0,0" Text="{Binding Comments, Mode=TwoWay}" BackgroundColor="White" />
+            <views:AutoCompleteList  x:Name="AutoCompleteList" Grid.Column="0" Grid.Row="0" SelectedTicket="{Binding CurrentTimeEntry.Ticket}" />
+            <StackLayout Grid.Column="1" Grid.Row="0"  Orientation="Vertical" Padding="10,0,0,0" HorizontalOptions="End">
+                <Switch IsToggled="{Binding Billed}"  />
                 <Label x:Name="TimerLabel" Text="0:0:0" HorizontalOptions="Center" FontSize="15"/>
-                    <Button x:Name="TimerButton"  HeightRequest="75"  WidthRequest="100" Text="{Binding TimerButtonText}" FontAttributes="Bold" TextColor="DarkSlateGray" CornerRadius="2" BorderWidth="5" BorderColor="DarkGray" BackgroundColor="{Binding TimerButtonColor}" Clicked="TimerButton_OnClicked" />
-
-                </StackLayout>
-
-
+                <Button x:Name="TimerButton"  HeightRequest="75"  WidthRequest="100" Text="{Binding TimerButtonText}" FontAttributes="Bold" TextColor="DarkSlateGray" CornerRadius="2" BorderWidth="5" BorderColor="DarkGray" BackgroundColor="{Binding TimerButtonColor}" Clicked="TimerButton_OnClicked" />
+            </StackLayout>
         </Grid>
-            <views:TimeEntryListView x:Name="EntryListView" Grid.Row="1"/>
-        </Grid>
-
+        <views:TimeEntryListView x:Name="EntryListView" Grid.Row="1"/>
+    </Grid>
 </ContentPage>
