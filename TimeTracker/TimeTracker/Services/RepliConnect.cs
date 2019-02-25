@@ -127,7 +127,7 @@ namespace TimeTracker.Services
                         newRow.billingRate = new BillingRate() { uri = "urn:replicon:project-specific-billing-rate" };
                     }
 
-                    newRow.task.uri = timeEntry.RepliconTicketID;
+                    newRow.task.uri = timeEntry.Ticket.uri;
 
                     var newCell = CreateCellFromEntry(timeEntry);
 
