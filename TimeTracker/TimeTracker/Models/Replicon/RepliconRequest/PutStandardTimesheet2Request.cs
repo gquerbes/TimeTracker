@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using RepliconIntegrator.Models;
 using SQLite;
 using TimeTracker.Models.Replicon.RepliconReply;
 
@@ -20,17 +21,11 @@ namespace TimeTracker.Models.Replicon.RepliconRequest
     public class Target
     {
         public string uri { get; set; }
-        public object user { get; set; }
-        public object date { get; set; }
+        public User user { get; set; } = new User();
+        public Date date { get; set; } = new Date();
     }
 
-    public class Task
-    {
-        public string uri { get; set; }
-        public object name { get; set; }
-        public object parent { get; set; }
-        public object parameterCorrelationId { get; set; }
-    }
+ 
 
    
    

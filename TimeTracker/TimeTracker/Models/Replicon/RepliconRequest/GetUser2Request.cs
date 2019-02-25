@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TimeTracker.Models.Replicon.RepliconReply;
 
 namespace RepliconIntegrator.Models
 {
@@ -16,12 +17,7 @@ namespace RepliconIntegrator.Models
         public User user { get; set; } = new User();
     }
 
-    public class User
-        {
-            public string uri { get; set; }
-            public string loginName { get; set; }
-            public string parameterCorrelationID { get; set; }
-        }
+    
 
      
 }

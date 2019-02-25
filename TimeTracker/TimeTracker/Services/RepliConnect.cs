@@ -12,6 +12,7 @@ using TimeTracker.Models.Replicon.RepliconReply;
 using TimeTracker.Models.Replicon.RepliconRequest;
 using TimeTracker.Models;
 using TimeTracker.Models.Replicon.RepliconReply;
+using Date = TimeTracker.Models.Replicon.RepliconReply.Date;
 
 namespace TimeTracker.Services
 {
@@ -60,21 +61,30 @@ namespace TimeTracker.Services
             /*
           * do beforehand and save values
           */
+
             GetStandardTimesheet2Reply currentTS = JsonConvert.DeserializeObject<GetStandardTimesheet2Reply>(GetTimesheet(TimesheetURI).ToString());
 
             PutStandardTimesheet2Request newTS = new PutStandardTimesheet2Request();
 
             //copy URI of current Timesheet
             newTS.timesheet.target.uri = TimesheetURI;
-
+            //set employee
+            newTS.timesheet.target.user.uri = currentTS.d.uri;
+            //set date
+            newTS.timesheet.target.date.day = DateTime.Today.Day;
+            newTS.timesheet.target.date.month = DateTime.Today.Month;
+            newTS.timesheet.target.date.year = DateTime.Today.Year;
             //copy current rows
-            newTS.timesheet.rows = currentTS.d.rows;
+            foreach (var dRow in currentTS.d.rows)
+            {
+                dRow.task.parameterCorrelationId = "TimwTrackerApp";
+                newTS.timesheet.rows.Add(dRow);
+            }
+            //set value of whatever this means
+            newTS.timesheet.noticeExplicitlyAccepted = "0";
 
-            newTS.timesheet.rows.FirstOrDefault().cells.FirstOrDefault().duration.hours = "22";
-             //add a couple more for testing
-             //newTS.timesheet.rows.Add(currentTS.d.rows.FirstOrDefault());
-             //newTS.timesheet.rows.Add(currentTS.d.rows.FirstOrDefault());
-             //newTS.timesheet.rows.Add(currentTS.d.rows.FirstOrDefault());
+
+        
 
               PutTimesheet(newTS);
         }
