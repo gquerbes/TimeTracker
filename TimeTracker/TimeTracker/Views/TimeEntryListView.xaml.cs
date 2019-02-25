@@ -113,6 +113,11 @@ namespace TimeTracker.Views
                 {
                     OnExpandCollapseParent?.Invoke(parent);
                 }
+
+                else
+                {
+                    Navigation.PushAsync(new TimeEntryDetailPage(parent.Entries.FirstOrDefault()));
+                }
             }
             else
             {

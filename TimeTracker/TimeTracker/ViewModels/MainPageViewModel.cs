@@ -32,11 +32,19 @@ namespace TimeTracker
 
                 return _currentTimeEntry;
             }
-            protected set => _currentTimeEntry = value;
+            protected set
+            {
+
+                _currentTimeEntry = value;
+                OnPropertyChanged(null);
+            } 
         }
 
 
-
+        public void ContinueRunningTimer(TimeEntryViewModel vm)
+        {
+            this.CurrentTimeEntry = vm;
+        }
 
         public ObservableCollection<TimeEntryListElementOverservableCollection> _timeEntries;
 
@@ -86,8 +94,10 @@ namespace TimeTracker
         /// <param name="vm"></param>
         public void AddTimeEntryToList(TimeEntryViewModel vm)
         {
+            //correspodning date collection
+            var collection = TimeEntries.FirstOrDefault(x => x.Date.Equals(vm.StartTime.Date));
             //check if valid parent ticket exists and place child inside or make new one and place child inside if does not exist
-            foreach (var entryParent in  TimeEntries.First())
+            foreach (var entryParent in  collection)
             {
                 if (entryParent.Ticket != null && entryParent.Ticket.uri.Equals(vm.Ticket?.uri))
                 {
@@ -118,7 +128,6 @@ namespace TimeTracker
         public void ContinueTimerClicked(TimeEntryViewModel previousTimeEntry)
         {
             TimerClicked();
-            CurrentTimeEntry.Comments = previousTimeEntry.Comments;
             CurrentTimeEntry.Ticket = previousTimeEntry.Ticket;
             OnPropertyChanged(null);
         }
@@ -128,6 +137,17 @@ namespace TimeTracker
 
             var y = TimeEntries.FirstOrDefault().Cast<TimeEntryParent>().ToList();
             RepliConnect.SubmitTimesheet(y);
+        }
+
+        public void ParseDateEntry(string entry)
+        {
+            var validParse = TimeSpan.TryParse(entry, out TimeSpan result );
+
+            if (validParse)
+            {
+                var correctedStartTime = DateTime.Now - result;
+                CurrentTimeEntry.StartTime = correctedStartTime;
+            }
         }
     
 

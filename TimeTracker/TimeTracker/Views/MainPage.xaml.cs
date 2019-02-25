@@ -20,7 +20,7 @@ namespace TimeTracker
             this.BindingContext = _vm;
 
             InitializeComponent();
-            LoadData();
+            LoadTickets();
             EntryListView.OnContinueEntry += OnContinueEntry;
             EntryListView.OnExpandCollapseParent += OnExpandCollapseParent;
         }
@@ -59,12 +59,18 @@ namespace TimeTracker
         /// <summary>
         /// Load data from the DB and add to table
         /// </summary>
-        private void LoadData()
+        private void LoadTickets()
         {
             //Query entries
             var entries =  App.Database.GetItems<TimeEntry>();
             foreach (var entry in entries)
             {
+                if (entry.EndDateTime.Equals(DateTime.MinValue))
+                {
+                    _vm.ContinueRunningTimer(new TimeEntryViewModel(entry));
+                    break;
+                }
+
                 //Find collection with same date as start date of entry
                 TimeEntryListElementOverservableCollection correspondingCollection =
                     _vm.TimeEntries.FirstOrDefault(x => x.Date.Equals(entry.StartDateTime.Date));
@@ -110,6 +116,8 @@ namespace TimeTracker
             }
         }
 
+        
+
         /// <summary>
         /// Handles when start/stop button is pressed
         /// </summary>
@@ -139,7 +147,10 @@ namespace TimeTracker
         private bool UpdateClock()
         {
             var elapsedTime =  DateTime.Now - _vm.CurrentTimeEntry.StartTime;
-            TimerLabel.Text = $"{elapsedTime.Hours}:{elapsedTime.Minutes}:{elapsedTime.Seconds}";
+            if (!TimerLabel.IsFocused)
+            {
+                TimerLabel.Text = $"{elapsedTime.Hours}:{elapsedTime.Minutes}:{elapsedTime.Seconds}";
+            }
 
             //will continue so long as timer is running
             return _vm.CurrentTimeEntry.IsRunning;
@@ -166,6 +177,21 @@ namespace TimeTracker
         {
            _vm.LoadTickets();
            
+        }
+
+
+        private void TimerLabel_OnUnfocused(object sender, FocusEventArgs e)
+        {
+            //parse value
+            _vm.ParseDateEntry(TimerLabel.Text);
+            //update label
+            TimerLabel.Text = _vm.CurrentTimeEntry.RunTimeText;
+        }
+
+
+        private void TimerLabel_OnFocused(object sender, FocusEventArgs e)
+        {
+            TimerLabel.Text = "";
         }
     }
 }

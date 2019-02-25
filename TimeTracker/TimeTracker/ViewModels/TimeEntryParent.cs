@@ -60,7 +60,7 @@ namespace TimeTracker.ViewModels
                 var text = "";
                 foreach (var timeEntryViewModel in Entries)
                 {
-                    text += $"{timeEntryViewModel.Comments}\n";
+                    text += $"{timeEntryViewModel.Comments}, ";
                 }
 
                 return text;

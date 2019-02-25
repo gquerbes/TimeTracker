@@ -28,7 +28,7 @@
             <views:AutoCompleteList  x:Name="AutoCompleteList" Grid.Column="0" Grid.Row="0" SelectedTicket="{Binding CurrentTimeEntry.Ticket}" />
             <StackLayout Grid.Column="1" Grid.Row="0"  Orientation="Vertical" Padding="10,0,0,0" HorizontalOptions="End">
                 <Switch IsToggled="{Binding Billed}"  />
-                <Label x:Name="TimerLabel" Text="0:0:0" HorizontalOptions="Center" FontSize="15"/>
+                <Entry x:Name="TimerLabel" Text="0:0:0" HorizontalOptions="Center" FontSize="15" Unfocused="TimerLabel_OnUnfocused" Focused="TimerLabel_OnFocused"/>
                 <Button x:Name="TimerButton"  HeightRequest="75"  WidthRequest="100" Text="{Binding TimerButtonText}" FontAttributes="Bold" TextColor="DarkSlateGray" CornerRadius="2" BorderWidth="5" BorderColor="DarkGray" BackgroundColor="{Binding TimerButtonColor}" Clicked="TimerButton_OnClicked" />
             </StackLayout>
         </Grid>

@@ -37,7 +37,11 @@ namespace TimeTracker
         public DateTime StartTime
         {
             get => TimeEntry.StartDateTime;
-            set => TimeEntry.StartDateTime = value;
+            set
+            {
+                TimeEntry.StartDateTime = value;
+                Save();
+            } 
         }
 
         public DateTime EndTime
@@ -100,6 +104,7 @@ namespace TimeTracker
                 {
                     TimeEntry.Comments = value;
                     OnPropertyChanged();
+                    Save();
                 }
             }
         }
@@ -117,7 +122,11 @@ namespace TimeTracker
 
         public string RunTimeText
         {
-            get { return $"{RunTime.Hours}:{RunTime.Minutes}:{RunTime.Seconds}"; }
+            get
+            {
+                if (StartTime.Equals(DateTime.MinValue)) return "0:0:0";
+                return $"{RunTime.Hours}:{RunTime.Minutes}:{RunTime.Seconds}";
+            }
         }
 
         public Color TimerButtonColor
@@ -162,6 +171,7 @@ namespace TimeTracker
 
             OnPropertyChanged(nameof(TimerButtonColor));
             OnPropertyChanged(nameof(TimerButtonText));
+            Save();
         }
 
         public void StopTimer()
