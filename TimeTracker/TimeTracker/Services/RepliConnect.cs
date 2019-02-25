@@ -102,8 +102,17 @@ namespace TimeTracker.Services
                         || (!string.IsNullOrEmpty(timesheetRow.billingRate?.uri) && timeEntry.IsBillable))) //neither billable
                     {
                         var newCell = CreateCellFromEntry(timeEntry);
+                        //find entry on row with same date
+                        var existingEntry = timesheetRow.cells.FirstOrDefault(x => x.date.day.Equals(newCell.date.day));
+                        //if entry exists for same date replace, else add to list
+                        if (existingEntry != null)
+                        {
+                            timesheetRow.cells.Remove(existingEntry);
+                        }
+                        
                         timesheetRow.cells.Add(newCell);
                         timeEntry.ExistsOnTimeSheet = true;
+                        break;
                     }
                     
                 }
