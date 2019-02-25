@@ -71,6 +71,8 @@ namespace TimeTracker
         /// </summary>
         public bool IsRunning => !StartTime.Equals(DateTime.MinValue) && EndTime.Equals(DateTime.MinValue);
 
+
+
         public TimeSpan RunTime
         {
             get
@@ -78,6 +80,11 @@ namespace TimeTracker
                 if (IsRunning)
                 {
                     return DateTime.Now - TimeEntry.StartDateTime;
+                }
+                //not yet started
+                if (StartTime.Equals(DateTime.MinValue))
+                {
+                    return TimeSpan.Zero;
                 }
 
                 return TimeEntry.EndDateTime - TimeEntry.StartDateTime;

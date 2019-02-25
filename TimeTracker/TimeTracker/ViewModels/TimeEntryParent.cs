@@ -23,6 +23,9 @@ namespace TimeTracker.ViewModels
 
         public DateTime Date { get; set; }
 
+        public bool IsBillable { get; set; }
+
+        public bool ExistsOnTimeSheet { get; set; }
 
         private RepliconTask _ticket;
         public RepliconTask Ticket
@@ -54,20 +57,20 @@ namespace TimeTracker.ViewModels
         {
             get
             {
-                if (Entries.Count > 1)
+                var text = "";
+                foreach (var timeEntryViewModel in Entries)
                 {
-                    return "**Multiple Entries***";
+                    text += $"{timeEntryViewModel.Comments}\n";
                 }
-                else
-                {
-                    return Entries.FirstOrDefault()?.Comments;
-                }
+
+                return text;
             }
         }
 
         public string SelectedTicketLabel => Entries.FirstOrDefault()?.SelectedTicketLabel;
 
-        public string RunTimeText
+
+        public TimeSpan TotalTime
         {
             get
             {
@@ -76,6 +79,15 @@ namespace TimeTracker.ViewModels
                 {
                     totalTime += timeEntryViewModel.RunTime;
                 }
+
+                return totalTime;
+            }
+        }
+        public string RunTimeText
+        {
+            get
+            {
+                var totalTime = TotalTime;
 
                 return $"{totalTime.Hours}:{totalTime.Minutes}:{totalTime.Seconds}";
             }

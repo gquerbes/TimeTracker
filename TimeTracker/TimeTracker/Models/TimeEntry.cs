@@ -14,7 +14,11 @@ namespace TimeTracker.Models
 
         public string Comments { get; set; }
 
+        public string InternalComments { get; set; }
+
         public string TicketURI { get; set; }
+
+        public bool IsBillable { get; set; }
 
     }
 }

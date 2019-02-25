@@ -8,11 +8,14 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RepliconIntegrator.Models;
+using TimeTracker.Helpers;
 using TimeTracker.Models.Replicon.RepliconReply;
 using TimeTracker.Models.Replicon.RepliconRequest;
 using TimeTracker.Models;
 using TimeTracker.Models.Replicon.RepliconReply;
+using TimeTracker.ViewModels;
 using Date = TimeTracker.Models.Replicon.RepliconReply.Date;
+using Timesheet = TimeTracker.Models.Replicon.RepliconReply.Timesheet;
 
 namespace TimeTracker.Services
 {
@@ -45,12 +48,11 @@ namespace TimeTracker.Services
 
         }
 
-
-        public static void SubmitTimesheet()
+        private static PutStandardTimesheet2Request CreateTimesheetSubmissionForCurrentTimesheet()
         {
             /*
-             * do beforehand and save values
-             */ 
+            * do beforehand and save values
+            */
             var userReply = GetUser();
 
             UserURI = JsonConvert.DeserializeObject<GetUser2Response>(userReply.ToString()).d.uri;
@@ -77,18 +79,79 @@ namespace TimeTracker.Services
             //copy current rows
             foreach (var dRow in currentTS.d.rows)
             {
-                dRow.task.parameterCorrelationId = "TimwTrackerApp";
+                dRow.task.parameterCorrelationId = "TimeTrackerApp";
                 newTS.timesheet.rows.Add(dRow);
             }
             //set value of whatever this means
             newTS.timesheet.noticeExplicitlyAccepted = "0";
 
-
-        
-
-              PutTimesheet(newTS);
+            return newTS;
         }
 
+
+        public static void SubmitTimesheet(List<TimeEntryParent> timeEntries)
+        {
+
+            var timesheetSubmission = CreateTimesheetSubmissionForCurrentTimesheet();
+            foreach (var timeEntry in timeEntries)//for each entry to be submitted
+            {
+                foreach (var timesheetRow in timesheetSubmission.timesheet.rows) // foreach timesheet row currently on timesheet
+                {
+                    if (timesheetRow.task.uri.Equals(timeEntry.RepliconTicketID) // current row matches current entry project
+                        && ((string.IsNullOrEmpty(timesheetRow.billingRate?.uri) && !timeEntry.IsBillable) // both billable
+                        || (!string.IsNullOrEmpty(timesheetRow.billingRate?.uri) && timeEntry.IsBillable))) //neither billable
+                    {
+                        var newCell = CreateCellFromEntry(timeEntry);
+                        timesheetRow.cells.Add(newCell);
+                        timeEntry.ExistsOnTimeSheet = true;
+                    }
+                    
+                }
+                //iterated through all current rows and not match found, make a new row
+                if (!timeEntry.ExistsOnTimeSheet)
+                {
+                    //create new row
+                    Row newRow = new Row();
+
+                    if (timeEntry.IsBillable)
+                    {
+                        newRow.billingRate = new BillingRate() { uri = "urn:replicon:project-specific-billing-rate" };
+                    }
+
+                    newRow.task.uri = timeEntry.RepliconTicketID;
+
+                    var newCell = CreateCellFromEntry(timeEntry);
+
+                    newRow.cells.Add(newCell);
+                    timesheetSubmission.timesheet.rows.Add(newRow);
+                }
+
+            }
+
+
+            PutTimesheet(timesheetSubmission);
+        }
+
+        private static Cell CreateCellFromEntry(TimeEntryParent timeEntry)
+        {
+            //new cell for entry
+            var newCell = new Cell();
+            //comments
+            newCell.comments = timeEntry.Comments;
+            //duration
+            var roundedTime = timeEntry.TotalTime.RoundToNearestMinutes(15);
+            newCell.duration.hours = roundedTime.Hours.ToString();
+            newCell.duration.minutes = roundedTime.Minutes.ToString();
+            newCell.duration.seconds = "0";
+            newCell.duration.milliseconds = "0";
+            newCell.duration.microseconds = "0";
+            //date
+            newCell.date.day = timeEntry.Date.Day;
+            newCell.date.month = timeEntry.Date.Month;
+            newCell.date.year = timeEntry.Date.Year;
+
+            return newCell;
+        }
         #endregion
 
         #region Base Replicon Communication
@@ -105,13 +168,13 @@ namespace TimeTracker.Services
             return GetServerData(req);
 
         }
-        
+
         private static JToken GetTaskFromProjects(List<string> projectURIs)
         {
             AppRequest req = new AppRequest();
             req.serviceURL = Models.Replicon.RepliconRequest.BulkGetDescendantTaskDetailsRequest.ServiceURL;
             var input = new Models.Replicon.RepliconRequest.BulkGetDescendantTaskDetailsRequest();
-         
+
             foreach (var projectUrI in projectURIs)
             {
                 input.parentUris.Add(projectUrI);
@@ -130,7 +193,7 @@ namespace TimeTracker.Services
             var input = new GetUser2Request();
             input.user.loginName = "gquerbes";
             req.Input = JObject.FromObject(input);
-            return  GetServerData(req);
+            return GetServerData(req);
         }
 
         private static JToken GetTimesheetUri(string userURI, DateTime date)
@@ -168,7 +231,7 @@ namespace TimeTracker.Services
 
         }
 
-        private static JToken GetServerData(AppRequest appRequest, string requestMethod ="POST" )
+        private static JToken GetServerData(AppRequest appRequest, string requestMethod = "POST")
         {
             //ignore http errors
 #warning This is due to self signed cert, should fix
@@ -178,7 +241,7 @@ namespace TimeTracker.Services
             WebRequest req = WebRequest.Create($"{Credentials.RepliConnectURL}/api/values/x");
             req.ContentType = "application/json";
             req.Method = requestMethod;
-            using(var streamWriter = new StreamWriter(req.GetRequestStream()))
+            using (var streamWriter = new StreamWriter(req.GetRequestStream()))
             {
                 string json = JsonConvert.SerializeObject(appRequest);
 
@@ -189,7 +252,7 @@ namespace TimeTracker.Services
 
             try
             {
-                var httpResponse = (HttpWebResponse) req.GetResponse();
+                var httpResponse = (HttpWebResponse)req.GetResponse();
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     return streamReader.ReadToEnd();
@@ -199,8 +262,8 @@ namespace TimeTracker.Services
             {
                 return e.Message;
             }
-           
-           
+
+
         }
 
 

@@ -60,7 +60,7 @@ namespace TimeTracker.Models.Replicon.RepliconReply
     public class CustomField
     {
         public CustomField2 customField { get; set; }
-        public CustomFieldType customFieldType { get; set; }
+        public CustomFieldType customFieldType { get; set; } 
         public string text { get; set; }
     }
 
@@ -68,7 +68,7 @@ namespace TimeTracker.Models.Replicon.RepliconReply
     {
         public object activity { get; set; }
         public BillingRate billingRate { get; set; }
-        public List<Cell> cells { get; set; }
+        public List<Cell> cells { get; set; } = new List<Cell>();
         public List<CustomFieldValue2> customFieldValues { get; set; }
         public Project project { get; set; }
         public TaskBasic task { get; set; } = new TaskBasic();
@@ -87,7 +87,7 @@ namespace TimeTracker.Models.Replicon.RepliconReply
         public string comments { get; set; }
         public List<CustomFieldValue> customFieldValues { get; set; }
         public Date date { get; set; } = new Date();
-        public Duration duration { get; set; }
+        public Duration duration { get; set; } = new Duration();
     }
 
     public class Duration
