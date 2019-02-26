@@ -6,7 +6,8 @@
              x:Class="TimeTracker.MainPage"
              Title="abas Time Tracker ">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="BUTTON" Clicked="MenuItem_OnClicked" />
+        <ToolbarItem Text="LoadTickets" Clicked= "LoadTickets_OnClicked" />
+        <ToolbarItem Text="Submit" Clicked="Submit_OnClicked" />
     </ContentPage.ToolbarItems>
 
 

@@ -28,7 +28,11 @@ namespace TimeTracker.Services
 
 
         #region Public Methods
-        public static BulkGetDescendantTaskDetailsResponse GetTickets()
+        /// <summary>
+        /// Returns tuple of projects and tasks responses
+        /// </summary>
+        /// <returns></returns>
+        public static Tuple<GetPageOfProjectsFilteredByClientAndTextSearchResponse, BulkGetDescendantTaskDetailsResponse> GetTickets()
         {
             var userReply = GetUser();
 
@@ -38,13 +42,17 @@ namespace TimeTracker.Services
 
             TimesheetURI = JsonConvert.DeserializeObject<GetTimesheetForDate2Response>(timesheetReply.ToString()).d.timesheet.uri;
 
-            var projectsList = JsonConvert.DeserializeObject<GetPageOfProjectsFilteredByClientAndTextSearchResponse>(GetProjectsForTimesheet(TimesheetURI).ToString()).d.Select(x => x.project.uri).ToList();
+            var projectsList = JsonConvert.DeserializeObject<GetPageOfProjectsFilteredByClientAndTextSearchResponse>(GetProjectsForTimesheet(TimesheetURI).ToString());
+
+            var projectListURIs = projectsList.d.Select(x => x.project.uri).ToList();
 
             //TODO: Pull ops overhead and other ticket
+            var taskReply = GetTaskFromProjects(projectListURIs);
 
-            var tasks = JsonConvert.DeserializeObject<BulkGetDescendantTaskDetailsResponse>(GetTaskFromProjects(projectsList).ToString());
+            var tasks = JsonConvert.DeserializeObject<BulkGetDescendantTaskDetailsResponse>(news.ToString());
 
-            return tasks;
+
+            return Tuple.Create(projectsList, tasks);
 
         }
 
@@ -186,6 +194,7 @@ namespace TimeTracker.Services
 
             foreach (var projectUrI in projectURIs)
             {
+
                 input.parentUris.Add(projectUrI);
             }
 

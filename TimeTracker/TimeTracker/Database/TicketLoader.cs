@@ -29,10 +29,35 @@ namespace TimeTracker.Database
             //load ticket from DB
             var rawData = RepliConnect.GetTickets();
 
-            if (rawData?.d != null)
-                foreach (var item in rawData?.d)
+            //save parent tasks as tasks
+            if (rawData.Item1.d != null)
+            {
+                foreach (var projectRootObject in rawData.Item1.d)
+                {
+                    if (projectRootObject != null && projectRootObject.project != null)
+                    {
+                        if (!App.Database.Query<RepliconTask>($"{nameof(RepliconTask.uri)} = \"{projectRootObject?.project?.uri}\"").Any()
+                        ) //if ticket not in database
+                        {
+                            //create task from project to allow time entry on parent tickets
+                            var task = new RepliconTask();
+                            task.description = projectRootObject.project.displayText;
+                            task.displayText = projectRootObject.project.name;
+                            task.name = projectRootObject.project.name;
+                            task.uri = projectRootObject.project.uri;
+                            App.Database.SaveItem(task);
+                        }
+                    }
+                }
+            }
+
+
+            //save  tasks
+            if (rawData?.Item2.d != null)
+                foreach (var item in rawData?.Item2.d)
                 {
                     if (item?.childTasks != null)
+                    {
                         foreach (var childtask in item?.childTasks)
                         {
                             if (!App.Database.Query<RepliconTask>($"{nameof(RepliconTask.uri)} = \"{childtask.Task.uri}\"").Any()
@@ -42,6 +67,8 @@ namespace TimeTracker.Database
                                 App.Database.SaveItem(childtask.Task);
                             }
                         }
+                    }
+                        
                 }
 
             OnTicketLoadCompleted?.Invoke();

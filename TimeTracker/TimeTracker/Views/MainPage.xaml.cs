@@ -173,10 +173,15 @@ namespace TimeTracker
         }
 
 
-        private async void MenuItem_OnClicked(object sender, EventArgs e)
+        private async void LoadTickets_OnClicked(object sender, EventArgs e)
         {
            _vm.LoadTickets();
            
+        }
+
+        private async void Submit_OnClicked(object sender, EventArgs e)
+        {
+
         }
 
 

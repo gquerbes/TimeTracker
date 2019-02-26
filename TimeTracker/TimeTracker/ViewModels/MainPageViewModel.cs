@@ -134,8 +134,13 @@ namespace TimeTracker
 
         public void LoadTickets()
         {
+            TicketLoader.LoadData();
+          
+        }
 
-            var y = TimeEntries.FirstOrDefault().Cast<TimeEntryParent>().ToList();
+        public void SubmitTimesheet()
+        {
+            var y = TimeEntries?.FirstOrDefault()?.Cast<TimeEntryParent>().ToList();
             RepliConnect.SubmitTimesheet(y);
         }
 
