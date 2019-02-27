@@ -31,42 +31,50 @@ namespace TimeTracker.Services
 
 
         #region Public Methods
+
         /// <summary>
         /// Returns tuple of projects and tasks responses
         /// </summary>
         /// <returns></returns>
         public static async Task<Tuple<GetPageOfProjectsFilteredByClientAndTextSearchResponse, BulkGetDescendantTaskDetailsResponse>> GetTickets()
         {
-            var userReply = await GetUser();
 
-            UserURI = JsonConvert.DeserializeObject<GetUser2Response>(userReply.ToString()).d.uri;
-
-            var timesheetReply = await GetTimesheetUri(UserURI, DateTime.Today);
-
-            TimesheetURI = JsonConvert.DeserializeObject<GetTimesheetForDate2Response>(timesheetReply.ToString()).d.timesheet.uri;
-
-            var projectsList = JsonConvert.DeserializeObject<GetPageOfProjectsFilteredByClientAndTextSearchResponse>((await GetProjectsForTimesheet(TimesheetURI)).ToString());
-
-            var projectListURIs = projectsList.d.Select(x => x.project.uri).ToList();
-
-            //TODO: Pull ops overhead and other ticket
-            var taskReply = await GetTaskFromProjects(projectListURIs);
-
-            var tasks = JsonConvert.DeserializeObject<BulkGetDescendantTaskDetailsResponse>(taskReply.ToString());
+            //Get user if required
+            if (string.IsNullOrEmpty(UserURI))
+            {
+                var User = await GetUser();//set local variable to avoid calling this again
+                UserURI = JsonConvert.DeserializeObject<GetUser2Response>(User.ToString()).d.uri; //8ms
+            }
 
 
+            //get timesheet uri
+            JToken Timesheet = await GetTimesheetUri(UserURI, DateTime.Today); //900ms 
+            TimesheetURI = JsonConvert.DeserializeObject<GetTimesheetForDate2Response>(Timesheet.ToString()).d.timesheet.uri; //1ms
+
+            //get list of projects URI for timesheet
+            JToken Projects = await GetProjectsForTimesheet(TimesheetURI); //2667ms
+            var projectsList = JsonConvert.DeserializeObject<GetPageOfProjectsFilteredByClientAndTextSearchResponse>((Projects).ToString()); //108ms
+            var projectListURIs = projectsList.d.Select(x => x.project.uri).ToList(); //1ms
+
+
+            //get all tasks from list of projects
+            JToken taskReply = await GetTaskFromProjects(projectListURIs); //78776ms
+            var tasks = JsonConvert.DeserializeObject<BulkGetDescendantTaskDetailsResponse>(taskReply.ToString()); //1290ms
+
+            //return projects and tasks
             return Tuple.Create(projectsList, tasks);
-
         }
 
-        private static PutStandardTimesheet2Request CreateTimesheetSubmissionForCurrentTimesheet()
+        private static async Task<PutStandardTimesheet2Request> CreateTimesheetSubmissionForCurrentTimesheet()
         {
             /*
             * do beforehand and save values
             */
-            var userReply = GetUser();
-
-            UserURI = JsonConvert.DeserializeObject<GetUser2Response>(userReply.ToString()).d.uri;
+            if (string.IsNullOrEmpty(UserURI))
+            {
+                var User = await GetUser();//set local variable to avoid calling this again
+                UserURI = JsonConvert.DeserializeObject<GetUser2Response>(User.ToString()).d.uri; //8ms
+            }
 
             var timesheetReply = GetTimesheetUri(UserURI, DateTime.Today);
 
@@ -100,10 +108,10 @@ namespace TimeTracker.Services
         }
 
 
-        public static void SubmitTimesheet(List<TimeEntryParent> timeEntries)
+        public static async Task SubmitTimesheet(List<TimeEntryParent> timeEntries)
         {
 
-            var timesheetSubmission = CreateTimesheetSubmissionForCurrentTimesheet();
+            var timesheetSubmission =  await CreateTimesheetSubmissionForCurrentTimesheet();
             foreach (var timeEntry in timeEntries)//for each entry to be submitted
             {
                 foreach (var timesheetRow in timesheetSubmission.timesheet.rows) // foreach timesheet row currently on timesheet
@@ -192,15 +200,10 @@ namespace TimeTracker.Services
         private static async Task<JToken> GetTaskFromProjects(List<string> projectURIs)
         {
             AppRequest req = new AppRequest();
-            req.serviceURL = Models.Replicon.RepliconRequest.BulkGetDescendantTaskDetailsRequest.ServiceURL;
-            var input = new Models.Replicon.RepliconRequest.BulkGetDescendantTaskDetailsRequest();
+            req.serviceURL = BulkGetDescendantTaskDetailsRequest.ServiceURL;
+            var input = new BulkGetDescendantTaskDetailsRequest();
 
-            foreach (var projectUrI in projectURIs)
-            {
-
-                input.parentUris.Add(projectUrI);
-            }
-
+            input.parentUris = projectURIs;
             req.Input = JObject.FromObject(input);
 
             return await GetServerData(req);
@@ -224,7 +227,7 @@ namespace TimeTracker.Services
             var input = new GetTimesheetForDate2Request();
             input.SetDate(DateTime.Today);
             input.userUri = userURI;
-            req.Input = JObject.FromObject(input);
+            req.Input = JObject.FromObject(input);  //3ms
             var response = GetServerData(req);
 
             return await response;
