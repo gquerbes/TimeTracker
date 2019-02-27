@@ -36,33 +36,38 @@ namespace TimeTracker.Services
         /// Returns tuple of projects and tasks responses
         /// </summary>
         /// <returns></returns>
-        public static async Task<Tuple<GetPageOfProjectsFilteredByClientAndTextSearchResponse, BulkGetDescendantTaskDetailsResponse>> GetTickets()
+        public static async Task<JArray> GetTickets()
         {
+#warning This URI will change in production environment
+            var TicketReportURI = "urn:replicon-tenant:7895aad72083482794c5caa8c38018b2:report:fb9692e3-894c-43e0-9354-551b3b4a32c4";
+            var CsvFormatURI = "urn:replicon:report-output-format-option:csv";
+            //run report
+           
 
-            //Get user if required
-            if (string.IsNullOrEmpty(UserURI))
+            try
             {
-                var User = await GetUser();//set local variable to avoid calling this again
-                UserURI = JsonConvert.DeserializeObject<GetUser2Response>(User.ToString()).d.uri; //8ms
+                JToken reportResult = await GetReport(TicketReportURI, CsvFormatURI);
+
+                //var desesrializedResult = JsonConvert.DeserializeObject<GenerateReportResponse>(reportResult.ToString());
+
+                var csv = new List<string[]>();                //split the result into an array of string, one for each line of result
+                var lines= desesrializedResult.D.payload.Split(new [] {Environment.NewLine}, StringSplitOptions.None);
+
+                foreach (string line in lines)
+                    csv.Add(line.Split(',')); // or, populate YourClass          
+                string json = JsonConvert.SerializeObject(csv);
+
+                JArray result = JsonConvert.DeserializeObject<JArray>(json);
+
+                return result;
+
+
             }
-
-
-            //get timesheet uri
-            JToken Timesheet = await GetTimesheetUri(UserURI, DateTime.Today); //900ms 
-            TimesheetURI = JsonConvert.DeserializeObject<GetTimesheetForDate2Response>(Timesheet.ToString()).d.timesheet.uri; //1ms
-
-            //get list of projects URI for timesheet
-            JToken Projects = await GetProjectsForTimesheet(TimesheetURI); //2667ms
-            var projectsList = JsonConvert.DeserializeObject<GetPageOfProjectsFilteredByClientAndTextSearchResponse>((Projects).ToString()); //108ms
-            var projectListURIs = projectsList.d.Select(x => x.project.uri).ToList(); //1ms
-
-
-            //get all tasks from list of projects
-            JToken taskReply = await GetTaskFromProjects(projectListURIs); //78776ms
-            var tasks = JsonConvert.DeserializeObject<BulkGetDescendantTaskDetailsResponse>(taskReply.ToString()); //1290ms
-
+            catch (Exception e)
+            {
+                return null;
+            }
             //return projects and tasks
-            return Tuple.Create(projectsList, tasks);
         }
 
         private static async Task<PutStandardTimesheet2Request> CreateTimesheetSubmissionForCurrentTimesheet()
@@ -184,6 +189,16 @@ namespace TimeTracker.Services
 
         #region Base Replicon Communication
 
+        private static async Task<JToken> GetReport(string reportURI, string reportOutputFormat)
+        {
+            AppRequest req = new AppRequest();
+            req.serviceURL = GenerateReportRequest.ServiceURL;
+            var input = new GenerateReportRequest();
+            input.reportUri = reportURI;
+            input.outputFormatUri = reportOutputFormat;
+            req.Input = JObject.FromObject(input);
+            return await GetServerData(req);
+        }
 
         private static async Task<JToken> GetProjectsForTimesheet(string TimesheetURI)
         {

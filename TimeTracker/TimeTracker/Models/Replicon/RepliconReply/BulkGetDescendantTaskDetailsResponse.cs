@@ -54,10 +54,12 @@ namespace TimeTracker.Models.Replicon.RepliconReply
         public bool isClosed { get; set; }
         [Ignore]
         public bool isClosedByInheritance { get; set; }
+        [Ignore]
         public bool isTimeEntryAllowed { get; set; }
         public string name { get; set; }
         [Ignore]
         public object parent { get; set; }
+        [IgnoreDataMember]
         public int percentCompleted { get; set; }
         [Ignore]
         public object slug { get; set; }
@@ -66,6 +68,9 @@ namespace TimeTracker.Models.Replicon.RepliconReply
         [Ignore]
         public TimeEntryDateRange timeEntryDateRange { get; set; }
         public string uri { get; set; }
+
+        [JsonIgnore]
+        public bool IsBillable { get; set; }
     }
 
     public class ChildTask
