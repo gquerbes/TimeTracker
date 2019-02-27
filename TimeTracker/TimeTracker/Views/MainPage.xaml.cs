@@ -175,8 +175,10 @@ namespace TimeTracker
 
         private async void LoadTickets_OnClicked(object sender, EventArgs e)
         {
-           _vm.LoadTickets();
-           
+            var confirm = await _vm.LoadTickets();
+
+            await DisplayAlert(confirm, confirm, confirm);
+
         }
 
         private async void Submit_OnClicked(object sender, EventArgs e)

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using TimeTracker.Annotations;
 using TimeTracker.Database;
 using TimeTracker.Models;
@@ -132,10 +133,10 @@ namespace TimeTracker
             OnPropertyChanged(null);
         }
 
-        public async void LoadTickets()
+        public async Task<string> LoadTickets()
         {
-           await TicketLoader.LoadData();
-          
+           var text = await TicketLoader.LoadData();
+           return text;
         }
 
         public void SubmitTimesheet()

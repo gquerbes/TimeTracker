@@ -203,6 +203,8 @@ namespace TimeTracker.Services
             req.serviceURL = BulkGetDescendantTaskDetailsRequest.ServiceURL;
             var input = new BulkGetDescendantTaskDetailsRequest();
 
+            //projectURIs.RemoveRange(1, 1200);
+
             input.parentUris = projectURIs;
             req.Input = JObject.FromObject(input);
 
@@ -217,7 +219,9 @@ namespace TimeTracker.Services
             var input = new GetUser2Request();
             input.user.loginName = "gquerbes";
             req.Input = JObject.FromObject(input);
-            return await GetServerData(req);
+            var x = await GetServerData(req);
+
+            return x;
         }
 
         private static async Task<JToken> GetTimesheetUri(string userURI, DateTime date)
@@ -291,7 +295,6 @@ namespace TimeTracker.Services
             }
             catch (Exception e)
             {
-#warning Do something with error messages
                 Dictionary<string, string> errorMessages;
 
                 if (e.GetType() == typeof(WebException)) // Check if the exception is a Web Exception(returned by the HTTP request)
@@ -313,7 +316,7 @@ namespace TimeTracker.Services
                     {
                         errorMessages = error;
                     }
-                    return errorJObject;
+                    return JToken.FromObject(errorMessages);
                 }
                 else
                 {
@@ -323,7 +326,9 @@ namespace TimeTracker.Services
                         {"Details", string.Empty},
                         {"CorelationID", string.Empty}
                     };
-                    return null;
+                    //create JTOKEN with error
+                    JToken errorJToken = JToken.FromObject(errorMessages);
+                    return errorJToken;
                 }
             }
         }
