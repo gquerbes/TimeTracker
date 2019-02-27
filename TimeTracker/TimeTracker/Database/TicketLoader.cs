@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TimeTracker.Models.Replicon.RepliconReply;
 using TimeTracker.Services;
@@ -24,10 +25,10 @@ namespace TimeTracker.Database
 
         public static TicketLoadCompleted OnTicketLoadCompleted;
 
-        public static void LoadData()
+        public static async Task LoadData()
         {
             //load ticket from DB
-            var rawData = RepliConnect.GetTickets();
+            var rawData = await RepliConnect.GetTickets();
 
             //save parent tasks as tasks
             if (rawData.Item1.d != null)

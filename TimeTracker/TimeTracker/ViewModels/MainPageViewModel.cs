@@ -132,9 +132,9 @@ namespace TimeTracker
             OnPropertyChanged(null);
         }
 
-        public void LoadTickets()
+        public async void LoadTickets()
         {
-            TicketLoader.LoadData();
+           await TicketLoader.LoadData();
           
         }
 

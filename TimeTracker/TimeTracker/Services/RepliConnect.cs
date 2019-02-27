@@ -4,7 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RepliconIntegrator.Models;
@@ -32,24 +35,24 @@ namespace TimeTracker.Services
         /// Returns tuple of projects and tasks responses
         /// </summary>
         /// <returns></returns>
-        public static Tuple<GetPageOfProjectsFilteredByClientAndTextSearchResponse, BulkGetDescendantTaskDetailsResponse> GetTickets()
+        public static async Task<Tuple<GetPageOfProjectsFilteredByClientAndTextSearchResponse, BulkGetDescendantTaskDetailsResponse>> GetTickets()
         {
-            var userReply = GetUser();
+            var userReply = await GetUser();
 
             UserURI = JsonConvert.DeserializeObject<GetUser2Response>(userReply.ToString()).d.uri;
 
-            var timesheetReply = GetTimesheetUri(UserURI, DateTime.Today);
+            var timesheetReply = await GetTimesheetUri(UserURI, DateTime.Today);
 
             TimesheetURI = JsonConvert.DeserializeObject<GetTimesheetForDate2Response>(timesheetReply.ToString()).d.timesheet.uri;
 
-            var projectsList = JsonConvert.DeserializeObject<GetPageOfProjectsFilteredByClientAndTextSearchResponse>(GetProjectsForTimesheet(TimesheetURI).ToString());
+            var projectsList = JsonConvert.DeserializeObject<GetPageOfProjectsFilteredByClientAndTextSearchResponse>((await GetProjectsForTimesheet(TimesheetURI)).ToString());
 
             var projectListURIs = projectsList.d.Select(x => x.project.uri).ToList();
 
             //TODO: Pull ops overhead and other ticket
-            var taskReply = GetTaskFromProjects(projectListURIs);
+            var taskReply = await GetTaskFromProjects(projectListURIs);
 
-            var tasks = JsonConvert.DeserializeObject<BulkGetDescendantTaskDetailsResponse>(news.ToString());
+            var tasks = JsonConvert.DeserializeObject<BulkGetDescendantTaskDetailsResponse>(taskReply.ToString());
 
 
             return Tuple.Create(projectsList, tasks);
@@ -174,7 +177,7 @@ namespace TimeTracker.Services
         #region Base Replicon Communication
 
 
-        private static JToken GetProjectsForTimesheet(string TimesheetURI)
+        private static async Task<JToken> GetProjectsForTimesheet(string TimesheetURI)
         {
             AppRequest req = new AppRequest();
             req.serviceURL = GetPageOfProjectsFilteredByClientAndTextSearchRequest.ServiceURL;
@@ -182,11 +185,11 @@ namespace TimeTracker.Services
             input.pageSize = 100000;
             input.timesheetUri = TimesheetURI;
             req.Input = JObject.FromObject(input);
-            return GetServerData(req);
+            return await GetServerData(req);
 
         }
 
-        private static JToken GetTaskFromProjects(List<string> projectURIs)
+        private static async Task<JToken> GetTaskFromProjects(List<string> projectURIs)
         {
             AppRequest req = new AppRequest();
             req.serviceURL = Models.Replicon.RepliconRequest.BulkGetDescendantTaskDetailsRequest.ServiceURL;
@@ -200,21 +203,21 @@ namespace TimeTracker.Services
 
             req.Input = JObject.FromObject(input);
 
-            return GetServerData(req);
+            return await GetServerData(req);
 
         }
 
-        private static JToken GetUser()
+        private static async Task<JToken> GetUser()
         {
             AppRequest req = new AppRequest();
             req.serviceURL = GetUser2Request.ServiceURL;
             var input = new GetUser2Request();
             input.user.loginName = "gquerbes";
             req.Input = JObject.FromObject(input);
-            return GetServerData(req);
+            return await GetServerData(req);
         }
 
-        private static JToken GetTimesheetUri(string userURI, DateTime date)
+        private static async Task<JToken> GetTimesheetUri(string userURI, DateTime date)
         {
             AppRequest req = new AppRequest();
             req.serviceURL = GetTimesheetForDate2Request.ServiceURL;
@@ -224,66 +227,199 @@ namespace TimeTracker.Services
             req.Input = JObject.FromObject(input);
             var response = GetServerData(req);
 
-            return response;
+            return await response;
         }
 
-        private static JToken GetTimesheet(string timesheetURI)
+        private static async Task<JToken> GetTimesheet(string timesheetURI)
         {
             AppRequest req = new AppRequest();
             req.serviceURL = GetStandardTimesheet2Request.ServiceUrl;
             var input = new GetStandardTimesheet2Request();
             input.timesheetUri = timesheetURI;
             req.Input = JObject.FromObject(input);
-            var response = GetServerData(req);
+            var response = await GetServerData(req);
 
             return response;
         }
 
-        private static void PutTimesheet(PutStandardTimesheet2Request timesheetRequest)
+        private static async Task PutTimesheet(PutStandardTimesheet2Request timesheetRequest)
         {
             AppRequest req = new AppRequest();
             req.serviceURL = PutStandardTimesheet2Request.ServiceUrl;
             req.Input = JObject.FromObject(timesheetRequest);
 
-            GetServerData(req);
+            await GetServerData(req);
 
         }
 
-        private static JToken GetServerData(AppRequest appRequest, string requestMethod = "POST")
+
+        private static async Task<JToken> GetServerData(AppRequest appRequest)
         {
-            //ignore http errors
-#warning This is due to self signed cert, should fix
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-
-            WebRequest req = WebRequest.Create($"{Credentials.RepliConnectURL}/api/values/x");
-            req.ContentType = "application/json";
-            req.Method = requestMethod;
-            using (var streamWriter = new StreamWriter(req.GetRequestStream()))
-            {
-                string json = JsonConvert.SerializeObject(appRequest);
-
-                streamWriter.Write(json);
-                streamWriter.Flush();
-                streamWriter.Close();
-            }
-
+            JObject jObject;
             try
             {
-                var httpResponse = (HttpWebResponse)req.GetResponse();
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                using (var client = new HttpClient(new HttpClientHandler(){ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true }))
                 {
-                    return streamReader.ReadToEnd();
+                    using (var request = new HttpRequestMessage(HttpMethod.Post, $"{Credentials.RepliConnectURL}/api/values/x"))
+                    {
+                        using (var httpContent = CreateHttpContent(appRequest))
+                        {
+                            request.Content = httpContent;
+                            using (var response = await client
+                                .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None)
+                                .ConfigureAwait(false))
+                            {
+                                response.EnsureSuccessStatusCode();
+                                using (var receivedStream = await response.Content.ReadAsStreamAsync())
+                                {
+                                    using (StreamReader reader = new StreamReader(receivedStream))
+                                    {
+                                        var line =  await reader.ReadLineAsync();
+                                        jObject = JObject.Parse(line); // Convert the response to JSON Object
+                                    }
+                                    return jObject;
+                                }
+
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception e)
             {
-                return e.Message;
+#warning Do something with error messages
+                Dictionary<string, string> errorMessages;
+
+                if (e.GetType() == typeof(WebException)) // Check if the exception is a Web Exception(returned by the HTTP request)
+                {
+                    Dictionary<string, string> error = new Dictionary<string, string>(); // Create a Dictionary to hold the Error Details
+                    WebException eWebException = (WebException)e;
+                    JObject errorJObject = GetResponseErrorObject((HttpWebResponse)eWebException.Response, out error); // Get the formatted Error Details
+
+                    if (!error.Any())
+                    {
+                        errorMessages = new Dictionary<string, string>()
+                        {
+                            {"Exception", e.Message},
+                            {"Details", errorJObject["error"]["reason"].ToString()},
+                            {"CorelationID", eWebException.Response.Headers["X-Execution-Correlation-Id"]}
+                        };
+                    }
+                    else
+                    {
+                        errorMessages = error;
+                    }
+                    return errorJObject;
+                }
+                else
+                {
+                    errorMessages = new Dictionary<string, string>()
+                    {
+                        {"Exception", e.Message},
+                        {"Details", string.Empty},
+                        {"CorelationID", string.Empty}
+                    };
+                    return null;
+                }
             }
-
-
         }
 
+
+//        private static JToken GetServerData(AppRequest appRequest, string requestMethod = "POST")
+//        {
+//            //ignore http errors
+//#warning This is due to self signed cert, should fix
+//            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+
+//            WebRequest req = WebRequest.Create($"{Credentials.RepliConnectURL}/api/values/x");
+//            req.ContentType = "application/json";
+//            req.Method = requestMethod;
+//            using (var streamWriter = new StreamWriter(req.GetRequestStream()))
+//            {
+//                string json = JsonConvert.SerializeObject(appRequest);
+
+//                streamWriter.Write(json);
+//                streamWriter.Flush();
+//                streamWriter.Close();
+//            }
+
+//            try
+//            {
+//                var httpResponse = (HttpWebResponse)req.GetResponse();
+//                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+//                {
+//                    return streamReader.ReadToEnd();
+//                }
+//            }
+//            catch (Exception e)
+//            {
+//                return e.Message;
+//            }
+
+
+//        }
+
+
+        #endregion
+
+        #region Helpers
+
+        public static void SerializeJsonIntoStream(object value, Stream stream)
+        {
+            using (var sw = new StreamWriter(stream, new UTF8Encoding(false), 1024, true))
+            using (var jtw = new JsonTextWriter(sw) { Formatting = Formatting.None })
+            {
+                var js = new JsonSerializer();
+                js.Serialize(jtw, value);
+                jtw.Flush();
+            }
+        }
+
+
+        private static HttpContent CreateHttpContent(object content)
+        {
+            HttpContent httpContent = null;
+
+            if (content != null)
+            {
+                var ms = new MemoryStream();
+                SerializeJsonIntoStream(content, ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                httpContent = new StreamContent(ms);
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            }
+
+            return httpContent;
+        }
+
+        private static JObject GetResponseErrorObject(HttpWebResponse errorResponse, out Dictionary<string, string> error)
+        {
+            try
+            {
+                JObject jObject;
+                using (Stream receivedstream = errorResponse.GetResponseStream())
+                using (StreamReader reader = new System.IO.StreamReader(receivedstream))
+                {
+                    jObject = JObject.Parse(reader.ReadLine());
+                }
+                error = new Dictionary<string, string>();
+                return jObject;
+            }
+            catch (Exception e)
+            {
+                error = new Dictionary<string, string>()
+                {
+                    {"Exception", e.Message},
+                    {"Details", e.Message},
+                    {"CorelationID", string.Empty}
+                };
+
+                return null;
+            }
+
+        }
 
         #endregion
 
