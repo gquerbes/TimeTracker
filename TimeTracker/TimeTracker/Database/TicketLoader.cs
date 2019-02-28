@@ -38,41 +38,34 @@ namespace TimeTracker.Database
             watch1.Stop();
 
             watch2.Start();
-            int x = 0;
             foreach (var item in rawData)
             {
                 //skip first line because it is the header
-                if(x++ == 0) continue;
 
-                string projectName = item.ElementAt(0)?.ToString();
-                string taskName = item.ElementAt(1)?.ToString();
-                string billingType = item.ElementAt(2)?.ToString();
-                string taskCode = item.ElementAt(3)?.ToString();
-                string taskURi = item.ElementAt(4)?.ToString();
-                string projectUri = item.ElementAt(5)?.ToString();
+               
                 var task = new RepliconTask();
 
-                if (string.IsNullOrEmpty(taskURi)) //is Project
+                if (string.IsNullOrEmpty(item.TaskURI)) //is Project
                 {
                    
-                    if (!App.Database.Query<RepliconTask>($"{nameof(RepliconTask.uri)} = \"{projectUri}\"").Any()) // check to see if already in BD
+                    if (!App.Database.Query<RepliconTask>($"{nameof(RepliconTask.uri)} = \"{item.ProjectURI}\"").Any()) // check to see if already in BD
                     {
-                        task.description = projectName;
-                        task.name = projectName;
-                        task.uri = projectUri;
-                        task.IsBillable = (!string.IsNullOrEmpty(billingType)) && billingType.Equals("Time And Material");
+                        task.description = item.ProjectName;
+                        task.name = item.ProjectName;
+                        task.uri = item.ProjectURI;
+                        task.IsBillable = (!string.IsNullOrEmpty(item.BillingType)) && item.BillingType.Equals("Time And Material");
 
                     }
                     else continue;
                 }
                 else // is task
                 {
-                    if (!App.Database.Query<RepliconTask>($"{nameof(RepliconTask.uri)} = \"{taskURi}\"").Any()) // check to see if already in BD
+                    if (!App.Database.Query<RepliconTask>($"{nameof(RepliconTask.uri)} = \"{item.TaskURI}\"").Any()) // check to see if already in BD
                     {
-                        task.description = taskCode;
-                        task.name = taskName;
-                        task.uri = taskURi;
-                        task.IsBillable = (!string.IsNullOrEmpty(billingType)) && billingType.Equals("Time And Material");
+                        task.description = item.TaskCode;
+                        task.name = item.TaskName;
+                        task.uri = item.TaskURI;
+                        task.IsBillable = (!string.IsNullOrEmpty(item.BillingType)) && item.BillingType.Equals("Time And Material");
 
                     }
                     else continue;

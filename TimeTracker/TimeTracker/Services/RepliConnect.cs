@@ -6,8 +6,10 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using CsvHelper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RepliconIntegrator.Models;
@@ -36,7 +38,7 @@ namespace TimeTracker.Services
         /// Returns tuple of projects and tasks responses
         /// </summary>
         /// <returns></returns>
-        public static async Task<JArray> GetTickets()
+        public static async Task<IEnumerable<RepliconReportCSV>> GetTickets()
         {
 #warning This URI will change in production environment
             var TicketReportURI = "urn:replicon-tenant:7895aad72083482794c5caa8c38018b2:report:fb9692e3-894c-43e0-9354-551b3b4a32c4";
@@ -48,18 +50,23 @@ namespace TimeTracker.Services
             {
                 JToken reportResult = await GetReport(TicketReportURI, CsvFormatURI);
 
-                //var desesrializedResult = JsonConvert.DeserializeObject<GenerateReportResponse>(reportResult.ToString());
+                var desesrializedResult = JsonConvert.DeserializeObject<GenerateReportResponse>(reportResult.ToString());
 
-                var csv = new List<string[]>();                //split the result into an array of string, one for each line of result
-                var lines= desesrializedResult.D.payload.Split(new [] {Environment.NewLine}, StringSplitOptions.None);
+                var csvText = desesrializedResult.D.payload;
 
-                foreach (string line in lines)
-                    csv.Add(line.Split(',')); // or, populate YourClass          
-                string json = JsonConvert.SerializeObject(csv);
+                // convert CSVtext to stream
+                byte[] byteArray = Encoding.UTF8.GetBytes(csvText);
+                //byte[] byteArray = Encoding.ASCII.GetBytes(contents);
+                MemoryStream stream = new MemoryStream(byteArray);
 
-                JArray result = JsonConvert.DeserializeObject<JArray>(json);
+                TextReader reader = new StreamReader(stream);
+                
+                var csvReader = new CsvReader(reader);
 
-                return result;
+                var records = csvReader.GetRecords<RepliconReportCSV>();
+
+
+               return records;
 
 
             }
