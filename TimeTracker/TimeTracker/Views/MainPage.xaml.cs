@@ -173,11 +173,20 @@ namespace TimeTracker
         }
 
 
-        private async void LoadTickets_OnClicked(object sender, EventArgs e)
+        private  void LoadTickets_OnClicked(object sender, EventArgs e)
         {
-            var confirm = await _vm.LoadTickets();
 
-            await DisplayAlert(confirm, confirm, confirm);
+            // The Progress<T> constructor captures our UI context,
+            //  so the lambda will be run on the UI thread.
+            var progress = new Progress<double>(percent =>
+            {
+                _vm.SyncProgress = percent;
+            });
+
+            // DoProcessing is run on the thread pool.
+             Task.Run(() => _vm.LoadTickets(progress));
+
+
 
         }
 

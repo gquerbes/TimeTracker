@@ -133,9 +133,9 @@ namespace TimeTracker
             OnPropertyChanged(null);
         }
 
-        public async Task<string> LoadTickets()
+        public async Task<string> LoadTickets(IProgress<double> progress)
         {
-           var text = await TicketLoader.LoadData();
+           var text = await TicketLoader.LoadData(progress);
            return text;
         }
 
@@ -155,9 +155,22 @@ namespace TimeTracker
                 CurrentTimeEntry.StartTime = correctedStartTime;
             }
         }
-    
 
-    public event PropertyChangedEventHandler PropertyChanged;
+        private double _syncProgress;
+        public double SyncProgress
+        {
+            get => _syncProgress;
+            set
+            {
+                _syncProgress = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsSyncBarVisible));
+            }
+        }
+
+        public bool IsSyncBarVisible => SyncProgress != 1.0 &&  SyncProgress != 0.0;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

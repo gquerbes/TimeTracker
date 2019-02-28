@@ -10,9 +10,10 @@
         <ToolbarItem Text="Submit" Clicked="Submit_OnClicked" />
     </ContentPage.ToolbarItems>
 
-
-    <!-- Place new controls here -->
-    <Grid x:Name="MainContentGrid">
+<StackLayout Spacing="0">
+    <ProgressBar Grid.Row="2"  FlowDirection="LeftToRight" Progress="{Binding SyncProgress, Mode=OneWay}" ProgressColor="{StaticResource AbasRed}"  IsVisible="{Binding IsSyncBarVisible}"/>
+<!-- Place new controls here -->
+    <Grid x:Name="MainContentGrid" RowSpacing="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="175"/>
             <RowDefinition Height="*"/>
@@ -35,4 +36,5 @@
         </Grid>
         <views:TimeEntryListView x:Name="EntryListView" Grid.Row="1"/>
     </Grid>
+</StackLayout>
 </ContentPage>
