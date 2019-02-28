@@ -162,9 +162,12 @@ namespace TimeTracker
             get => _syncProgress;
             set
             {
-                _syncProgress = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsSyncBarVisible));
+                if (!value.Equals(_syncProgress))
+                {
+                    _syncProgress = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsSyncBarVisible));
+                }
             }
         }
 
