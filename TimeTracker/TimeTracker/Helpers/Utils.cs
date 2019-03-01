@@ -12,12 +12,24 @@ namespace TimeTracker.Helpers
         {
             var totalMinutes = (int)(input + new TimeSpan(0, minutes / 2, 0)).TotalMinutes;
 
-            if (totalMinutes < 15)
+            if (totalMinutes > 5 && totalMinutes < 15)
             {
                 totalMinutes = 15;
             }
 
             return new TimeSpan(0, totalMinutes - totalMinutes % minutes, 0);
+        }
+
+        public static string NormalizeIntForTime(this int input)
+        {
+            if (input < 10)
+            {
+                return $"0{input}";
+            }
+            else
+            {
+                return input.ToString();
+            }
         }
     }
 

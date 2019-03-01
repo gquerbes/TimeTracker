@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using TimeTracker.Annotations;
 using TimeTracker.Database;
+using TimeTracker.Helpers;
 using TimeTracker.Interfaces;
 using TimeTracker.Models;
 using TimeTracker.Models.Replicon.RepliconReply;
@@ -89,12 +91,20 @@ namespace TimeTracker.ViewModels
             {
                 var totalTime = TotalTime;
 
-                return $"{totalTime.Hours}:{totalTime.Minutes}:{totalTime.Seconds}";
+                return $"{totalTime.Hours}:{totalTime.Minutes.NormalizeIntForTime()}";
             }
 
         }
 
 
+        public string RoundedRunTimeText
+        {
+            get
+            {
+                var RoundedTime = TotalTime.RoundToNearestMinutes(15);
+                return $"({(RoundedTime.TotalHours).ToString(CultureInfo.CurrentCulture)})";
+            }
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

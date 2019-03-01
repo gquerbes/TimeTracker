@@ -82,7 +82,6 @@ namespace TimeTracker.Database
                 //assign values
                 if (string.IsNullOrEmpty(item.TaskURI)) //is Project
                 {
-                    task.description = item.ProjectName;
                     task.name = item.ProjectName;
                     task.uri = item.ProjectURI;
                 }

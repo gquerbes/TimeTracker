@@ -122,7 +122,7 @@ namespace TimeTracker
             vm.parent = newParent;
             
             // add to list
-            TimeEntries.First().Add(newParent);
+            TimeEntries.First().Insert(0, newParent);
             
         }
 

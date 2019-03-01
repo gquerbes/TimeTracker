@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using TimeTracker.Helpers;
 using TimeTracker.Models;
 using TimeTracker.ViewModels;
 using TimeTracker.Views;
@@ -149,7 +150,7 @@ namespace TimeTracker
             var elapsedTime =  DateTime.Now - _vm.CurrentTimeEntry.StartTime;
             if (!TimerLabel.IsFocused)
             {
-                TimerLabel.Text = $"{elapsedTime.Hours}:{elapsedTime.Minutes}:{elapsedTime.Seconds}";
+                TimerLabel.Text = $"{elapsedTime.Hours}:{elapsedTime.Minutes.NormalizeIntForTime()}:{elapsedTime.Seconds.NormalizeIntForTime()}";
             }
 
             //will continue so long as timer is running

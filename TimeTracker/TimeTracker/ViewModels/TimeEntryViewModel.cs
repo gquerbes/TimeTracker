@@ -8,6 +8,7 @@ using System.Threading;
 using Newtonsoft.Json;
 using TimeTracker.Annotations;
 using TimeTracker.Database;
+using TimeTracker.Helpers;
 using TimeTracker.Interfaces;
 using TimeTracker.Models;
 using TimeTracker.Models.Replicon.RepliconReply;
@@ -129,10 +130,11 @@ namespace TimeTracker
             get
             {
                 if (StartTime.Equals(DateTime.MinValue)) return "0:0:0";
-                return $"{RunTime.Hours}:{RunTime.Minutes}:{RunTime.Seconds}";
+                return $"{RunTime.Hours}:{RunTime.Minutes.NormalizeIntForTime()}";
             }
         }
 
+       
         public Color TimerButtonColor
         {
             get
