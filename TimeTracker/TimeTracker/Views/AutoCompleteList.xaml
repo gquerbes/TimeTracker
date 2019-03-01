@@ -8,12 +8,12 @@
                 <Label x:Name="SelectedItemLabel" TextColor="White" FontAttributes="Bold" FontSize="15" VerticalTextAlignment="Center" />
                 <Button Text="X" TextColor="Red" FontAttributes="Bold" FontSize="20" VerticalOptions="Center" BackgroundColor="Transparent" Clicked="ClearSelectedTicket_OnClicked"/>
           </StackLayout>
-            <SearchBar x:Name="SearchBar" Focused="SearchBar_OnFocused" Unfocused="SearchBar_OnUnfocused"/>
-            <ListView x:Name="TicketListView"  ItemsSource="FilteredTickets" IsVisible="False" >
+            <SearchBar x:Name="SearchBar" Focused="SearchBar_OnFocused" Unfocused="SearchBar_OnUnfocused" TabIndex="0"/>
+            <ListView x:Name="TicketListView" ItemsSource="FilteredTickets"  CachingStrategy="RecycleElement" VerticalScrollBarVisibility="Default" IsVisible="False" TabIndex="1">
                 <ListView.ItemTemplate>
                  <DataTemplate>
                      <ViewCell>
-                         <Grid BackgroundColor="LightBlue" HeightRequest="25">
+                         <Grid BackgroundColor="LightBlue" HeightRequest="40">
                              <Grid.ColumnDefinitions>
                                  <ColumnDefinition Width="Auto"/>
                                  <ColumnDefinition Width="*"/>

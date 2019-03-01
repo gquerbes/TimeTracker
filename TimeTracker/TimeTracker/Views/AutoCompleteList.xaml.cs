@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TimeTracker.Annotations;
 using TimeTracker.Database;
 using TimeTracker.Models.Replicon.RepliconReply;
 using Xamarin.Forms;
@@ -127,16 +129,29 @@ namespace TimeTracker.Views
 	        SelectedTicket = null;
 	    }
 
+        /// <summary>
+        /// Used to trigger show /hide logic for comments text entry
+        /// </summary>
+        public bool TicketListIsVisible
+        {
+            get => TicketListView.IsVisible;
+        }
+
 	    private void SearchBar_OnFocused(object sender, FocusEventArgs e)
 	    {
 	        TicketListView.IsVisible = true;
+            if (TicketListView.ItemsSource == null)
+            {
+                TicketListView.ItemsSource = FilteredTickets;
+            }
+            OnPropertyChanged(nameof(TicketListIsVisible));
 	    }
 
 	    private void SearchBar_OnUnfocused(object sender, FocusEventArgs e)
 	    {
 	        TicketListView.IsVisible = false;
-
-	    }
+            OnPropertyChanged(nameof(TicketListIsVisible));
+        }
 
 
         #endregion

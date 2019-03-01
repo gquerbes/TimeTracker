@@ -64,9 +64,13 @@ namespace TimeTracker
             }
             set
             {
-                _ticket = value;
-                TimeEntry.TicketURI = value?.uri;
-                OnPropertyChanged(nameof(SelectedTicketLabel));
+                if (_ticket != value)
+                {
+                    _ticket = value;
+                    TimeEntry.TicketURI = value?.uri;
+                    OnPropertyChanged(nameof(SelectedTicketLabel));
+                    OnPropertyChanged(nameof(BillCustomer));
+                }
             }
         }
 
@@ -189,6 +193,10 @@ namespace TimeTracker
             OnPropertyChanged(nameof(TimerButtonText));
         }
 
+        public bool BillingAllowed => Ticket!=null && Ticket.IsBillable;
+
+        private bool _billCustomer = true;
+        public bool BillCustomer { get; set; } = true;
 
         public  void Save()
         {

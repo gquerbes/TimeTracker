@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using Xamarin.Forms;
 
@@ -31,6 +32,22 @@ namespace TimeTracker.Helpers
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             return !(bool)value;
+        }
+    }
+
+
+
+    public class BoolToBillTextConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (bool)value ? "Bill" : "Non-Bill";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+            // return ((string) value).Equals("Bill");
         }
     }
 }

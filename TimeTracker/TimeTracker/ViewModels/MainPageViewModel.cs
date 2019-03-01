@@ -170,7 +170,7 @@ namespace TimeTracker
             }
         }
 
-        public bool IsSyncBarVisible => SyncProgress != 1.0 &&  SyncProgress != 0.0;
+        public bool IsSyncBarVisible => !SyncProgress.Equals(1) && !SyncProgress.Equals(0);
 
         public event PropertyChangedEventHandler PropertyChanged;
 

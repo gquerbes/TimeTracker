@@ -6,6 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <helpers:NegateBooleanConverter x:Key="NegateBooleanConverter" />
+            <helpers:BoolToBillTextConverter x:Key="BoolToBillConverter"/>
             <Color x:Key="AbasGreen">#1BB8A3</Color>
             <Color x:Key="AbasGray">#2A3539</Color>
             <Color x:Key="AbasYellow">#FBE122</Color>
