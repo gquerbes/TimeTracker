@@ -133,10 +133,9 @@ namespace TimeTracker
             OnPropertyChanged(null);
         }
 
-        public async Task<string> LoadTickets(IProgress<double> progress)
+        public async Task LoadTickets(IProgress<double> progress)
         {
-           var text = await TicketLoader.LoadData(progress);
-           return text;
+           await TicketLoader.LoadData(progress);
         }
 
         public void SubmitTimesheet()

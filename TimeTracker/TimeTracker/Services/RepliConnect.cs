@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using CsvHelper;
+using CsvHelper.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RepliconIntegrator.Models;
@@ -51,6 +52,8 @@ namespace TimeTracker.Services
                 JToken reportResult = await GetReport(TicketReportURI, CsvFormatURI);
 
                 var desesrializedResult = JsonConvert.DeserializeObject<GenerateReportResponse>(reportResult.ToString());
+
+            
 
                 var csvText = desesrializedResult.D.payload;
 
@@ -355,41 +358,6 @@ namespace TimeTracker.Services
             }
         }
 
-
-//        private static JToken GetServerData(AppRequest appRequest, string requestMethod = "POST")
-//        {
-//            //ignore http errors
-//#warning This is due to self signed cert, should fix
-//            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-
-//            WebRequest req = WebRequest.Create($"{Credentials.RepliConnectURL}/api/values/x");
-//            req.ContentType = "application/json";
-//            req.Method = requestMethod;
-//            using (var streamWriter = new StreamWriter(req.GetRequestStream()))
-//            {
-//                string json = JsonConvert.SerializeObject(appRequest);
-
-//                streamWriter.Write(json);
-//                streamWriter.Flush();
-//                streamWriter.Close();
-//            }
-
-//            try
-//            {
-//                var httpResponse = (HttpWebResponse)req.GetResponse();
-//                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-//                {
-//                    return streamReader.ReadToEnd();
-//                }
-//            }
-//            catch (Exception e)
-//            {
-//                return e.Message;
-//            }
-
-
-//        }
 
 
         #endregion
