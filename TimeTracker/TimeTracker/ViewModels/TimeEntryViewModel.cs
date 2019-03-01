@@ -129,7 +129,7 @@ namespace TimeTracker
         {
             get
             {
-                if (StartTime.Equals(DateTime.MinValue)) return "0:0:0";
+                if (StartTime.Equals(DateTime.MinValue)) return "0:00:00";
                 return $"{RunTime.Hours}:{RunTime.Minutes.NormalizeIntForTime()}";
             }
         }
