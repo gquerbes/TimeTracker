@@ -10,14 +10,13 @@ namespace TimeTracker.Helpers
     {
         public static TimeSpan RoundToNearestMinutes(this TimeSpan input, int minutes)
         {
+            
+
             var totalMinutes = (int)(input + new TimeSpan(0, minutes / 2, 0)).TotalMinutes;
+           
 
-            if (totalMinutes > 5 && totalMinutes < 15)
-            {
-                totalMinutes = 15;
-            }
-
-            return new TimeSpan(0, totalMinutes - totalMinutes % minutes, 0);
+            var x = new TimeSpan(0, totalMinutes - totalMinutes % minutes, 0);
+            return x;
         }
 
         public static string NormalizeIntForTime(this int input)

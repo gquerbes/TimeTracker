@@ -59,13 +59,15 @@
             <ListView.GroupHeaderTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid BackgroundColor="{StaticResource AbasGray}" HeightRequest="40" Padding="5,0,5,0">
+                        <Grid BackgroundColor="{StaticResource AbasGray}" HeightRequest="50" Padding="5,0,5,0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="75"/>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" Text="{Binding DateLabel}" FontSize="12"  VerticalOptions="Center"  TextColor="White" HorizontalOptions="Start"/>
-                            <Label Grid.Column="1" Text="{Binding TotalTime}"  FontSize="14" HorizontalOptions="End" TextColor="White"/>
+                            <Label Grid.Column="1" Text="{Binding TotalTimeLabel}"  FontSize="12" VerticalOptions="Center" HorizontalOptions="End" TextColor="White"/>
+                            <Button Grid.Column="2" Text="Submit" BackgroundColor="PaleTurquoise"  />
                         </Grid>
                     </ViewCell>
                 </DataTemplate>

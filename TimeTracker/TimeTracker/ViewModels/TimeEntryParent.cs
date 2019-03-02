@@ -25,7 +25,7 @@ namespace TimeTracker.ViewModels
 
         public DateTime Date { get; set; }
 
-        public bool IsBillable { get; set; }
+        public bool BillCustomer => Entries.FirstOrDefault() != null ? Entries.FirstOrDefault().BillCustomer : false;
 
         public bool ExistsOnTimeSheet { get; set; }
 
@@ -72,6 +72,9 @@ namespace TimeTracker.ViewModels
         public string SelectedTicketLabel => Entries.FirstOrDefault()?.SelectedTicketLabel;
 
 
+        public TimeSpan RoundedTotalTime => TotalTime.RoundToNearestMinutes(15);
+        
+
         public TimeSpan TotalTime
         {
             get
@@ -101,7 +104,7 @@ namespace TimeTracker.ViewModels
         {
             get
             {
-                var RoundedTime = TotalTime.RoundToNearestMinutes(15);
+                var RoundedTime = RoundedTotalTime;
                 return $"({(RoundedTime.TotalHours).ToString(CultureInfo.CurrentCulture)})";
             }
         }

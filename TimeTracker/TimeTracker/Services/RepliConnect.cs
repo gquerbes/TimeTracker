@@ -132,8 +132,8 @@ namespace TimeTracker.Services
                 foreach (var timesheetRow in timesheetSubmission.timesheet.rows) // foreach timesheet row currently on timesheet
                 {
                     if (timesheetRow.task.uri.Equals(timeEntry.RepliconTicketID) // current row matches current entry project
-                        && ((string.IsNullOrEmpty(timesheetRow.billingRate?.uri) && !timeEntry.IsBillable) // both billable
-                        || (!string.IsNullOrEmpty(timesheetRow.billingRate?.uri) && timeEntry.IsBillable))) //neither billable
+                        && ((string.IsNullOrEmpty(timesheetRow.billingRate?.uri) && !timeEntry.BillCustomer) // both billable
+                        || (!string.IsNullOrEmpty(timesheetRow.billingRate?.uri) && timeEntry.BillCustomer))) //neither billable
                     {
                         var newCell = CreateCellFromEntry(timeEntry);
                         //find entry on row with same date
@@ -156,7 +156,7 @@ namespace TimeTracker.Services
                     //create new row
                     Row newRow = new Row();
 
-                    if (timeEntry.IsBillable)
+                    if (timeEntry.BillCustomer)
                     {
                         newRow.billingRate = new BillingRate() { uri = "urn:replicon:project-specific-billing-rate" };
                     }
