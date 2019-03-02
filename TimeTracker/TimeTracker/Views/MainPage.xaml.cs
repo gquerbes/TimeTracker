@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TimeTracker.Helpers;
+using TimeTracker.Interfaces;
 using TimeTracker.Models;
 using TimeTracker.ViewModels;
 using TimeTracker.Views;
@@ -157,7 +158,7 @@ namespace TimeTracker
             return _vm.CurrentTimeEntry.IsRunning;
         }
 
-        private void OnContinueEntry(TimeEntryViewModel TimeEntryVM)
+        private void OnContinueEntry(ITimeEntryListElement TimeEntryVM)
         {
             _vm.ContinueTimerClicked(TimeEntryVM);
 

@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TimeTracker.Annotations;
 using TimeTracker.Database;
+using TimeTracker.Interfaces;
 using TimeTracker.Models;
 using TimeTracker.Services;
 using TimeTracker.ViewModels;
@@ -126,10 +127,10 @@ namespace TimeTracker
             
         }
 
-        public void ContinueTimerClicked(TimeEntryViewModel previousTimeEntry)
+        public void ContinueTimerClicked(ITimeEntryListElement previousTimeEntry)
         {
             TimerClicked();
-            CurrentTimeEntry.Ticket = previousTimeEntry.Ticket;
+            CurrentTimeEntry.Ticket = previousTimeEntry?.Ticket;
             OnPropertyChanged(null);
         }
 
