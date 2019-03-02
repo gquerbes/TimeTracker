@@ -117,6 +117,11 @@ namespace TimeTracker.Views
 
 	        FilteredTickets = Tickets.Where(x => !string.IsNullOrEmpty(x.name) && x.name.ToLower().Contains(args?.NewTextValue?.ToLower())).ToList();
 
+            if (!FilteredTickets.Any())
+            {
+                FilteredTickets = Tickets.Where(x => !string.IsNullOrEmpty(x.description) && x.description.ToLower().Contains(args?.NewTextValue.ToLower())).ToList();
+            }
+
             //nothing found? check the tickets by description
 //TODO: Add Description filtering for overhead / training tickets
 

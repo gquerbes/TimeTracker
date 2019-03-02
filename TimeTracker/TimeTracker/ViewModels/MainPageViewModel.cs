@@ -147,11 +147,25 @@ namespace TimeTracker
 
         public void ParseDateEntry(string entry)
         {
-            var validParse = TimeSpan.TryParse(entry, out TimeSpan result );
+            //attempt to parse string as a double of total hours
+            var validParse = double.TryParse(entry, out double doubleParseResult);
 
+            TimeSpan enteredTimeSpan;
+            //if passed get timespan from entry
             if (validParse)
             {
-                var correctedStartTime = DateTime.Now - result;
+                enteredTimeSpan = TimeSpan.FromHours(doubleParseResult);
+            }
+            //if failed, attempt to parse string as a  timespan
+            else
+            {
+                validParse = TimeSpan.TryParse(entry, out enteredTimeSpan);
+            }
+
+            //parsing successful, correct time
+            if (validParse)
+            {
+                var correctedStartTime = DateTime.Now - enteredTimeSpan;
                 CurrentTimeEntry.StartTime = correctedStartTime;
             }
         }

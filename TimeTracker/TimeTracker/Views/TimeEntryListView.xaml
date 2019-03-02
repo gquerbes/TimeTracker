@@ -65,7 +65,7 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="75"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="{Binding DateLabel}" FontSize="12"  VerticalOptions="Center"  TextColor="White" HorizontalOptions="Start"/>
+                            <Label Grid.Column="0" Text="{Binding DateLabel}" FontSize="20"  VerticalOptions="Center"  TextColor="White" HorizontalOptions="Start"/>
                             <Label Grid.Column="1" Text="{Binding TotalTimeLabel}"  FontSize="12" VerticalOptions="Center" HorizontalOptions="End" TextColor="White"/>
                             <Button Grid.Column="2" Text="Submit" BackgroundColor="PaleTurquoise"  />
                         </Grid>
