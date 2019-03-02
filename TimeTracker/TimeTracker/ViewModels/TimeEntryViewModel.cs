@@ -69,8 +69,10 @@ namespace TimeTracker
                 {
                     _ticket = value;
                     TimeEntry.TicketURI = value?.uri;
+                    OnPropertyChanged();
                     OnPropertyChanged(nameof(SelectedTicketLabel));
                     OnPropertyChanged(nameof(BillCustomer));
+                    Save();
                 }
             }
         }
