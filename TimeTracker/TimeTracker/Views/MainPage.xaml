@@ -34,7 +34,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Switch x:Name="BillSwitch" IsToggled="{Binding CurrentTimeEntry.BillCustomer}"   VerticalOptions="Center" Grid.Column="0" />
+                        <Switch x:Name="BillSwitch" IsToggled="{Binding BillCustomer}" HorizontalOptions="End"  VerticalOptions="Center" Grid.Column="0" />
                         <Label Text="{Binding Source={x:Reference BillSwitch}, Path=IsToggled, Converter={StaticResource BoolToBillConverter}, Mode=OneWay }" HorizontalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="1"/>
                     </Grid>
                 <Button x:Name="TimerButton"  HeightRequest="75"  WidthRequest="100" Text="{Binding TimerButtonText}" FontAttributes="Bold" TextColor="DarkSlateGray" CornerRadius="2" BorderWidth="5" BorderColor="DarkGray" BackgroundColor="{Binding TimerButtonColor}" Clicked="TimerButton_OnClicked" />

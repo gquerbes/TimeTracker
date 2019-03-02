@@ -69,6 +69,7 @@ namespace TimeTracker
                 {
                     _ticket = value;
                     TimeEntry.TicketURI = value?.uri;
+                    BillCustomer = true; //attempt to set billing to true
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(SelectedTicketLabel));
                     OnPropertyChanged(nameof(BillCustomer));
@@ -200,7 +201,27 @@ namespace TimeTracker
         public bool BillingAllowed => Ticket!=null && Ticket.IsBillable;
 
         private bool _billCustomer = true;
-        public bool BillCustomer { get; set; } = true;
+
+        public bool BillCustomer
+        {
+            get
+            {
+                if (BillingAllowed)
+                {
+                    return _billCustomer;
+                }
+
+                return false;
+            }
+            set
+            {
+                if (value != BillCustomer)
+                {
+                    _billCustomer = value;
+                }
+                OnPropertyChanged();
+            }
+        }
 
         public  void Save()
         {
