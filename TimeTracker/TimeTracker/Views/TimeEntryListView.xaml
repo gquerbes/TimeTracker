@@ -67,7 +67,7 @@
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" Text="{Binding DateLabel}" FontSize="20"  VerticalOptions="Center"  TextColor="White" HorizontalOptions="Start"/>
                             <Label Grid.Column="1" Text="{Binding TotalTimeLabel}"  FontSize="12" VerticalOptions="Center" HorizontalOptions="End" TextColor="White"/>
-                            <Button Grid.Column="2" Text="Submit" BackgroundColor="PaleTurquoise" Clicked="Submit_OnClicked"  />
+                            <Button Grid.Column="2" Text="Submit" WidthRequest="75"   HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="None"  CornerRadius="10" BorderWidth=".5" BorderColor="Black"  BackgroundColor="LightGreen" Clicked="Submit_OnClicked"  />
                         </Grid>
                     </ViewCell>
                 </DataTemplate>

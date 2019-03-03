@@ -13,7 +13,7 @@
             <Color x:Key="AbasGreen">#BF1BB8A3</Color>
             <Color x:Key="AbasGray">#2A3539</Color>
             <Color x:Key="AbasYellow">#FBE122</Color>
-            <Color x:Key="AbasRed">#D9CC1414</Color>
+            <Color x:Key="AbasRed">#e9584a</Color>
             <Color x:Key="AbasLimeGreen">#97D700</Color>
         </ResourceDictionary>
     </Application.Resources>
