@@ -79,7 +79,13 @@ namespace TimeTracker
                     BillCustomer = true; //attempt to set billing to true
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(SelectedTicketLabel));
-                    this.parent?.OnPropertyChanged(nameof(TimeEntryParent.SelectedTicketLabel));
+                    OnPropertyChanged(nameof(Ticket));
+                    if(parent != null)
+                    {
+                        parent.Ticket = value;
+                        this.parent?.OnPropertyChanged(nameof(TimeEntryParent.SelectedTicketLabel));
+                        this.parent?.OnPropertyChanged(nameof(TimeEntryParent.Ticket));
+                    }
 
                     OnPropertyChanged(nameof(BillCustomer));
                     Save();

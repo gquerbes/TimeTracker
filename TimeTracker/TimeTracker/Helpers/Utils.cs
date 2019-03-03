@@ -100,6 +100,32 @@ namespace TimeTracker.Helpers
         }
     }
 
+    public class NullToColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value == null ? Color.DimGray : Color.White;
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+            // return ((string) value).Equals("Bill");
+        }
+    }
+
+    public class NullToBool : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value != null;
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+            // return ((string) value).Equals("Bill");
+        }
+    }
+
     public class BoolToBillTextConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

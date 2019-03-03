@@ -42,15 +42,18 @@ namespace TimeTracker.ViewModels
             }
             set
             {
-                if (value != null && !value.Equals(_ticket))
+            
+               _ticket = value;
+
+                if (_ticket != null)
                 {
-                    _ticket = value;
                     foreach (var timeEntryViewModel in Entries)
                     {
                         timeEntryViewModel.TimeEntry.TicketURI = value?.uri;  
                     }
-                    OnPropertyChanged(nameof(SelectedTicketLabel));
                 }
+                OnPropertyChanged(nameof(SelectedTicketLabel));
+
             }
         }
 

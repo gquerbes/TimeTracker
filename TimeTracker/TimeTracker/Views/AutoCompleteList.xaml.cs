@@ -54,7 +54,12 @@ namespace TimeTracker.Views
 	        {
                 RepliconTask ticket = ((RepliconTask)newValue);
 	            ((AutoCompleteList)bindable).SelectedItemStack.IsVisible = true;
-	            ((AutoCompleteList)bindable).SelectedItemLabel.Text = $"{((AutoCompleteList)bindable).SelectedTicket.name} : {((AutoCompleteList)bindable).SelectedTicket.description}";
+                var descriptionText = ((AutoCompleteList) bindable).SelectedTicket.description;
+                if (!string.IsNullOrEmpty(descriptionText))
+                {
+                    descriptionText = $": {descriptionText}";
+                }
+	            ((AutoCompleteList)bindable).SelectedItemLabel.Text = $"{((AutoCompleteList)bindable).SelectedTicket.name}{descriptionText}";
 	            ((AutoCompleteList)bindable).SearchBar.IsVisible = false;
 	        }
 	    }
