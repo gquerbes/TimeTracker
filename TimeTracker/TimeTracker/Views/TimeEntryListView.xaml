@@ -63,7 +63,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="4*"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" Text="{Binding DateLabel}" FontSize="20"  VerticalOptions="Center"  TextColor="White" HorizontalOptions="Start"/>
                             <Button Grid.Column="1" Text="Submit"  WidthRequest="100" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="None"  CornerRadius="2" BorderWidth="1" BorderColor="White"  BackgroundColor="{StaticResource AbasGray}" TextColor="White" Clicked="Submit_OnClicked"  />

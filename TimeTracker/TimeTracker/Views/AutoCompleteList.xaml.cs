@@ -147,19 +147,33 @@ namespace TimeTracker.Views
             get => TicketListView.IsVisible;
         }
 
-	    private void SearchBar_OnFocused(object sender, FocusEventArgs e)
+	    private void SearchBar_OnTextChanged(object sender, TextChangedEventArgs e)
 	    {
-	        TicketListView.IsVisible = true;
+            //if new string is empty, hide list
+            if (string.IsNullOrEmpty(e.NewTextValue))
+            {
+                TicketListView.IsVisible = false;
+                OnPropertyChanged(nameof(TicketListIsVisible));
+                return;
+            }
+
+            //else string is not empty and list has not item source, se the source
             if (TicketListView.ItemsSource == null)
             {
                 TicketListView.ItemsSource = FilteredTickets;
             }
-            OnPropertyChanged(nameof(TicketListIsVisible));
-	    }
+
+            if (!TicketListView.IsVisible)
+            {
+                TicketListView.IsVisible = true;
+                OnPropertyChanged(nameof(TicketListIsVisible));
+            }
+        }
 
 	    private void SearchBar_OnUnfocused(object sender, FocusEventArgs e)
 	    {
-	        TicketListView.IsVisible = false;
+
+	     //   TicketListView.IsVisible = false;
             OnPropertyChanged(nameof(TicketListIsVisible));
         }
 

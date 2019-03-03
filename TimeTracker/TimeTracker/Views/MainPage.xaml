@@ -31,14 +31,14 @@
                         <RowDefinition Height="Auto"/> 
                         <RowDefinition Height="*"/> 
                     </Grid.RowDefinitions>
-                    <views:AutoCompleteList  x:Name="AutoCompleteList" SelectedTicket="{Binding Ticket}" />
+                    <views:AutoCompleteList  x:Name="AutoCompleteList" SelectedTicket="{Binding Ticket}" TabIndex="0" />
                     <Grid Grid.Row ="1"  VerticalOptions="FillAndExpand"  >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Editor x:Name="CurrentTextEditor" FontSize="15" Grid.Column="0" Grid.Row="0" Placeholder="Comments" Text="{Binding Comments, Mode=TwoWay}" BackgroundColor="White" />
-                        <Entry x:Name="InternalComments"  FontSize="15" Grid.Column="0" Grid.Row="1" Placeholder="Internal Comments" Text="{Binding InternalComments, Mode=TwoWay}" BackgroundColor="White" />
+                        <Editor x:Name="CurrentTextEditor" FontSize="15" Grid.Column="0" Grid.Row="0" Placeholder="Comments" Text="{Binding Comments, Mode=TwoWay}" BackgroundColor="White" TabIndex="1"/>
+                        <Entry x:Name="InternalComments"  FontSize="15" Grid.Column="0" Grid.Row="1" Placeholder="Internal Comments" Text="{Binding InternalComments, Mode=TwoWay}" BackgroundColor="White" TabIndex="6" />
                     </Grid>
                 </Grid>
                 <StackLayout Grid.Column="1" Grid.Row="0"  Orientation="Vertical" Padding="10,0,0,0" HorizontalOptions="End">
@@ -47,11 +47,11 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
-                        <Switch x:Name="BillSwitch" IsToggled="{Binding BillCustomer}" HorizontalOptions="End"  VerticalOptions="Center" Grid.Column="0" />
+                        <Switch x:Name="BillSwitch" IsToggled="{Binding BillCustomer}" HorizontalOptions="End"  VerticalOptions="Center" Grid.Column="0" TabIndex="2" />
                         <Label Text="{Binding Source={x:Reference BillSwitch}, Path=IsToggled, Converter={StaticResource BoolToBillConverter}, Mode=OneWay }" HorizontalTextAlignment="Center" HorizontalOptions="Start" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="1"/>
                     </Grid>
-                    <Button x:Name="TimerButton"  Text="{Binding TimerButtonText}" FontSize="35" HeightRequest="75"  WidthRequest="150" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="None"  CornerRadius="10" BorderWidth=".5" BorderColor="Black" BackgroundColor="{Binding TimerButtonColor}" Clicked="TimerButton_OnClicked" />
-                    <Entry x:Name="TimerLabel"  FontAttributes="Bold" Text="0:00:00"  HorizontalOptions="Fill" HorizontalTextAlignment="Center" FontSize="20" Unfocused="TimerLabel_OnUnfocused" BackgroundColor="Transparent" Focused="TimerLabel_OnFocused"/>
+                    <Button x:Name="TimerButton"  Text="{Binding TimerButtonText}" FontSize="35" HeightRequest="75"  WidthRequest="150" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="None"  CornerRadius="10" BorderWidth=".5" BorderColor="Black" BackgroundColor="{Binding TimerButtonColor}" Clicked="TimerButton_OnClicked" TabIndex="4"/>
+                    <Entry x:Name="TimerLabel"  FontAttributes="Bold" Text="0:00:00"  HorizontalOptions="Fill" HorizontalTextAlignment="Center" FontSize="20" Unfocused="TimerLabel_OnUnfocused" BackgroundColor="Transparent" Focused="TimerLabel_OnFocused" TabIndex="5"/>
                 </StackLayout>
             </Grid>
             <views:TimeEntryListView x:Name="EntryListView" Grid.Row="1"/>

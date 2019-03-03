@@ -104,11 +104,15 @@ namespace TimeTracker
                 if (entryParent.Ticket != null && ((entryParent as TimeEntryParent)?.BillCustomer == vm.BillCustomer)
                     && (entryParent.Ticket.ProjectURI.Equals(vm.Ticket?.ProjectURI)
                         || (entryParent.Ticket?.uri != null && entryParent.Ticket.uri.Equals(vm?.Ticket?.uri))))
-                // if (entryParent.Ticket != null && entryParent.Ticket.uri.Equals(vm.Ticket?.uri))
                 {
                     var castedParent = (entryParent as TimeEntryParent);
                     vm.parent = castedParent;
                     castedParent?.Entries.Add(vm);
+                    //add new item to viewable list if the parent is already expanded
+                    if (collection.Contains(castedParent.Entries.FirstOrDefault()))
+                    {
+                        collection.Insert(collection.IndexOf(castedParent) +1, vm);
+                    }
                     castedParent?.OnPropertyChanged(null);
                     return;
                 }
