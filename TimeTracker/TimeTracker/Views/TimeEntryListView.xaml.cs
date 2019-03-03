@@ -100,7 +100,7 @@ namespace TimeTracker.Views
             //update view cell if still visible
             else
             {
-                selectedTimeEntry.parent.OnPropertyChanged(null);
+                selectedTimeEntry.parent?.OnPropertyChanged(null);
             }
 
         }

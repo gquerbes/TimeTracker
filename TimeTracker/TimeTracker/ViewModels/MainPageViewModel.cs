@@ -102,8 +102,8 @@ namespace TimeTracker
             foreach (var entryParent in  collection)
             {
                 if (entryParent.Ticket != null && ((entryParent as TimeEntryParent)?.BillCustomer == vm.BillCustomer)
-                    && (entryParent.Ticket.ProjectURI.Equals(vm.Ticket.ProjectURI)
-                        || (entryParent.Ticket.uri != null && entryParent.Ticket.uri.Equals(vm.Ticket.uri))))
+                    && (entryParent.Ticket.ProjectURI.Equals(vm.Ticket?.ProjectURI)
+                        || (entryParent.Ticket?.uri != null && entryParent.Ticket.uri.Equals(vm?.Ticket?.uri))))
                 // if (entryParent.Ticket != null && entryParent.Ticket.uri.Equals(vm.Ticket?.uri))
                 {
                     var castedParent = (entryParent as TimeEntryParent);
@@ -149,30 +149,7 @@ namespace TimeTracker
             RepliConnect.SubmitTimesheet(y);
         }
 
-        public void ParseDateEntry(string entry)
-        {
-            //attempt to parse string as a double of total hours
-            var validParse = double.TryParse(entry, out double doubleParseResult);
-
-            TimeSpan enteredTimeSpan;
-            //if passed get timespan from entry
-            if (validParse)
-            {
-                enteredTimeSpan = TimeSpan.FromHours(doubleParseResult);
-            }
-            //if failed, attempt to parse string as a  timespan
-            else
-            {
-                validParse = TimeSpan.TryParse(entry, out enteredTimeSpan);
-            }
-
-            //parsing successful, correct time
-            if (validParse)
-            {
-                var correctedStartTime = DateTime.Now - enteredTimeSpan;
-                CurrentTimeEntry.StartTime = correctedStartTime;
-            }
-        }
+       
 
         private double _syncProgress;
         public double SyncProgress

@@ -8,9 +8,7 @@
         <StackLayout HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="{StaticResource AbasGreen}" Padding="50">
            <Entry Text="{Binding Comments}"/>
             <views:AutoCompleteList SelectedTicket="{Binding Ticket}"/>  
-            <TimePicker Time="{Binding StartTime}"/>
-            <Entry Text="{Binding RunTimeText, Mode=OneWay}"/>
-            <TimePicker Time="{Binding EndTime}"/>
+            <Entry x:Name="TimeEntry" Text="{Binding RunTimeText, Mode=OneTime}" Unfocused="TimeEntry_OnUnfocused"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -133,11 +133,7 @@ namespace TimeTracker
             _vm.TimerClicked();
 
             //reset selected ticket if stopping timer
-            if (!_vm.CurrentTimeEntry.IsRunning)
-            {
-               // AutoCompleteList.ClearSelectedValue();
-            }
-            else
+            if (_vm.CurrentTimeEntry.IsRunning)
             {
                 //update the UI every second to update the clock
                 Device.StartTimer(new TimeSpan(0, 0, 0, 1), UpdateClock);
@@ -150,14 +146,23 @@ namespace TimeTracker
         /// <returns></returns>
         private bool UpdateClock()
         {
-            var elapsedTime =  DateTime.Now - _vm.CurrentTimeEntry.StartTime;
-            if (!TimerLabel.IsFocused)
+            bool isRunning = _vm.CurrentTimeEntry.IsRunning;
+            if (isRunning)
             {
-                TimerLabel.Text = $"{elapsedTime.Hours}:{elapsedTime.Minutes.NormalizeIntForTime()}:{elapsedTime.Seconds.NormalizeIntForTime()}";
+                var elapsedTime = DateTime.Now - _vm.CurrentTimeEntry.StartTime;
+
+                if (!TimerLabel.IsFocused)
+                {
+                    TimerLabel.Text = $"{elapsedTime.Hours}:{elapsedTime.Minutes.NormalizeIntForTime()}:{elapsedTime.Seconds.NormalizeIntForTime()}";
+                }
+            }
+            else
+            {
+                TimerLabel.Text = "0:00:00";
             }
 
             //will continue so long as timer is running
-            return _vm.CurrentTimeEntry.IsRunning;
+            return isRunning;
         }
 
         private void OnContinueEntry(ITimeEntryListElement TimeEntryVM)
@@ -199,8 +204,12 @@ namespace TimeTracker
 
         private void TimerLabel_OnUnfocused(object sender, FocusEventArgs e)
         {
-            //parse value
-            _vm.ParseDateEntry(TimerLabel.Text);
+            if (!string.IsNullOrEmpty(TimerLabel.Text))
+            {
+                //parse value
+                _vm.CurrentTimeEntry.StartTime = DateTime.Now - TimerLabel.Text.ParseToDateTime();
+            }
+            
             //update label
             TimerLabel.Text = _vm.CurrentTimeEntry.RunTimeText;
         }

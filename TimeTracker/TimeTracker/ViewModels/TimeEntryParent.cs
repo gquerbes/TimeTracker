@@ -61,14 +61,21 @@ namespace TimeTracker.ViewModels
                 var text = "";
                 foreach (var timeEntryViewModel in Entries)
                 {
-                    text += $"{timeEntryViewModel.Comments}, ";
+                    if (!string.IsNullOrEmpty(timeEntryViewModel.Comments))
+                    {
+                        text += $"{timeEntryViewModel.Comments} ";
+                    }
                 }
 
+                if (string.IsNullOrEmpty(text))
+                {
+                    text = "[No Comments]";
+                }
                 return text;
             }
         }
 
-        public string SelectedTicketLabel => Entries.FirstOrDefault()?.SelectedTicketLabel;
+        public string SelectedTicketLabel => Entries.FirstOrDefault()?.Ticket != null ? Entries.FirstOrDefault()?.SelectedTicketLabel : "[No Ticket]";
 
 
         public TimeSpan RoundedTotalTime => TotalTime.RoundToNearestMinutes(15);

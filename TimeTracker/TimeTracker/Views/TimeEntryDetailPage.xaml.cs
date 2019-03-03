@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using TimeTracker.Helpers;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -20,5 +20,16 @@ namespace TimeTracker.Views
 			InitializeComponent ();
 
 		}
-	}
+
+        private void TimeEntry_OnUnfocused(object sender, FocusEventArgs e)
+        {
+            TimeSpan time; 
+            if ((time = TimeEntry.Text.ParseToDateTime()) != TimeSpan.MinValue)
+            {
+
+                vm.StartTime = vm.EndTime - time;
+                TimeEntry.Text = vm.RunTimeText;
+            }
+        }
+    }
 }

@@ -45,6 +45,8 @@ namespace TimeTracker
                     TimeEntry.StartDateTime = value;
                     OnPropertyChanged(nameof(TimerButtonColor));
                     OnPropertyChanged(nameof(TimerButtonText));
+                    this.parent?.OnPropertyChanged(nameof(TimeEntryParent.RunTimeText));
+
                     Save();
                 }
             } 
@@ -77,6 +79,8 @@ namespace TimeTracker
                     BillCustomer = true; //attempt to set billing to true
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(SelectedTicketLabel));
+                    this.parent?.OnPropertyChanged(nameof(TimeEntryParent.SelectedTicketLabel));
+
                     OnPropertyChanged(nameof(BillCustomer));
                     Save();
                 }
@@ -117,6 +121,7 @@ namespace TimeTracker
                 {
                     TimeEntry.Comments = value;
                     OnPropertyChanged();
+                    this.parent?.OnPropertyChanged(nameof(TimeEntryParent.Comments));
                     Save();
                 }
             }

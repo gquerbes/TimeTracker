@@ -43,6 +43,32 @@ namespace TimeTracker.Helpers
         {
             return string.IsNullOrEmpty(element?.Ticket?.description);
         }
+
+
+        public static TimeSpan ParseToDateTime(this string entry)
+        {
+            //attempt to parse string as a double of total hours
+            var validParse = double.TryParse(entry, out double doubleParseResult);
+
+            TimeSpan enteredTimeSpan;
+            //if passed get timespan from entry
+            if (validParse)
+            {
+                enteredTimeSpan = TimeSpan.FromHours(doubleParseResult);
+            }
+            //if failed, attempt to parse string as a  timespan
+            else
+            {
+                validParse = TimeSpan.TryParse(entry, out enteredTimeSpan);
+            }
+
+            //parsing successful, correct time
+            if (validParse)
+            {
+                return enteredTimeSpan;
+            }
+            return TimeSpan.MinValue;
+        }
     }
 
 
