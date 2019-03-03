@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using TimeTracker.Interfaces;
 using TimeTracker.Models;
@@ -23,10 +24,12 @@ namespace TimeTracker.Views
 
         public ExpandCollapseParent OnExpandCollapseParent;
 
+        private SynchronizationContext _ui;
 
         public TimeEntryListView()
         {
             InitializeComponent();
+            _ui = SynchronizationContext.Current;
         }
 
 
@@ -110,7 +113,18 @@ namespace TimeTracker.Views
             var button = (sender as Button);
             var bindingcontext = button.BindingContext as TimeEntryListElementOverservableCollection;
 
-            await RepliConnect.SubmitTimesheet(bindingcontext?.Cast<TimeEntryParent>().ToList());
+            try
+            {
+                await RepliConnect.SubmitTimesheet(bindingcontext?.Cast<TimeEntryParent>().ToList());
+
+            }
+            catch (Exception ex)
+            {
+                _ui.Post(async (state) =>
+                {
+                    await Application.Current.MainPage.DisplayAlert("Attention", ex.Message, "ok");
+                },null);
+            }
         }
 
 

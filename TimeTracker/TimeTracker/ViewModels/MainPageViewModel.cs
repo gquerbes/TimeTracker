@@ -142,16 +142,11 @@ namespace TimeTracker
             OnPropertyChanged(null);
         }
 
-        public async Task LoadTickets(IProgress<double> progress)
+        public async Task<bool> LoadTickets(IProgress<double> progress)
         {
-           await TicketLoader.LoadData(progress);
+           return await TicketLoader.LoadData(progress);
         }
 
-        public void SubmitTimesheet()
-        {
-            var y = TimeEntries?.FirstOrDefault()?.Cast<TimeEntryParent>().ToList();
-            RepliConnect.SubmitTimesheet(y);
-        }
 
        
 

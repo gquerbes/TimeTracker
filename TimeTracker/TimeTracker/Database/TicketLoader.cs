@@ -44,7 +44,7 @@ namespace TimeTracker.Database
             }
         }
 
-        public static async Task LoadData(IProgress<double> progress)
+        public static async Task<bool> LoadData(IProgress<double> progress)
         {
 
              //get list of all uri's on the database.
@@ -55,6 +55,12 @@ namespace TimeTracker.Database
 
             //load ticket from DB
             var rawData = await RepliConnect.GetTickets();
+
+            if (rawData == null)
+            {
+                progress?.Report(0);
+                return false;
+            }
 
             //update progressbar
             progress?.Report(.015);
@@ -107,7 +113,7 @@ namespace TimeTracker.Database
             //Invoke delegate for any work to be done after sync
             OnTicketLoadCompleted?.Invoke();
 
-            return;
+            return true;
         }
 
      

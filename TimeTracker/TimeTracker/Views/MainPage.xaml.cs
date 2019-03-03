@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TimeTracker.Helpers;
@@ -16,6 +17,7 @@ namespace TimeTracker
     public partial class MainPage : ContentPage
     {
         private MainPageViewModel _vm;
+        private SynchronizationContext _ui;
         public MainPage()
         {
             _vm = new MainPageViewModel();
@@ -25,8 +27,8 @@ namespace TimeTracker
             LoadTickets();
             EntryListView.OnContinueEntry += OnContinueEntry;
             EntryListView.OnExpandCollapseParent += OnExpandCollapseParent;
+            _ui = SynchronizationContext.Current;
 
-           
         }
 
         protected override void OnAppearing()
@@ -207,9 +209,22 @@ namespace TimeTracker
                 _vm.SyncProgress = percent;
             });
 
+            bool success = false;
             // DoProcessing is run on the thread pool.
-             Task.Run(() => _vm.LoadTickets(progress));
+             Task.Run( async () =>
+             {
+                 success = await _vm.LoadTickets(progress);
+                 if (!success)
+                 {
+                     _ui.Post(async (state) =>
+                     {
+                         await DisplayAlert("Attention", "Unable to sync tickets\nPlease check your connection and try again", "Ok");
 
+                     }, null);
+                 }
+             });
+
+           
 
 
         }

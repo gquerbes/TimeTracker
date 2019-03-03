@@ -53,7 +53,6 @@ namespace TimeTracker.Services
 
                 var desesrializedResult = JsonConvert.DeserializeObject<GenerateReportResponse>(reportResult.ToString());
 
-            
 
                 var csvText = desesrializedResult.D.payload;
 
@@ -87,40 +86,65 @@ namespace TimeTracker.Services
             */
             if (string.IsNullOrEmpty(UserURI))
             {
-                var User = await GetUser();//set local variable to avoid calling this again
-                UserURI = JsonConvert.DeserializeObject<GetUser2Response>(User.ToString()).d.uri; //8ms
+                try
+                {
+                    var User = await GetUser(); //set local variable to avoid calling this again
+                    UserURI = JsonConvert.DeserializeObject<GetUser2Response>(User.ToString()).d.uri; //8ms
+                }
+                catch (Exception e)
+                {
+                    throw  new Exception("Unable To Load Employee", e);
+                }
             }
 
-            var timesheetReply = await GetTimesheetUri(UserURI, date);
+            GetStandardTimesheet2Reply currentTS;
+            try
+            {
+                var timesheetReply = await GetTimesheetUri(UserURI, date);
+                TimesheetURI = JsonConvert.DeserializeObject<GetTimesheetForDate2Response>(timesheetReply.ToString()).d
+                    .timesheet.uri;
+                var request = (await GetTimesheet(TimesheetURI)).ToString();
+                 currentTS = JsonConvert.DeserializeObject<GetStandardTimesheet2Reply>(request);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Unable To Load Timesheet", e);
+            }
 
-            TimesheetURI = JsonConvert.DeserializeObject<GetTimesheetForDate2Response>(timesheetReply.ToString()).d.timesheet.uri;
             /*
           * do beforehand and save values
           */
-
-            GetStandardTimesheet2Reply currentTS = JsonConvert.DeserializeObject<GetStandardTimesheet2Reply>((await GetTimesheet(TimesheetURI)).ToString());
-
             PutStandardTimesheet2Request newTS = new PutStandardTimesheet2Request();
-
-            //copy URI of current Timesheet
-            newTS.timesheet.target.uri = TimesheetURI;
-            //set employee
-            newTS.timesheet.target.user.uri = currentTS.d.uri;
-            //set date
-            newTS.timesheet.target.date.day = DateTime.Today.Day;
-            newTS.timesheet.target.date.month = DateTime.Today.Month;
-            newTS.timesheet.target.date.year = DateTime.Today.Year;
-            //copy current rows
-            foreach (var dRow in currentTS.d.rows)
+            try
             {
-                if (dRow.task != null)
+
+                //copy URI of current Timesheet
+                newTS.timesheet.target.uri = TimesheetURI;
+                //set employee
+                newTS.timesheet.target.user.uri = currentTS.d.uri;
+                //set date
+                newTS.timesheet.target.date.day = DateTime.Today.Day;
+                newTS.timesheet.target.date.month = DateTime.Today.Month;
+                newTS.timesheet.target.date.year = DateTime.Today.Year;
+                //copy current rows
+                foreach (var dRow in currentTS.d.rows)
                 {
-                    dRow.task.parameterCorrelationId = "TimeTrackerApp";
+                    if (dRow.task != null)
+                    {
+                        dRow.task.parameterCorrelationId = "TimeTrackerApp";
+                    }
+
+                    newTS.timesheet.rows.Add(dRow);
                 }
-                newTS.timesheet.rows.Add(dRow);
+
+                //set value of whatever this means
+                newTS.timesheet.noticeExplicitlyAccepted = "0";
             }
-            //set value of whatever this means
-            newTS.timesheet.noticeExplicitlyAccepted = "0";
+            catch (Exception e)
+            {
+               throw new Exception("Unable to copy current timesheet", e);
+            }
+         
 
             return newTS;
         }
@@ -128,12 +152,22 @@ namespace TimeTracker.Services
 
        
 
-        public static async Task SubmitTimesheet(List<TimeEntryParent> timeEntries)
+        public static async Task<bool> SubmitTimesheet(List<TimeEntryParent> timeEntries)
         {
-            if(timeEntries.FirstOrDefault() == null) { return;}
-            var timesheetSubmission =  await CreateTimesheetSubmissionForCurrentTimesheet(timeEntries.FirstOrDefault().Date);
+            if(timeEntries.FirstOrDefault() == null) { return false;}
+
+            PutStandardTimesheet2Request timesheetSubmission = null;
+            try
+            {
+                 timesheetSubmission = await CreateTimesheetSubmissionForCurrentTimesheet(timeEntries.FirstOrDefault().Date);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Unable to process timesheet submission, Try Again Later", e);
+            }
             foreach (var timeEntry in timeEntries)//for each entry to be submitted
             {
+                if (timeEntry.Ticket == null) break;//ignore entries with no tickets
                 foreach (var timesheetRow in timesheetSubmission.timesheet.rows) // foreach timesheet row currently on timesheet
                 {
                     if (((!timesheetRow.IsProject() && timesheetRow.task.uri.Equals(timeEntry.RepliconTicketID)) //current row is project and matches current entry
@@ -186,8 +220,9 @@ namespace TimeTracker.Services
 
             }
 
+            var response = await PutTimesheet(timesheetSubmission);
 
-           await PutTimesheet(timesheetSubmission);
+            return true;
         }
 
         private static Cell CreateCellFromEntry(TimeEntryParent timeEntry)
@@ -290,13 +325,13 @@ namespace TimeTracker.Services
             return response;
         }
 
-        private static async Task PutTimesheet(PutStandardTimesheet2Request timesheetRequest)
+        private static async Task<JToken> PutTimesheet(PutStandardTimesheet2Request timesheetRequest)
         {
             AppRequest req = new AppRequest();
             req.serviceURL = PutStandardTimesheet2Request.ServiceUrl;
             req.Input = JObject.FromObject(timesheetRequest);
 
-            await GetServerData(req);
+          return  await GetServerData(req);
 
         }
 
