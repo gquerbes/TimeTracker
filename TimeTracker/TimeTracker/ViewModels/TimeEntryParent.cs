@@ -38,7 +38,6 @@ namespace TimeTracker.ViewModels
                 {
                     _ticket = App.Database.FindRepliconTaskByUri(RepliconTicketID);
                 }
-
                 return _ticket;
             }
             set

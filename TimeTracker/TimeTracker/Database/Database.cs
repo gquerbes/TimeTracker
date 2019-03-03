@@ -43,7 +43,13 @@ namespace TimeTracker.Database
 
         public Models.Replicon.RepliconReply.RepliconTask FindRepliconTaskByUri(string TaskURI)
         {
-            return this.Query<Models.Replicon.RepliconReply.RepliconTask>($"{nameof(Models.Replicon.RepliconReply.RepliconTask.uri)} = \"{TaskURI}\"").FirstOrDefault();
+            var foundTask = Query<RepliconTask>($"{nameof(RepliconTask.uri)} = \"{TaskURI}\"").FirstOrDefault();
+            if (foundTask == null)
+            {
+                foundTask = Query<RepliconTask>($"{nameof(RepliconTask.ProjectURI)} = \"{TaskURI}\"").FirstOrDefault();
+            }
+
+            return foundTask;
         }
 
     

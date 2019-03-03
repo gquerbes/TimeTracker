@@ -40,8 +40,13 @@ namespace TimeTracker
             get => TimeEntry.StartDateTime;
             set
             {
-                TimeEntry.StartDateTime = value;
-                Save();
+                if (value != TimeEntry.StartDateTime)
+                {
+                    TimeEntry.StartDateTime = value;
+                    OnPropertyChanged(nameof(TimerButtonColor));
+                    OnPropertyChanged(nameof(TimerButtonText));
+                    Save();
+                }
             } 
         }
 
@@ -68,7 +73,7 @@ namespace TimeTracker
                 if (_ticket != value)
                 {
                     _ticket = value;
-                    TimeEntry.TicketURI = value?.uri;
+                    TimeEntry.TicketURI = !string.IsNullOrEmpty(value.uri) ? value.uri : value.ProjectURI;
                     BillCustomer = true; //attempt to set billing to true
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(SelectedTicketLabel));

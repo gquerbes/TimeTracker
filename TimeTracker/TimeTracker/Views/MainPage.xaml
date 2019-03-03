@@ -4,10 +4,10 @@
              xmlns:local="clr-namespace:TimeTracker"
              xmlns:views="clr-namespace:TimeTracker.Views;assembly=TimeTracker"
              x:Class="TimeTracker.MainPage"
-             Title="abas Time Tracker ">
+             Title="abas Time Tracker">
+
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="LoadTickets" Clicked= "LoadTickets_OnClicked" />
-        <ToolbarItem Text="Submit" Clicked="Submit_OnClicked" />
     </ContentPage.ToolbarItems>
 
 <StackLayout Spacing="0">
@@ -37,8 +37,8 @@
                         <Switch x:Name="BillSwitch" IsToggled="{Binding BillCustomer}" HorizontalOptions="End"  VerticalOptions="Center" Grid.Column="0" />
                         <Label Text="{Binding Source={x:Reference BillSwitch}, Path=IsToggled, Converter={StaticResource BoolToBillConverter}, Mode=OneWay }" HorizontalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="1"/>
                     </Grid>
-                <Button x:Name="TimerButton"  HeightRequest="75"  WidthRequest="100" Text="{Binding TimerButtonText}" FontAttributes="Bold" TextColor="DarkSlateGray" CornerRadius="2" BorderWidth="5" BorderColor="DarkGray" BackgroundColor="{Binding TimerButtonColor}" Clicked="TimerButton_OnClicked" />
-                <Entry x:Name="TimerLabel" Text="0:00:00" HorizontalOptions="Fill" HorizontalTextAlignment="Center" FontSize="20" Unfocused="TimerLabel_OnUnfocused" BackgroundColor="Transparent" Focused="TimerLabel_OnFocused"/>
+                    <Button x:Name="TimerButton"  Text="{Binding TimerButtonText}" FontSize="35" HeightRequest="75"  WidthRequest="150" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="None"  CornerRadius="10" BorderWidth=".5" BorderColor="Black" BackgroundColor="{Binding TimerButtonColor}" Clicked="TimerButton_OnClicked" />
+                <Entry x:Name="TimerLabel"  FontAttributes="Bold" Text="0:00:00" HorizontalOptions="Fill" HorizontalTextAlignment="Center" FontSize="20" Unfocused="TimerLabel_OnUnfocused" BackgroundColor="Transparent" Focused="TimerLabel_OnFocused"/>
             </StackLayout>
         </Grid>
         <views:TimeEntryListView x:Name="EntryListView" Grid.Row="1"/>

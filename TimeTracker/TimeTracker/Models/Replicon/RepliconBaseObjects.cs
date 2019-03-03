@@ -70,8 +70,8 @@ namespace TimeTracker.Models.Replicon.RepliconReply
         public BillingRate billingRate { get; set; }
         public List<Cell> cells { get; set; } = new List<Cell>();
         public List<CustomFieldValue2> customFieldValues { get; set; }
-        public Project project { get; set; }
-        public TaskBasic task { get; set; } = new TaskBasic();
+        public Project project { get; set; } 
+        public TaskBasic task { get; set; } 
         public string uri { get; set; }
     }
 

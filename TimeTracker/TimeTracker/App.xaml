@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:TimeTracker.Helpers;assembly=TimeTracker"
              x:Class="TimeTracker.App">
     <Application.Resources>
-        <ResourceDictionary>
+        <ResourceDictionary x:Name="AppResources">
             <helpers:NegateBooleanConverter x:Key="NegateBooleanConverter" />
             <helpers:BoolToBillTextConverter x:Key="BoolToBillConverter"/>
             <Color x:Key="AbasGreen">#BF1BB8A3</Color>
@@ -13,7 +13,5 @@
             <Color x:Key="AbasRed">#D9CC1414</Color>
             <Color x:Key="AbasLimeGreen">#97D700</Color>
         </ResourceDictionary>
-
-            
     </Application.Resources>
 </Application>

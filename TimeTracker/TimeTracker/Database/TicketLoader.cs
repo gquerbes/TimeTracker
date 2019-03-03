@@ -78,12 +78,12 @@ namespace TimeTracker.Database
 
                 //create new task
                 var task = new RepliconTask();
+                task.ProjectURI = item.ProjectURI;
 
                 //assign values
                 if (string.IsNullOrEmpty(item.TaskURI)) //is Project
                 {
                     task.name = item.ProjectName;
-                    task.uri = item.ProjectURI;
                 }
                 else // is task
                 {
@@ -91,6 +91,8 @@ namespace TimeTracker.Database
                     task.name = item.TaskName;
                     task.uri = item.TaskURI;
                 }
+
+
                 //set billable status
                 task.IsBillable = (!string.IsNullOrEmpty(item.BillingType)) &&
                                   item.BillingType.Equals("Time And Material");

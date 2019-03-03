@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TimeTracker.Interfaces;
+using TimeTracker.Models;
+using TimeTracker.Services;
 using TimeTracker.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -102,6 +104,15 @@ namespace TimeTracker.Views
             }
 
         }
+
+        private async void Submit_OnClicked(object sender, EventArgs e)
+        {
+            var button = (sender as Button);
+            var bindingcontext = button.BindingContext as TimeEntryListElementOverservableCollection;
+
+            await RepliConnect.SubmitTimesheet(bindingcontext?.Cast<TimeEntryParent>().ToList());
+        }
+
 
         private void ListView_OnItemTapped(object sender, ItemTappedEventArgs e)
         {

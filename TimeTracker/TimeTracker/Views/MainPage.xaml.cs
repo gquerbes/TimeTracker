@@ -89,7 +89,7 @@ namespace TimeTracker
                 TimeEntryParent entryParent = null;
                 foreach (var parent in correspondingCollection)
                 {
-                    if (parent.Ticket != null && parent.Ticket.uri.Equals(entry.TicketURI))
+                    if (parent.Ticket != null && (parent.Ticket.ProjectURI.Equals(entry.TicketURI) || (parent.Ticket.uri != null &&  parent.Ticket.uri.Equals(entry.TicketURI) )))
                     {
                         entryParent = parent as TimeEntryParent;
                         break;
@@ -192,10 +192,7 @@ namespace TimeTracker
 
         }
 
-        private async void Submit_OnClicked(object sender, EventArgs e)
-        {
-
-        }
+       
 
 
         private void TimerLabel_OnUnfocused(object sender, FocusEventArgs e)

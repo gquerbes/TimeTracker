@@ -80,7 +80,7 @@ namespace TimeTracker.Services
             //return projects and tasks
         }
 
-        private static async Task<PutStandardTimesheet2Request> CreateTimesheetSubmissionForCurrentTimesheet()
+        private static async Task<PutStandardTimesheet2Request> CreateTimesheetSubmissionForCurrentTimesheet(DateTime date)
         {
             /*
             * do beforehand and save values
@@ -91,14 +91,14 @@ namespace TimeTracker.Services
                 UserURI = JsonConvert.DeserializeObject<GetUser2Response>(User.ToString()).d.uri; //8ms
             }
 
-            var timesheetReply = GetTimesheetUri(UserURI, DateTime.Today);
+            var timesheetReply = await GetTimesheetUri(UserURI, date);
 
             TimesheetURI = JsonConvert.DeserializeObject<GetTimesheetForDate2Response>(timesheetReply.ToString()).d.timesheet.uri;
             /*
           * do beforehand and save values
           */
 
-            GetStandardTimesheet2Reply currentTS = JsonConvert.DeserializeObject<GetStandardTimesheet2Reply>(GetTimesheet(TimesheetURI).ToString());
+            GetStandardTimesheet2Reply currentTS = JsonConvert.DeserializeObject<GetStandardTimesheet2Reply>((await GetTimesheet(TimesheetURI)).ToString());
 
             PutStandardTimesheet2Request newTS = new PutStandardTimesheet2Request();
 
@@ -113,7 +113,10 @@ namespace TimeTracker.Services
             //copy current rows
             foreach (var dRow in currentTS.d.rows)
             {
-                dRow.task.parameterCorrelationId = "TimeTrackerApp";
+                if (dRow.task != null)
+                {
+                    dRow.task.parameterCorrelationId = "TimeTrackerApp";
+                }
                 newTS.timesheet.rows.Add(dRow);
             }
             //set value of whatever this means
@@ -123,15 +126,18 @@ namespace TimeTracker.Services
         }
 
 
+       
+
         public static async Task SubmitTimesheet(List<TimeEntryParent> timeEntries)
         {
-
-            var timesheetSubmission =  await CreateTimesheetSubmissionForCurrentTimesheet();
+            if(timeEntries.FirstOrDefault() == null) { return;}
+            var timesheetSubmission =  await CreateTimesheetSubmissionForCurrentTimesheet(timeEntries.FirstOrDefault().Date);
             foreach (var timeEntry in timeEntries)//for each entry to be submitted
             {
                 foreach (var timesheetRow in timesheetSubmission.timesheet.rows) // foreach timesheet row currently on timesheet
                 {
-                    if (timesheetRow.task.uri.Equals(timeEntry.RepliconTicketID) // current row matches current entry project
+                    if (((!timesheetRow.IsProject() && timesheetRow.task.uri.Equals(timeEntry.RepliconTicketID)) //current row is project and matches current entry
+                           || (timesheetRow.IsProject() && timesheetRow.project.uri.Equals(timeEntry.RepliconTicketID))) // current row is task and matches current entry 
                         && ((string.IsNullOrEmpty(timesheetRow.billingRate?.uri) && !timeEntry.BillCustomer) // both billable
                         || (!string.IsNullOrEmpty(timesheetRow.billingRate?.uri) && timeEntry.BillCustomer))) //neither billable
                     {
@@ -158,10 +164,19 @@ namespace TimeTracker.Services
 
                     if (timeEntry.BillCustomer)
                     {
-                        newRow.billingRate = new BillingRate() { uri = "urn:replicon:project-specific-billing-rate" };
+                        newRow.billingRate = new BillingRate() { uri = "urn:replicon:project-specific-billing-rate", name = "Project Rate", displayText = "Project Rate"};
+                        
                     }
 
-                    newRow.task.uri = timeEntry.Ticket.uri;
+                    newRow.project = new Project();
+                    newRow.project.uri = timeEntry.Ticket.ProjectURI;
+
+
+                   if(!timeEntry.IsProject())
+                    {
+                        newRow.task = new TaskBasic();
+                        newRow.task.uri = timeEntry.Ticket.uri;
+                    }
 
                     var newCell = CreateCellFromEntry(timeEntry);
 
@@ -172,7 +187,7 @@ namespace TimeTracker.Services
             }
 
 
-            PutTimesheet(timesheetSubmission);
+           await PutTimesheet(timesheetSubmission);
         }
 
         private static Cell CreateCellFromEntry(TimeEntryParent timeEntry)
@@ -192,6 +207,7 @@ namespace TimeTracker.Services
             newCell.date.day = timeEntry.Date.Day;
             newCell.date.month = timeEntry.Date.Month;
             newCell.date.year = timeEntry.Date.Year;
+            //bill rate
 
             return newCell;
         }

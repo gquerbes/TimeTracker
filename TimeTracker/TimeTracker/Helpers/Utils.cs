@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using TimeTracker.Interfaces;
+using TimeTracker.Models.Replicon.RepliconReply;
+using TimeTracker.ViewModels;
 using Xamarin.Forms;
 
 namespace TimeTracker.Helpers
@@ -30,10 +33,21 @@ namespace TimeTracker.Helpers
                 return input.ToString();
             }
         }
+
+        public static bool IsProject(this Row row)
+        {
+            return row.task == null;
+        }
+
+        public static bool IsProject(this ITimeEntryListElement element)
+        {
+            return string.IsNullOrEmpty(element?.Ticket?.description);
+        }
     }
 
 
-   
+  
+
     public class NegateBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

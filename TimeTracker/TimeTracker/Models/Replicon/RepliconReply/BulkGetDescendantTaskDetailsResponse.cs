@@ -69,6 +69,9 @@ namespace TimeTracker.Models.Replicon.RepliconReply
         public TimeEntryDateRange timeEntryDateRange { get; set; }
         public string uri { get; set; }
 
+        public string ProjectURI { get; set; }
+
+
         [JsonIgnore]
         public bool IsBillable { get; set; }
     }

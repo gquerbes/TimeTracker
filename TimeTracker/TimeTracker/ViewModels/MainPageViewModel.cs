@@ -101,7 +101,8 @@ namespace TimeTracker
             //check if valid parent ticket exists and place child inside or make new one and place child inside if does not exist
             foreach (var entryParent in  collection)
             {
-                if (entryParent.Ticket != null && entryParent.Ticket.uri.Equals(vm.Ticket?.uri))
+                if (entryParent.Ticket != null && (entryParent.Ticket.ProjectURI.Equals(vm.Ticket.ProjectURI) || (entryParent.Ticket.uri != null && entryParent.Ticket.uri.Equals(vm.Ticket.uri))))
+                // if (entryParent.Ticket != null && entryParent.Ticket.uri.Equals(vm.Ticket?.uri))
                 {
                     var castedParent = (entryParent as TimeEntryParent);
                     vm.parent = castedParent;
