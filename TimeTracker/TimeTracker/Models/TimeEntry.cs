@@ -18,7 +18,9 @@ namespace TimeTracker.Models
 
         public string TicketURI { get; set; }
 
-        public bool IsBillable { get; set; }
+        public bool BillCustomer { get; set; }
+
+
 
     }
 }
