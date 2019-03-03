@@ -152,9 +152,9 @@ namespace TimeTracker.Services
 
        
 
-        public static async Task<bool> SubmitTimesheet(List<TimeEntryParent> timeEntries)
+        public static async Task SubmitTimesheet(List<TimeEntryParent> timeEntries)
         {
-            if(timeEntries.FirstOrDefault() == null) { return false;}
+            if(timeEntries.All(x => x.Ticket == null)) {throw  new Exception("Nothing to submit");}
 
             PutStandardTimesheet2Request timesheetSubmission = null;
             try
@@ -220,9 +220,15 @@ namespace TimeTracker.Services
 
             }
 
-            var response = await PutTimesheet(timesheetSubmission);
+            try
+            {
+                await PutTimesheet(timesheetSubmission);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Unable to upload timesheet", e);
+            }
 
-            return true;
         }
 
         private static Cell CreateCellFromEntry(TimeEntryParent timeEntry)

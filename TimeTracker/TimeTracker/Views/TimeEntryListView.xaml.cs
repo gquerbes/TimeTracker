@@ -110,21 +110,28 @@ namespace TimeTracker.Views
 
         private async void Submit_OnClicked(object sender, EventArgs e)
         {
+            ((Button) sender).IsEnabled = false;
             var button = (sender as Button);
             var bindingcontext = button.BindingContext as TimeEntryListElementOverservableCollection;
 
             try
             {
                 await RepliConnect.SubmitTimesheet(bindingcontext?.Cast<TimeEntryParent>().ToList());
-
+                await Application.Current.MainPage.DisplayAlert("Success", "Timesheet submitted", "ok");
             }
             catch (Exception ex)
             {
-                _ui.Post(async (state) =>
-                {
-                    await Application.Current.MainPage.DisplayAlert("Attention", ex.Message, "ok");
-                },null);
+                _ui.Post(
+                    async (state) =>
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Attention", ex.Message, "ok");
+                    }, null);
             }
+            finally
+            {
+                ((Button)sender).IsEnabled = true;
+            }
+
         }
 
 
