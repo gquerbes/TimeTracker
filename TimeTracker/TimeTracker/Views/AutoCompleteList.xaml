@@ -8,7 +8,7 @@
                 <Label x:Name="SelectedItemLabel" TextColor="Black"  FontAttributes="Bold" FontSize="14" VerticalTextAlignment="Center" />
                 <Button Text="X" TextColor="Crimson" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" BackgroundColor="Transparent" Clicked="ClearSelectedTicket_OnClicked"/>
           </StackLayout>
-            <Entry x:Name="SearchBar" Placeholder="Search For Ticket" BackgroundColor="Transparent" TextChanged="SearchBar_OnTextChanged" Unfocused="SearchBar_OnUnfocused" />
+            <Entry x:Name="SearchBar" x:FieldModifier="public"  Placeholder="Search For Ticket" BackgroundColor="Transparent" TextChanged="SearchBar_OnTextChanged" Unfocused="SearchBar_OnUnfocused" />
             <ListView x:Name="TicketListView" ItemsSource="FilteredTickets"  CachingStrategy="RecycleElement" VerticalScrollBarVisibility="Default" IsVisible="False" >
                 <ListView.ItemTemplate>
                  <DataTemplate>

@@ -25,6 +25,21 @@ namespace TimeTracker
             LoadTickets();
             EntryListView.OnContinueEntry += OnContinueEntry;
             EntryListView.OnExpandCollapseParent += OnExpandCollapseParent;
+
+           
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            if (_vm.CurrentTimeEntry?.Ticket == null)
+            {
+                AutoCompleteList.SearchBar.Focus();
+            }
+            else
+            {
+                CommentsTextEditor.Focus();
+            }
         }
 
         private void OnExpandCollapseParent(TimeEntryParent timeentryparent)
@@ -206,8 +221,12 @@ namespace TimeTracker
         {
             if (!string.IsNullOrEmpty(TimerLabel.Text))
             {
-                //parse value
-                _vm.CurrentTimeEntry.StartTime = DateTime.Now - TimerLabel.Text.ParseToDateTime();
+                var updatedTime = TimerLabel.Text.ParseToDateTime();
+                if (updatedTime != TimeSpan.MinValue)
+                {
+                    _vm.CurrentTimeEntry.StartTime = DateTime.Now - TimerLabel.Text.ParseToDateTime();
+
+                }
             }
             
             //update label

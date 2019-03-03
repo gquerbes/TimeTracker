@@ -32,7 +32,9 @@ namespace TimeTracker.Views
 		        SelectedTicket = ticket;
 		        SearchBar.Text = "";
 		    };
-           SearchBar.TextChanged += (sender, args) => { SearchTextChanged(args); }; 
+           SearchBar.TextChanged += (sender, args) => { SearchTextChanged(args); };
+
+        
 		}
 
 	  
@@ -137,7 +139,8 @@ namespace TimeTracker.Views
 	    public void ClearSelectedTicket_OnClicked(object sender, EventArgs e)
 	    {
 	        SelectedTicket = null;
-	    }
+            SearchBar.Focus();
+        }
 
         /// <summary>
         /// Used to trigger show /hide logic for comments text entry

@@ -37,7 +37,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Editor x:Name="CurrentTextEditor" FontSize="15" Grid.Column="0" Grid.Row="0" Placeholder="Comments" Text="{Binding Comments, Mode=TwoWay}" BackgroundColor="White" TabIndex="1"/>
+                        <Editor x:Name="CommentsTextEditor" FontSize="15" Grid.Column="0" Grid.Row="0" Placeholder="Comments" Text="{Binding Comments, Mode=TwoWay}" BackgroundColor="White" TabIndex="1"/>
                         <Entry x:Name="InternalComments"  FontSize="15" Grid.Column="0" Grid.Row="1" Placeholder="Internal Comments" Text="{Binding InternalComments, Mode=TwoWay}" BackgroundColor="White" TabIndex="6" />
                     </Grid>
                 </Grid>
