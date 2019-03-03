@@ -18,10 +18,10 @@
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
                     <Label Grid.Column="0" Grid.Row="0" Text="{Binding Comments}" FontSize="14"  LineBreakMode="CharacterWrap"/>
-                    <Label Grid.Column="0" Grid.Row="1" Text="{Binding SelectedTicketLabel}" FontSize="12"/>
+                        <Label Grid.Column="0" Grid.Row="1" Text="{Binding SelectedTicketLabel}" FontAttributes="Bold" TextColor="{Binding BillCustomer, Converter={StaticResource BoolToColorConverter}}" FontSize="12"/>
                     <Label Grid.Column="1"  Grid.Row="0"  Text="{Binding RunTimeText}" VerticalOptions="Center" FontAttributes="Bold" FontSize="20"/>
                     <Label Grid.Column="1"  Grid.Row="1" Text="{Binding RoundedRunTimeText}" VerticalOptions="Center" FontSize="12"/>
-                    <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Text="continue" FontAttributes="Bold" TextColor="SlateGray" CornerRadius="2" BorderWidth="5" BorderColor="LightGray" BackgroundColor="{StaticResource AbasLimeGreen}" Clicked="ContinueJobTimer_OnClicked"/>
+                    <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Text="continue" HeightRequest="45" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="None"  CornerRadius="10" BorderWidth=".5" BorderColor="Black"  BackgroundColor="{StaticResource AbasLimeGreen}" Clicked="ContinueJobTimer_OnClicked"/>
                 </Grid>
                 <ViewCell.ContextActions>
                     <MenuItem Text="Delete" Clicked="DeleteParentContextAction_Clicked" CommandParameter="{Binding .}"  />

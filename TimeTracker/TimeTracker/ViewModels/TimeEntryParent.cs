@@ -75,7 +75,7 @@ namespace TimeTracker.ViewModels
             }
         }
 
-        public string SelectedTicketLabel => Entries.FirstOrDefault()?.Ticket != null ? Entries.FirstOrDefault()?.SelectedTicketLabel : "[No Ticket]";
+        public string SelectedTicketLabel => Entries.FirstOrDefault()?.Ticket != null ? Entries.FirstOrDefault()?.SelectedTicketLabel : string.Empty;
 
 
         public TimeSpan RoundedTotalTime => TotalTime.RoundToNearestMinutes(15);

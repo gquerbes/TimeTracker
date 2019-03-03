@@ -135,7 +135,18 @@ namespace TimeTracker
 
         public string SelectedTicketLabel
         {
-            get => $"{Ticket?.name} : {Ticket?.description}";
+            get
+            {
+                if (Ticket == null) return "";
+
+                string description = Ticket?.description;
+
+                if (string.IsNullOrEmpty(Ticket?.description))
+                {
+                    return Ticket?.name;
+                }
+               return $"{Ticket?.name} : {description} ";
+            } 
         }
 
         public string RunTimeText
