@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -120,15 +120,7 @@ namespace TimeTracker.Views
             {
                 TimeEntryParent parent = e.Item as TimeEntryParent;
 
-                if (parent.Entries.Count > 1)
-                {
                     OnExpandCollapseParent?.Invoke(parent);
-                }
-
-                else
-                {
-                    Navigation.PushAsync(new TimeEntryDetailPage(parent.Entries.FirstOrDefault()));
-                }
             }
             else
             {
