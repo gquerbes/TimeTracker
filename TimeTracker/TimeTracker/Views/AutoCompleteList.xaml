@@ -3,23 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TimeTracker.Views.AutoCompleteList">
   <ContentView.Content>
-      <StackLayout>
-            <StackLayout Orientation="Horizontal" x:Name="SelectedItemStack" IsVisible="False">
-                <Label x:Name="SelectedItemLabel" TextColor="White" FontAttributes="Bold" FontSize="15" VerticalTextAlignment="Center" />
-                <Button Text="X" TextColor="Red" FontAttributes="Bold" FontSize="20" VerticalOptions="Center" BackgroundColor="Transparent" Clicked="ClearSelectedTicket_OnClicked"/>
+        <StackLayout Spacing="0">
+            <StackLayout Orientation="Horizontal" x:Name="SelectedItemStack" IsVisible="False" >
+                <Label x:Name="SelectedItemLabel" TextColor="Black"  FontAttributes="Bold" FontSize="14" VerticalTextAlignment="Center" />
+                <Button Text="X" TextColor="Crimson" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" BackgroundColor="Transparent" Clicked="ClearSelectedTicket_OnClicked"/>
           </StackLayout>
-            <SearchBar x:Name="SearchBar" Focused="SearchBar_OnFocused" Unfocused="SearchBar_OnUnfocused" TabIndex="0"/>
+            <Entry x:Name="SearchBar" Placeholder="Search For Ticket" BackgroundColor="Transparent" Focused="SearchBar_OnFocused" Unfocused="SearchBar_OnUnfocused" TabIndex="0"/>
             <ListView x:Name="TicketListView" ItemsSource="FilteredTickets"  CachingStrategy="RecycleElement" VerticalScrollBarVisibility="Default" IsVisible="False" TabIndex="1">
                 <ListView.ItemTemplate>
                  <DataTemplate>
                      <ViewCell>
-                         <Grid BackgroundColor="LightBlue" HeightRequest="40">
+                         <Grid BackgroundColor="Beige" HeightRequest="40">
                              <Grid.ColumnDefinitions>
                                  <ColumnDefinition Width="Auto"/>
                                  <ColumnDefinition Width="*"/>
                              </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" FontSize="12" VerticalOptions="Center"  Margin="0,0,5,0" Text="{Binding name}"/>
-                                <Label Grid.Column="1"  FontSize="12"  VerticalOptions="Center"  Text="{Binding description}"/>
+                                <Label Grid.Column="0" FontSize="14" FontAttributes="Bold" VerticalOptions="Center"  Margin="0,0,5,0" Text="{Binding name}"/>
+                                <Label Grid.Column="1"  FontSize="14"  VerticalOptions="Center"  Text="{Binding description}"/>
                          </Grid>
                      </ViewCell>
                  </DataTemplate>

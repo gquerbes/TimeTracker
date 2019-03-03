@@ -21,7 +21,7 @@
                         <Label Grid.Column="0" Grid.Row="1" Text="{Binding SelectedTicketLabel}" FontAttributes="Bold" TextColor="{Binding BillCustomer, Converter={StaticResource BoolToColorConverter}}" FontSize="12"/>
                     <Label Grid.Column="1"  Grid.Row="0"  Text="{Binding RunTimeText}" VerticalOptions="Center" FontAttributes="Bold" FontSize="20"/>
                     <Label Grid.Column="1"  Grid.Row="1" Text="{Binding RoundedRunTimeText}" VerticalOptions="Center" FontSize="12"/>
-                    <Button Grid.Column="2" Grid.Row="0" IsVisible="{Binding Ticket, Converter={StaticResource NullToBool}}" WidthRequest="75" Grid.RowSpan="2" Text="continue" HeightRequest="45" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="None"  CornerRadius="10" BorderWidth=".5" BorderColor="Black"  BackgroundColor="{StaticResource AbasLimeGreen}" Clicked="ContinueJobTimer_OnClicked"/>
+                    <Button Grid.Column="2" Grid.Row="0" IsVisible="{Binding Ticket, Converter={StaticResource NullToBool}}" WidthRequest="75" Grid.RowSpan="2" Text="continue" HeightRequest="45" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="None"  CornerRadius="10" BorderWidth=".5" BorderColor="Black"  BackgroundColor="Transparent" Clicked="ContinueJobTimer_OnClicked"/>
                 </Grid>
                 <ViewCell.ContextActions>
                     <MenuItem Text="Delete" Clicked="DeleteParentContextAction_Clicked" CommandParameter="{Binding .}"  />
@@ -35,7 +35,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5*"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="75"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"/>
@@ -59,15 +59,15 @@
             <ListView.GroupHeaderTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid BackgroundColor="{StaticResource AbasGray}" HeightRequest="50" Padding="5,0,5,0">
+                        <Grid BackgroundColor="{StaticResource AbasGray}" HeightRequest="50" Padding="5,0,5,0" Margin="0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="75"/>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" Text="{Binding DateLabel}" FontSize="20"  VerticalOptions="Center"  TextColor="White" HorizontalOptions="Start"/>
-                            <Label Grid.Column="1" Text="{Binding TotalTimeLabel}"  FontSize="12" VerticalOptions="Center" HorizontalOptions="End" TextColor="White"/>
-                            <Button Grid.Column="2" Text="Submit" WidthRequest="75"   HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="None"  CornerRadius="10" BorderWidth=".5" BorderColor="Black"  BackgroundColor="LightGreen" Clicked="Submit_OnClicked"  />
+                            <Button Grid.Column="1" Text="Submit"  WidthRequest="100" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="None"  CornerRadius="2" BorderWidth="1" BorderColor="White"  BackgroundColor="{StaticResource AbasGray}" TextColor="White" Clicked="Submit_OnClicked"  />
+                            <Label Grid.Column="2" Text="{Binding TotalTimeLabel}" Margin="0,0,10,0" FontSize="12" VerticalOptions="Center" HorizontalOptions="End" TextColor="White"/>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>

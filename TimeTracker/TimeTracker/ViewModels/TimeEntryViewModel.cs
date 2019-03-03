@@ -184,10 +184,10 @@ namespace TimeTracker
             {
                 if (IsRunning)
                 {
-                    return "Stop";
+                    return "stop";
                 }
 
-                return "Start";
+                return "start";
             }
         }
         #endregion
