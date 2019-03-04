@@ -20,6 +20,10 @@ namespace TimeTracker
     public class TimeEntryViewModel :  ITimeEntryListElement, INotifyPropertyChanged
     {
 
+        public delegate void TicketRequiresReorg(TimeEntryViewModel entry);
+
+        public TicketRequiresReorg OnTicketRequiresReorg;
+
         public TimeEntryViewModel(TimeEntry Entry = null)
         {
             //set current time entry if one being passed in else, create new entry
@@ -83,6 +87,7 @@ namespace TimeTracker
                     OnPropertyChanged(nameof(Ticket));
                     if(parent != null)
                     {
+                        OnTicketRequiresReorg?.Invoke(this);
                         parent.Ticket = value;
                         this.parent?.OnPropertyChanged(nameof(TimeEntryParent.SelectedTicketLabel));
                         this.parent?.OnPropertyChanged(nameof(TimeEntryParent.Ticket));
@@ -261,6 +266,7 @@ namespace TimeTracker
                 {
                     TimeEntry.BillCustomer = value;
                     Save();
+                    OnTicketRequiresReorg?.Invoke(this);
                 }
                 OnPropertyChanged();
                 parent?.OnPropertyChanged(nameof(TimeEntryParent.BillCustomer));

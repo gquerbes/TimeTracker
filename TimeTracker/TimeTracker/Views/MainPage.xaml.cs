@@ -91,52 +91,12 @@ namespace TimeTracker
                     break;
                 }
 
-                //Find collection with same date as start date of entry
-                TimeEntryListElementOverservableCollection correspondingCollection =
-                    _vm.TimeEntries.FirstOrDefault(x => x.Date.Equals(entry.StartDateTime.Date));
-
-                //if collection for date does not exist, create one
-                if(correspondingCollection == null)
-                {
-                    correspondingCollection = new TimeEntryListElementOverservableCollection(entry.StartDateTime.Date);
-                    _vm.TimeEntries.Add(correspondingCollection);
-                }
-            
-
-                //Find corresponding parent entry 
-                TimeEntryParent entryParent = null;
-                foreach (var parent in correspondingCollection)
-                {
-                    if (parent.Ticket != null && ((parent as TimeEntryParent).BillCustomer == entry.BillCustomer)
-                        && (parent.Ticket.ProjectURI.Equals(entry.TicketURI) 
-                            || (parent.Ticket.uri != null &&  parent.Ticket.uri.Equals(entry.TicketURI) )))
-                    {
-                        entryParent = parent as TimeEntryParent;
-                        break;
-                    }
-                }
-                //parent entry not found, make a new one
-                if (entryParent == null)
-                {
-                    entryParent = new TimeEntryParent();
-                    entryParent.Date = entry.StartDateTime;
-                    entryParent.RepliconTicketID = entry?.TicketURI;
-                    //add parent to collection
-                    correspondingCollection.Add(entryParent);
-                }
-
-                //create new entryVM
-                TimeEntryViewModel entryVM = new TimeEntryViewModel(entry);
-
-                //set parent on child entry
-                entryVM.parent = entryParent;
-
-                //add entry to parent
-                entryParent.Entries.Add(entryVM);
-              
-
+               _vm.AddTimeEntryToList(new TimeEntryViewModel(entry));
             }
         }
+
+
+     
 
         
 

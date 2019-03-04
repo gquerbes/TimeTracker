@@ -107,6 +107,7 @@ namespace TimeTracker
                 {
                     var castedParent = (entryParent as TimeEntryParent);
                     vm.parent = castedParent;
+                    vm.OnTicketRequiresReorg += OnTicketRequiresReorg;
                     castedParent?.Entries.Add(vm);
                     //add new item to viewable list if the parent is already expanded
                     if (collection.Contains(castedParent.Entries.FirstOrDefault()))
@@ -128,11 +129,41 @@ namespace TimeTracker
             newParent.Ticket = vm.Ticket;
             //set the parent of the entry to the newly created parent
             vm.parent = newParent;
-            
+            //set ticket changed delegate 
+            vm.OnTicketRequiresReorg += OnTicketRequiresReorg;
+
             // add to list
             TimeEntries.First().Insert(0, newParent);
             
         }
+
+        private void OnTicketRequiresReorg(TimeEntryViewModel vm)
+        {
+           var collectionForDate = TimeEntries?.FirstOrDefault(x => x.Date.Date.Equals(vm?.StartTime.Date));
+
+           //remove from list if item is being shown currently
+           if (collectionForDate != null && collectionForDate.Contains(vm))
+           {
+               collectionForDate?.Remove(vm);
+           }
+
+            //detach from current parent
+            if (vm.parent.Entries.Contains(vm))
+            {
+                vm.parent.Entries.Remove(vm);//remove from parent
+                if (!vm.parent.Entries.Any())
+                {
+                    collectionForDate?.Remove(vm?.parent); //remove parent from view if no children left
+                }
+            }
+
+
+            //place on list at correct location
+            AddTimeEntryToList(vm);
+        }
+
+       
+
 
         public void ContinueTimerClicked(ITimeEntryListElement previousTimeEntry)
         {
