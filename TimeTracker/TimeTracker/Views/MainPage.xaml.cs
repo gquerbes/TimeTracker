@@ -87,6 +87,7 @@ namespace TimeTracker
                 if (entry.EndDateTime.Equals(DateTime.MinValue))
                 {
                     _vm.ContinueRunningTimer(new TimeEntryViewModel(entry));
+                    Device.StartTimer(new TimeSpan(0, 0, 0, 1), UpdateClock);
                     break;
                 }
 
