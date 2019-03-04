@@ -46,6 +46,7 @@ namespace TimeTracker
                     OnPropertyChanged(nameof(TimerButtonColor));
                     OnPropertyChanged(nameof(TimerButtonText));
                     this.parent?.OnPropertyChanged(nameof(TimeEntryParent.RunTimeText));
+                    this.parent?.OnPropertyChanged(nameof(TimeEntryParent.RoundedRunTimeText));
 
                     Save();
                 }
@@ -128,6 +129,21 @@ namespace TimeTracker
                     TimeEntry.Comments = value;
                     OnPropertyChanged();
                     this.parent?.OnPropertyChanged(nameof(TimeEntryParent.Comments));
+                    Save();
+                }
+            }
+        }
+
+        public string InternalComments
+        {
+            get => TimeEntry?.InternalComments;
+            set
+            {
+                if (value != null && !value.Equals(InternalComments))
+                {
+                    TimeEntry.InternalComments = value;
+                    OnPropertyChanged();
+                    this.parent?.OnPropertyChanged(nameof(TimeEntryParent.InternalComments));
                     Save();
                 }
             }
@@ -244,8 +260,10 @@ namespace TimeTracker
                 if (value != BillCustomer && BillingAllowed)
                 {
                     TimeEntry.BillCustomer = value;
+                    Save();
                 }
                 OnPropertyChanged();
+                parent?.OnPropertyChanged(nameof(TimeEntryParent.BillCustomer));
             }
         }
 

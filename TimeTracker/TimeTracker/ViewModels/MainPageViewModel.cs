@@ -102,8 +102,8 @@ namespace TimeTracker
             foreach (var entryParent in  collection)
             {
                 if (entryParent.Ticket != null && ((entryParent as TimeEntryParent)?.BillCustomer == vm.BillCustomer)
-                    && (entryParent.Ticket.ProjectURI.Equals(vm.Ticket?.ProjectURI)
-                        || (entryParent.Ticket?.uri != null && entryParent.Ticket.uri.Equals(vm?.Ticket?.uri))))
+                    && (string.IsNullOrEmpty(entryParent.Ticket?.uri) && entryParent.Ticket.ProjectURI.Equals(vm.Ticket?.ProjectURI)
+                        || (!string.IsNullOrEmpty(entryParent.Ticket?.uri) && entryParent.Ticket.uri.Equals(vm?.Ticket?.uri))))
                 {
                     var castedParent = (entryParent as TimeEntryParent);
                     vm.parent = castedParent;

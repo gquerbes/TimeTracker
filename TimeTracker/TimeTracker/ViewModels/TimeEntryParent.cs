@@ -78,6 +78,23 @@ namespace TimeTracker.ViewModels
             }
         }
 
+        public string InternalComments
+        {
+            get
+            {
+                var text = "";
+                foreach (var timeEntryViewModel in Entries)
+                {
+                    if (!string.IsNullOrEmpty(timeEntryViewModel.InternalComments))
+                    {
+                        text += $"{timeEntryViewModel.InternalComments} ";
+                    }
+                }
+
+                return text;
+            }
+        }
+
         public string SelectedTicketLabel => Entries.FirstOrDefault()?.Ticket != null ? Entries.FirstOrDefault()?.SelectedTicketLabel : string.Empty;
 
 

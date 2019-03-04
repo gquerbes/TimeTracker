@@ -5,10 +5,31 @@
              x:Class="TimeTracker.Views.TimeEntryDetailPage"
              BackgroundColor="LightGray">
     <ContentPage.Content>
-        <StackLayout HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="{StaticResource AbasGreen}" Padding="50">
-           <Entry Text="{Binding Comments}"/>
-            <views:AutoCompleteList SelectedTicket="{Binding Ticket}"/>  
-            <Entry x:Name="TimeEntry" Text="{Binding RunTimeText, Mode=OneTime}" Unfocused="TimeEntry_OnUnfocused"/>
-        </StackLayout>
+        <ScrollView  BackgroundColor="LightGray" HorizontalOptions="Center"  HorizontalScrollBarVisibility="Never">
+            <StackLayout HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="500" Padding="50,20,50,20" >
+                <Label Text="{Binding StartTime, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+                <Label Text="Comments"/>
+                <Editor HeightRequest="250"  Text="{Binding Comments}" Placeholder="Comments"/>
+                <Label Text="Internal Comments"/>
+                <Editor HeightRequest="150" Text="{Binding InternalComments}" Placeholder="Internal Comments"/>
+                <Label Text="Time (hrs)"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Entry x:Name="TimeEntry" WidthRequest="100"  Text="{Binding RunTimeText, Mode=OneTime}" Unfocused="TimeEntry_OnUnfocused" Grid.Column="0"/>
+                   <Grid Grid.Column="1" HorizontalOptions="End" >
+                       <Grid.ColumnDefinitions>
+                           <ColumnDefinition Width="*"/>
+                           <ColumnDefinition Width="*"/>
+                       </Grid.ColumnDefinitions>
+                        <Label Text="{Binding Source={x:Reference BillSwitch}, Path=IsToggled, Converter={StaticResource BoolToBillConverter}, Mode=OneWay }" HorizontalOptions="Center"    VerticalOptions="Center" FontAttributes="Bold" Grid.Column="0"/>
+                        <Switch x:Name="BillSwitch" IsToggled="{Binding BillCustomer}" HorizontalOptions ="End" WidthRequest="50"  VerticalOptions="Center" Grid.Column="1"  />
+                    </Grid>
+                  </Grid>
+                <views:AutoCompleteList SelectedTicket="{Binding Ticket}" HeightRequest="125"/>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
