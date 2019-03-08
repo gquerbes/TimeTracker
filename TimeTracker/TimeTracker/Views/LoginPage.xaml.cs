@@ -48,6 +48,8 @@ namespace TimeTracker.Views
                 {
                     sb.AppendLine($"{claim.Type} = {claim.Value}");
                 }
+
+                await this.Navigation.PushModalAsync(new MainPage());
             }
 
             System.Diagnostics.Debug.WriteLine(sb.ToString());

@@ -28,9 +28,10 @@ namespace TimeTracker.UWP.Services
            
         }
 
-        public Task<LoginResult> Authenticate()
+        public async Task<LoginResult> Authenticate()
         {
-            return _auth0Client.LoginAsync();
+            var loginResult = await _auth0Client.LoginAsync(new { audience = "https://ausa.abas.cloud/", connection = "ausa" });
+            return loginResult;
         }
     }
 }
