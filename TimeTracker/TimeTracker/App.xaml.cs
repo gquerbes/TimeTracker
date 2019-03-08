@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using TimeTracker.Database;
+using TimeTracker.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,11 +14,17 @@ namespace TimeTracker
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MainPage())
+            MainPage = new NavigationPage(new LoginPage())
             {
                 BarBackgroundColor = Color.FromHex("#2A3539"),
                 BarTextColor = Color.FromHex("#1BB8A3"),
             };
+
+            //MainPage = new NavigationPage(new MainPage())
+            //{
+            //    BarBackgroundColor = Color.FromHex("#2A3539"),
+            //    BarTextColor = Color.FromHex("#1BB8A3"),
+            //};
         }
 
         private static AppDatabase database;
