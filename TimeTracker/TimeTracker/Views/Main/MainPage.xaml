@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TimeTracker.Views.Main.MainPage"
+             xmlns:pages="clr-namespace:TimeTracker.Views.Main"
+             xmlns:timeTracker="clr-namespace:TimeTracker;assembly=TimeTracker"
+             MasterBehavior="Popover"
+             Title= "MainPage">
+  <MasterDetailPage.Master>
+    <pages:MainPageMaster x:Name="MasterPage" />
+  </MasterDetailPage.Master>
+  <MasterDetailPage.Detail>
+    <NavigationPage>
+      <x:Arguments>
+        <timeTracker:TimeTrackerPage/>
+      </x:Arguments>
+    </NavigationPage>
+  </MasterDetailPage.Detail>
+</MasterDetailPage>

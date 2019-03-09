@@ -14,11 +14,11 @@ using Xamarin.Forms;
 
 namespace TimeTracker
 {
-    public partial class MainPage : ContentPage
+    public partial class TimeTrackerPage : ContentPage
     {
         private MainPageViewModel _vm;
         private SynchronizationContext _ui;
-        public MainPage()
+        public TimeTrackerPage()
         {
             _vm = new MainPageViewModel();
             this.BindingContext = _vm;
