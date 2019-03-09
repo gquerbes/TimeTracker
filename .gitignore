@@ -260,3 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 TimeTracker/TimeTracker/Credentials\.cs
+
+TimeTracker/TimeTracker/Services/Authentication/AuthenticationConfig\.cs

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using TimeTracker.Database;
+using TimeTracker.Services.Authentication;
+using TimeTracker.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -30,6 +32,16 @@ namespace TimeTracker
 
                 return database;
             }
+        }
+
+        public static async void Authenticate()
+        {
+            var authenticationService = DependencyService.Get<IAuthenticationService>();
+            var loginResult = await authenticationService.Authenticate();
+
+            //handle token stuff
+
+            //notify the UI
         }
         protected override void OnStart()
         {

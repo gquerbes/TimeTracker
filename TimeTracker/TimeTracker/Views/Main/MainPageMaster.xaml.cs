@@ -22,7 +22,6 @@ namespace TimeTracker.Views.Main
             InitializeComponent();
 
             BindingContext = new MainPageMasterViewModel();
-            ListView = MenuItemsListView;
 
         }
 
@@ -48,6 +47,18 @@ namespace TimeTracker.Views.Main
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
             #endregion
+        }
+
+        private void LoginButton_OnClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                App.Authenticate();
+            }
+            catch
+            {
+                //DisplayAlert()
+            }
         }
     }
 }
