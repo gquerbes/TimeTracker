@@ -10,6 +10,7 @@ using TimeTracker.Interfaces;
 using TimeTracker.Models;
 using TimeTracker.ViewModels;
 using TimeTracker.Views;
+using TimeTracker.Views.Main;
 using Xamarin.Forms;
 
 namespace TimeTracker
@@ -29,11 +30,20 @@ namespace TimeTracker
             EntryListView.OnExpandCollapseParent += OnExpandCollapseParent;
             _ui = SynchronizationContext.Current;
 
+
+        }
+
+
+
+        private void OnUpdateTickets()
+        {
+          System.Diagnostics.Debug.WriteLine("ok");
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
+
             if (_vm.CurrentTimeEntry?.Ticket == null)
             {
                 AutoCompleteList.SearchBar.Focus();
@@ -42,6 +52,7 @@ namespace TimeTracker
             {
                 CommentsTextEditor.Focus();
             }
+
         }
 
         private void OnExpandCollapseParent(TimeEntryParent timeentryparent)

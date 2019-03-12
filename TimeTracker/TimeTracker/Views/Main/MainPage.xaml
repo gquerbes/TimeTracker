@@ -7,7 +7,7 @@
              MasterBehavior="Popover"
              Title= "MainPage">
   <MasterDetailPage.Master>
-    <pages:MainPageMaster x:Name="MasterPage" />
+    <pages:MainPageMaster x:Name="MasterPage"  x:FieldModifier="public" />
   </MasterDetailPage.Master>
   <MasterDetailPage.Detail>
     <NavigationPage>

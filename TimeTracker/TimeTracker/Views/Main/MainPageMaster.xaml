@@ -4,9 +4,9 @@
              x:Class="TimeTracker.Views.Main.MainPageMaster"
              Title="MainPageMaster">
   <StackLayout>
-   <Button Text="Login" Clicked="LoginButton_OnClicked" />
+   <Button Text="login" Clicked="LoginButton_OnClicked" />
    <StackLayout>
-   <Button Text="" Clicked="LoginButton_OnClicked" />
+   <Button Text="update tickets list" Clicked="UpdateTicketsList_OnClicked" />
    </StackLayout>
     </StackLayout>
 </ContentPage>

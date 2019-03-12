@@ -31,9 +31,6 @@
     <Compile Update="Views\TimeTrackerPage.xaml.cs">
       <DependentUpon>TimeTrackerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Main\MainPageMenuItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -44,9 +41,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Main\MainPageMaster.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\LoginPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\TimeEntryDetailPage.xaml">

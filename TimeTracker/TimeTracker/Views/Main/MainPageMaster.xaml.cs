@@ -15,8 +15,10 @@ namespace TimeTracker.Views.Main
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPageMaster : ContentPage
     {
-        public ListView ListView;
 
+        public delegate void UpdateTicketsDelegate();
+
+        public UpdateTicketsDelegate OnUpdateTickets;
         public MainPageMaster()
         {
             InitializeComponent();
@@ -27,16 +29,7 @@ namespace TimeTracker.Views.Main
 
         class MainPageMasterViewModel : INotifyPropertyChanged
         {
-            public ObservableCollection<MainPageMenuItem> MenuItems { get; set; }
-
-            public MainPageMasterViewModel()
-            {
-                MenuItems = new ObservableCollection<MainPageMenuItem>(new[]
-                {
-                    new MainPageMenuItem { Id = 0, Title = "Login", },
-                });
-            }
-
+      
             #region INotifyPropertyChanged Implementation
             public event PropertyChangedEventHandler PropertyChanged;
             void OnPropertyChanged([CallerMemberName] string propertyName = "")
@@ -59,6 +52,11 @@ namespace TimeTracker.Views.Main
             {
                 //DisplayAlert()
             }
+        }
+
+        private void UpdateTicketsList_OnClicked(object sender, EventArgs e)
+        {
+            OnUpdateTickets?.Invoke();
         }
     }
 }
