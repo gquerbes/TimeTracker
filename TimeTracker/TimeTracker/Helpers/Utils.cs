@@ -104,7 +104,7 @@ namespace TimeTracker.Helpers
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value == null ? Color.DimGray : Color.White;
+            return value == null ? Color.LightCoral : Color.White;
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

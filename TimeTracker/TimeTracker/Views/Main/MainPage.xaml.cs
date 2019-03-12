@@ -15,7 +15,6 @@ namespace TimeTracker.Views.Main
         public MainPage()
         {
             InitializeComponent();
-
         }
 
      

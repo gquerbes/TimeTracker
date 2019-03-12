@@ -194,7 +194,7 @@ namespace TimeTracker
                 {
                     return  ((Color) Application.Current.Resources["AbasRed"]);
                 }
-                    return ((Color)Application.Current.Resources["AbasLimeGreen"]);
+                    return ((Color)Application.Current.Resources["AbasGreen"]);
             }
         }
 

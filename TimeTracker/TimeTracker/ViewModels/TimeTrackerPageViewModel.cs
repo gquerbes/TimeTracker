@@ -19,7 +19,7 @@ using Xamarin.Forms;
 
 namespace TimeTracker
 {
-    public class MainPageViewModel : INotifyPropertyChanged
+    public class TimeTrackerPageViewModel : INotifyPropertyChanged
     {
         private TimeEntryViewModel _currentTimeEntry;
 

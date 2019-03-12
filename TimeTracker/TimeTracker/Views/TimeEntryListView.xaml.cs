@@ -58,7 +58,7 @@ namespace TimeTracker.Views
 
             //find corresponding collection
             var correspondingCollection =
-                (this.BindingContext as MainPageViewModel)?.TimeEntries.FirstOrDefault(x =>
+                (this.BindingContext as TimeTrackerPageViewModel)?.TimeEntries.FirstOrDefault(x =>
                     x.Date.Date.Equals(selectedParent?.Date.Date));
 
             //for each child, remove it from the list and delete from database
@@ -82,7 +82,7 @@ namespace TimeTracker.Views
 
             //find corresponding collection
             var correspondingCollection =
-                (this.BindingContext as MainPageViewModel)?.TimeEntries.FirstOrDefault(x =>
+                (this.BindingContext as TimeTrackerPageViewModel)?.TimeEntries.FirstOrDefault(x =>
                     x.Date.Equals(selectedTimeEntry?.StartTime.Date));
 
             //remove item from list

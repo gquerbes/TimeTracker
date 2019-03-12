@@ -6,11 +6,11 @@
              xmlns:timeTracker="clr-namespace:TimeTracker;assembly=TimeTracker"
              MasterBehavior="Popover"
              Title= "MainPage">
-  <MasterDetailPage.Master>
-    <pages:MainPageMaster x:Name="MasterPage"  x:FieldModifier="public" />
+    <MasterDetailPage.Master>
+<pages:MainPageMaster x:Name="MasterPage"  x:FieldModifier="public" />
   </MasterDetailPage.Master>
   <MasterDetailPage.Detail>
-    <NavigationPage>
+    <NavigationPage BarBackgroundColor="{StaticResource AbasGray}" BarTextColor="White">
       <x:Arguments>
         <timeTracker:TimeTrackerPage/>
       </x:Arguments>

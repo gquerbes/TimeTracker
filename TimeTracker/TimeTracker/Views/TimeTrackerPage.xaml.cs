@@ -17,11 +17,11 @@ namespace TimeTracker
 {
     public partial class TimeTrackerPage : ContentPage
     {
-        private MainPageViewModel _vm;
+        private TimeTrackerPageViewModel _vm;
         private SynchronizationContext _ui;
         public TimeTrackerPage()
         {
-            _vm = new MainPageViewModel();
+            _vm = new TimeTrackerPageViewModel();
             this.BindingContext = _vm;
 
             InitializeComponent();

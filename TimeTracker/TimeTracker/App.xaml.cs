@@ -3,6 +3,7 @@ using System.IO;
 using TimeTracker.Database;
 using TimeTracker.Services.Authentication;
 using TimeTracker.Views;
+using TimeTracker.Views.Main;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,7 +16,7 @@ namespace TimeTracker
         {
             InitializeComponent();
 
-            MainPage = new TimeTracker.Views.Main.MainPage();
+            MainPage = new MainPage();
         }
 
         private static AppDatabase database;

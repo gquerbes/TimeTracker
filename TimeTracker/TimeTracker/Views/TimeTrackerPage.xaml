@@ -6,19 +6,16 @@
              x:Class="TimeTracker.TimeTrackerPage"
              Title="abas Time Tracker">
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="LoadTickets" Clicked= "LoadTickets_OnClicked" />
-    </ContentPage.ToolbarItems>
 
     <StackLayout Spacing="0">
         <ProgressBar Grid.Row="2"  FlowDirection="LeftToRight" Progress="{Binding SyncProgress, Mode=OneWay}" ProgressColor="{StaticResource AbasRed}"  IsVisible="{Binding IsSyncBarVisible}"/>
         <!-- Place new controls here -->
         <Grid x:Name="MainContentGrid" RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="175"/>
+                <RowDefinition Height="185"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Grid x:Name="TopBar" BindingContext="{Binding CurrentTimeEntry}" Grid.Row="0" BackgroundColor="{StaticResource AbasGreen}" Padding="5,5,5,5">
+            <Grid x:Name="TopBar" BindingContext="{Binding CurrentTimeEntry}" Grid.Row="0" BackgroundColor="WhiteSmoke"  Padding="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="150"/>
@@ -37,8 +34,8 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Editor x:Name="CommentsTextEditor" FontSize="15" Grid.Column="0" Grid.Row="0" Placeholder="Comments" Text="{Binding Comments, Mode=TwoWay}" BackgroundColor="White" TabIndex="1"/>
-                        <Entry x:Name="InternalComments"  FontSize="15" Grid.Column="0" Grid.Row="1" Placeholder="Internal Comments" Text="{Binding InternalComments, Mode=TwoWay}" BackgroundColor="White" TabIndex="6" />
+                        <Editor x:Name="CommentsTextEditor" FontSize="15" Grid.Column="0" Grid.Row="0" Placeholder="Comments" Text="{Binding Comments, Mode=TwoWay}" TabIndex="1"/>
+                        <Entry x:Name="InternalComments"  FontSize="15" Grid.Column="0" Grid.Row="1" Placeholder="Internal Comments" Text="{Binding InternalComments, Mode=TwoWay}"  TabIndex="6" />
                     </Grid>
                 </Grid>
                 <StackLayout Grid.Column="1" Grid.Row="0"  Orientation="Vertical" Padding="10,0,0,0" HorizontalOptions="End">
