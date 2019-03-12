@@ -97,27 +97,37 @@ namespace TimeTracker
         public void AddTimeEntryToList(TimeEntryViewModel vm)
         {
             //correspodning date collection
-            var collection = TimeEntries.FirstOrDefault(x => x.Date.Equals(vm.StartTime.Date));
-            //check if valid parent ticket exists and place child inside or make new one and place child inside if does not exist
-            foreach (var entryParent in  collection)
+            var collection = TimeEntries?.FirstOrDefault(x => x.Date.Date.Equals(vm.StartTime.Date));
+            if (collection == null)
             {
-                if (entryParent.Ticket != null && ((entryParent as TimeEntryParent)?.BillCustomer == vm.BillCustomer)
-                    && (string.IsNullOrEmpty(entryParent.Ticket?.uri) && entryParent.Ticket.ProjectURI.Equals(vm.Ticket?.ProjectURI)
-                        || (!string.IsNullOrEmpty(entryParent.Ticket?.uri) && entryParent.Ticket.uri.Equals(vm?.Ticket?.uri))))
-                {
-                    var castedParent = (entryParent as TimeEntryParent);
-                    vm.parent = castedParent;
-                    vm.OnTicketRequiresReorg += OnTicketRequiresReorg;
-                    castedParent?.Entries.Add(vm);
-                    //add new item to viewable list if the parent is already expanded
-                    if (collection.Contains(castedParent.Entries.FirstOrDefault()))
-                    {
-                        collection.Insert(collection.IndexOf(castedParent) +1, vm);
-                    }
-                    castedParent?.OnPropertyChanged(null);
-                    return;
-                }
+                collection = new TimeEntryListElementOverservableCollection(vm.StartTime.Date.Date);
             }
+          
+
+            //check if valid parent ticket exists and place child inside or make new one and place child inside if does not exist
+                foreach (var entryParent in collection)
+                {
+                    if (entryParent.Ticket != null && ((entryParent as TimeEntryParent)?.BillCustomer ==
+                                                       vm.BillCustomer)
+                                                   && (string.IsNullOrEmpty(entryParent.Ticket?.uri) &&
+                                                       entryParent.Ticket.ProjectURI.Equals(vm.Ticket?.ProjectURI)
+                                                       || (!string.IsNullOrEmpty(entryParent.Ticket?.uri) &&
+                                                           entryParent.Ticket.uri.Equals(vm?.Ticket?.uri))))
+                    {
+                        var castedParent = (entryParent as TimeEntryParent);
+                        vm.parent = castedParent;
+                        vm.OnTicketRequiresReorg += OnTicketRequiresReorg;
+                        castedParent?.Entries.Add(vm);
+                        //add new item to viewable list if the parent is already expanded
+                        if (collection.Contains(castedParent.Entries.FirstOrDefault()))
+                        {
+                            collection.Insert(collection.IndexOf(castedParent) + 1, vm);
+                        }
+
+                        castedParent?.OnPropertyChanged(null);
+                        return;
+                    }
+                }
 
             //No valid parent yest on list
             //create new parent
